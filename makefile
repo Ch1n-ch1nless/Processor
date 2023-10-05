@@ -17,8 +17,8 @@ CPU_SRC_DIR = ./CPU/source/
 ASM_OBJ_DIR = ./Assembler/object/
 ASM_SRC_DIR = ./Assembler/source/
 
-DIS_OBJ_DIR = ./DisAssembler/object/
-DIS_SRC_DIR = ./DisAssembler/source/
+DIS_OBJ_DIR = ./Disassembler/object/
+DIS_SRC_DIR = ./Disassembler/source/
 
 ONG_OBJ_DIR = ./Onegin/object/
 ONG_SRC_DIR = ./Onegin/source/
@@ -59,7 +59,7 @@ $(CPU_OBJ_DIR)%.o : $(CPU_SRC_DIR)%.cpp
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 dis_compile: $(ONG_OBJ) $(DIS_OBJ)
-	$(CC) $(DIS_OBJ) -o dis
+	$(CC) $(DIS_OBJ) $(ONG_OBJ) -o dis
 
 $(ONG_OBJ_DIR)%.o : $(ONG_SRC_DIR)%.cpp
 	@$(CC) $(CFLAGS) -c $< -o $@

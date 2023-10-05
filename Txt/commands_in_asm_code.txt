@@ -1,0 +1,9 @@
+push 333
+in
+mul
+push 222
+add
+sqrt
+cos
+push0
+hlt
