@@ -4,10 +4,12 @@ int main()
 {
     ERRORS error = NO_ERR;
 
-    const char* input_file = "Txt/commands.txt";
+    const char* input_file  = "Txt/commands.txt";
     const char* output_file = "Txt/commands_in_byte_code.txt";
 
-    Text instruction = FillText(input_file, &error);
+    Text instruction = {};
+
+    error = FillText(input_file, &instruction);
     $CHECK_AND_RETURN_ERROR
 
     error = AssemblerTheInstruction(output_file, &instruction);

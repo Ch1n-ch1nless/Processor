@@ -1,14 +1,16 @@
 #ifndef DISASSEMBLER_H_INCLUDED
 #define DISASSEMBLER_H_INCLUDED
 
-#include "../../Onegin/source/onegin.h"
+#include "../../Onegin/source/text.h"
+#include "../../Onegin/source/make_text.h"
+#include "../../Onegin/source/print_text.h"
 
 const size_t COUNT_OF_COMMANDS = 11;
 
 struct translation
 {
-    const char* asm_cmd;
     const char* mode;
+    const char* asm_cmd;
 };
 
 const translation cmd_array[] = {

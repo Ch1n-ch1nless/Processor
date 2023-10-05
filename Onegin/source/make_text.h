@@ -5,7 +5,7 @@
 
 #define REDASSERT(str) "\033[0;31m" #str "\033[0m"
 
-Text FillText(const char* filename, ERRORS* error);
+ERRORS FillText(const char* filename, Text* onegin);
 ERRORS OpenFile(Text* onegin, const char* filename);
 ERRORS ReadBuffer(Text* onegin);
 size_t FillLineArray(Text* onegin, ERRORS* error);

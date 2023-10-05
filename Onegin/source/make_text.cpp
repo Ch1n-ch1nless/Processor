@@ -1,29 +1,25 @@
 #include "make_text.h"
 
-Text FillText(const char* filename, ERRORS* error)
+ERRORS FillText(const char* filename, Text* onegin)
 {
-    Text onegin = {.file_ptr   = nullptr,
-                   .buf_size   = 0,
-                   .buffer     = nullptr,
-                   .n_lines    = 0,
-                   .line_array = nullptr};
+    ERRORS error = NO_ERR;
 
-    *error = OpenFile(&onegin, filename);
-    $CHECK_ERROR_AND_RETURN_ONEGIN
+    error = OpenFile(onegin, filename);
+    $CHECK_AND_RETURN_ERROR
 
-    *error = ReadBuffer(&onegin);
-    $CHECK_ERROR_AND_RETURN_ONEGIN
+    error = ReadBuffer(onegin);
+    $CHECK_AND_RETURN_ERROR
 
-    size_t count_of_lines = FillLineArray(&onegin, error);
+    size_t count_of_lines = FillLineArray(onegin, &error);
 
-    if (count_of_lines <= onegin.n_lines) {
-        onegin.n_lines = count_of_lines;
+    if (count_of_lines <= onegin->n_lines) {
+        onegin->n_lines = count_of_lines;
     } else {
-        printf("ERROR! count_of_lines: %d\nn_lines: %d\n", count_of_lines, onegin.n_lines);
+        printf("ERROR! count_of_lines: %d\nn_lines: %d\n", count_of_lines, onegin->n_lines);
         assert(0);
     }
 
-    return onegin;
+    return error;
 }
 
 ERRORS OpenFile(Text* onegin, const char* filename)

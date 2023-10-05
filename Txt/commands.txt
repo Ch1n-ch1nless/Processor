@@ -1,7 +1,9 @@
-push 1
-push 2
-push 3
+push 333
+in
 mul
-sub
+push 222
+add
+sqrt
+cos
 out 
 hlt

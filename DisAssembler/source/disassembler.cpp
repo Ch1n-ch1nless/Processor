@@ -13,16 +13,16 @@ ERRORS DisAssemblerTheInstruction(const char* outputfile, Text* guide)
 
     for (int i = 0; i < guide->n_lines; i++)
     {
-        if (strncmp(guide->line_array[i].str_ptr, cmd_array[0].asm_cmd, 1) == 0)
+        if (strncmp(guide->line_array[i].str_ptr, cmd_array[0].mode, 1) == 0)
         {
-            fprintf("%s%s\n", cmd_array[0].mode, guide->line_array[i].str_ptr + 1);
+            fprintf(output, "%s%s\n", cmd_array[0].asm_cmd, guide->line_array[i].str_ptr + 1);
             continue;
         }
         for (int j = 1; j < COUNT_OF_COMMANDS; j++)
         {
-            if (strncmp(guide->line_array[i].str_ptr, cmd_array[j].asm_cmd, 1) == 0)
+            if (strncmp(guide->line_array[i].str_ptr, cmd_array[j].mode, strlen(cmd_array[j].mode)) == 0)
             {
-                fprintf(output, "%s\n", cmd_array[j].mode);
+                fprintf(output, "%s\n", cmd_array[j].asm_cmd);
             }
         }
     }
