@@ -93,3 +93,98 @@ DEF_CMD(POP,  11, REG,       1, {
                                             BREAK
                                     }
                                 })
+
+DEF_CMD(JMP,  12, LBL,       1, {
+				    i = clm->cmd_array[i+1] - 1;
+                                })
+
+DEF_CMD(JA,   13, LBL,       1, {
+				    	MAKE_VAR(first)
+					MAKE_VAR(second)
+					STK_POP(second)
+					STK_POP(first)
+					if (first < second)
+					{
+					    i = clm->cmd_array[i+1] - 1;
+					}
+					else
+					{
+					    i += 1;
+					}
+                                })
+
+DEF_CMD(JAE,  14, LBL,       1, {
+				    MAKE_VAR(first)
+					MAKE_VAR(second)
+					STK_POP(second)
+					STK_POP(first)
+					if (first <= second)
+					{
+					    i = clm->cmd_array[i+1] - 1;
+					}
+					else
+					{
+					    i += 1;
+					}
+                                })
+
+DEF_CMD(JB,   15, LBL,       1, {
+				    MAKE_VAR(first)
+					MAKE_VAR(second)
+					STK_POP(second)
+					STK_POP(first)
+					if (first > second)
+					{
+					    i = clm->cmd_array[i+1] - 1;
+					}
+					else
+					{
+					    i += 1;
+					}
+                                })
+
+DEF_CMD(JBE,  16, LBL,       1, {
+				    MAKE_VAR(first)
+					MAKE_VAR(second)
+					STK_POP(second)
+					STK_POP(first)
+					if (first >= second)
+					{
+					    i = clm->cmd_array[i+1] - 1;
+					}
+					else
+					{
+					    i += 1;
+					}
+                                })
+
+DEF_CMD(JE,   17, LBL,       1, {
+				    MAKE_VAR(first)
+					MAKE_VAR(second)
+					STK_POP(second)
+					STK_POP(first)
+					if (first == second)
+					{
+					    i = clm->cmd_array[i+1] - 1;
+					}
+					else
+					{
+					    i += 1;
+					}
+                                })
+
+DEF_CMD(JNE,  18, LBL,       1, {
+				    MAKE_VAR(first)
+					MAKE_VAR(second)
+					STK_POP(second)
+					STK_POP(first)
+					if (first != second)
+					{
+					    i = clm->cmd_array[i+1] - 1;
+					}
+					else
+					{
+					    i += 1;
+					}
+                                })
+ 

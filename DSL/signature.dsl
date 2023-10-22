@@ -27,7 +27,7 @@ DEF_SGNT(LBL,   7, {
                         {
                             cmd_array[i] += LBL;
                             i += 1;
-                            cmd_array[i] = LABELS_ARRAY[k].value;
+                            cmd_array[i] = LABELS_ARRAY[k].line;
                         }
                     }
                    })

@@ -3,7 +3,7 @@
 
 #define DEF_LABEL(name, value) {#name, strlen(#name), value, -1},
 
-struct label
+struct Label
 {
     const char* name;
     size_t len;
@@ -11,7 +11,7 @@ struct label
     int line;
 };
 
-static label LABELS_ARRAY[] = {
+static Label LABELS_ARRAY[] = {
                                 #include "../DSL/labels.dsl"
                               };
 

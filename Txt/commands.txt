@@ -2,17 +2,16 @@
 		push rax
 		in
 		push rbx
-		in
-		push rcx
-		pop rbx
-		pop rbx
-		mul
-		push 4
+FOR:
 		pop rax
-		pop rcx
-		mul
-		mul
-		sub
-		sqrt
+		pop rbx
+		jb NEXT:
+		pop rax
+		pop rax
+		add
+		push rax
+		jmp FOR:
+NEXT:
+		pop rax
 		out  
 		hlt
