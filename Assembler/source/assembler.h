@@ -4,44 +4,53 @@
 #include "../../Onegin/source/text.h"
 #include "../../Onegin/source/make_text.h"
 #include "../../Onegin/source/print_text.h"
+#include "../../Stack/source/struct_and_const.h"
 
-enum MODE : unsigned int
+enum CMD : int
 {
-    PUSH_MODE = 1,
-    IN_MODE   = 2,
-    ADD_MODE  = 3,
-    SUB_MODE  = 4,
-    MUL_MODE  = 5,
-    DIV_MODE  = 6,
-    SQRT_MODE = 7,
-    SIN_MODE  = 8,
-    COS_MODE  = 9,
-    OUT_MODE  = 10,
-    HLT_MODE  = 0
+    CMD_HLT  = -1,
+    CMD_PUSH =  1,
+    CMD_IN   =  2,
+    CMD_ADD  =  3,
+    CMD_SUB  =  4,
+    CMD_MUL  =  5,
+    CMD_DIV  =  6,
+    CMD_SQRT =  7,
+    CMD_SIN  =  8,
+    CMD_COS  =  9,
+    CMD_OUT  = 10,
+    END_CMD
 };
 
-const size_t COUNT_OF_COMMANDS = 11;
+const size_t DICTIONARY_LEN = END_CMD;
 
-struct translation
+struct Translation
 {
     const char* asm_cmd;
-    MODE mode;
+    size_t      cmd_len;
+    CMD         byte_cmd;
 };
 
-const translation cmd_array[] = {
-                                    {"push", PUSH_MODE},
-                                    {"in",   IN_MODE},
-                                    {"add",  ADD_MODE},
-                                    {"sub",  SUB_MODE},
-                                    {"mul",  MUL_MODE},
-                                    {"div",  DIV_MODE},
-                                    {"sqrt", SQRT_MODE},
-                                    {"sin",  SIN_MODE},
-                                    {"cos",  COS_MODE},
-                                    {"out",  OUT_MODE},
-                                    {"hlt",  HLT_MODE}
+const Translation DICTIONARY[] = {
+                                    {"push", 4, CMD_PUSH},
+                                    {"in",   2, CMD_IN  },
+                                    {"add",  3, CMD_ADD },
+                                    {"sub",  3, CMD_SUB },
+                                    {"mul",  3, CMD_MUL },
+                                    {"div",  3, CMD_DIV },
+                                    {"sqrt", 4, CMD_SQRT},
+                                    {"sin",  3, CMD_SIN },
+                                    {"cos",  3, CMD_COS },
+                                    {"out",  3, CMD_OUT },
+                                    {"hlt",  3, CMD_HLT }
                                 };
 
-ERRORS AssemblerTheInstruction(const char* outputfile, Text* guide);
+ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code);
+
+ERRORS OpenFile(const char* file_name, FILE** file_pointer, const char* mode);
+
+//ERRORS MakeBinCmdArray(elem_t* cmd_array, const size_t len);
+
+ERRORS PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len);
 
 #endif // ASSEMBLER_H_INCLUDED

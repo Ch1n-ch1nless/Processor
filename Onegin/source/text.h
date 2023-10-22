@@ -38,9 +38,14 @@ struct Text
 
 enum ERRORS
 {
-    NO_ERR,
-    OPEN_FILE_ERR,
-    MEM_ALLOC_ERR
+    NO_ERR                    = 0,
+    OPEN_FILE_ERR             = 1 << 0,
+    MEM_ALLOC_ERR             = 1 << 1,
+    FEW_CMD_LINE_ARGS_ERR     = 1 << 2,
+    MANY_CMD_LINE_ARGS_ERR    = 1 << 3,
+    INCORRECT_INPUT_FILE_ERR  = 1 << 4,
+    INCORRECT_OUTPUT_FILE_ERR = 1 << 5,
+    WRITE_TO_FILE_ERR         = 1 << 6
 };
 
 #endif // TEXT_H_INCLUDED

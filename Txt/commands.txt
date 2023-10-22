@@ -1,9 +1,8 @@
-push 333
-in
-mul
-push 222
-add
-sqrt
-cos
-out 
-hlt
+		in
+		in
+		mul
+		push 3
+		add
+		sqrt
+		out 
+		hlt

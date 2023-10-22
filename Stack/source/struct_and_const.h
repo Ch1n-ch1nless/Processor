@@ -5,11 +5,11 @@
 /**
  * The elem_t is data type of stack's elements
  */
-typedef double elem_t;
+typedef int elem_t;
 /**
  * This define specifies how the elements will be displayed
  */
-#define elem_format "%lg"
+#define elem_format "%d"
 
 #define PRINT_STACK(stk) PrintStack((stk), #stk, __FILE__, __FUNCTION__, __LINE__);
 #define STACK_CTOR(stk) StackCtor((stk), #stk, __FILE__, __LINE__);
