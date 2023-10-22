@@ -1,8 +1,18 @@
 		in
+		push rax
 		in
+		push rbx
+		in
+		push rcx
+		pop rbx
+		pop rbx
+		mul 
+		push 4
+		pop rax
 		mul
-		push 3
-		add
+		pop rcx
+		mul
+		sub
 		sqrt
 		out 
 		hlt

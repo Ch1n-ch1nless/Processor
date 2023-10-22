@@ -18,8 +18,25 @@ error_t ExecuteCommands(Processor* clm)
         {
             case(CMD_PUSH):
             {
+                int arg = clm->cmd_array[i] & BIT_MASK_OF_ARGS_TYPE;
                 i++;
-                error = ProcessorStkPush(clm, clm->cmd_array[i]);
+                switch(arg)
+                {
+                    case(REG):
+                    {
+                        ProcessorRegPush(clm, clm->cmd_array[i]);
+                        break;
+                    }
+
+                    case(NUM):
+                    {
+                        ProcessorStkPush(clm, clm->cmd_array[i]);
+                        break;
+                    }
+
+                    default:
+                        break;
+                }
                 break;
             }
 
@@ -105,6 +122,13 @@ error_t ExecuteCommands(Processor* clm)
 
             case(CMD_HLT):
                 return error;
+
+            case(CMD_POP):
+            {
+                i++;
+                ProcessorRegPop(clm, clm->cmd_array[i]);
+                break;
+            }
 
             default:
             {

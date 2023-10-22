@@ -20,8 +20,17 @@ enum CMD : int
     CMD_SQRT =  7,
     CMD_SIN  =  8,
     CMD_COS  =  9,
-    CMD_OUT  = 10
+    CMD_OUT  = 10,
+    CMD_POP  = 11
 };
+
+enum ArgsType : int
+{
+    NONE = 1 << 0,
+    REG  = 1 << 5,
+    NUM  = 1 << 6
+};
+
 
 error_t ExecuteCommands(Processor* clm);
 

@@ -15,16 +15,24 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
             if (strnicmp(cmd_begin, DICTIONARY[j].asm_cmd, DICTIONARY[j].cmd_len) == 0)
             {
                 cmd_array[index] = DICTIONARY[j].byte_cmd;
-                index++;
 
                 char* arg_begin = cmd_begin + DICTIONARY[j].cmd_len + 1;
                 elem_t argument = POISON_VALUE;
+                char str_arg[] = "-1";
 
                 if (sscanf(arg_begin, elem_format, &argument) == 1)
                 {
-                    cmd_array[index] = argument;
+                    cmd_array[index] |= NUM;
                     index++;
+                    cmd_array[index] = argument;
                 }
+                else if (sscanf(arg_begin, "%[rabcdx]", str_arg) == 1)
+                {
+                    cmd_array[index] |= REG;
+                    index++;
+                    cmd_array[index] = str_arg[1] - 'a';
+                }
+                index++;
             }
         }
     }

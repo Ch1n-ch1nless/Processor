@@ -19,37 +19,45 @@ enum CMD : int
     CMD_SIN  =  8,
     CMD_COS  =  9,
     CMD_OUT  = 10,
+    CMD_POP  = 11,
     END_CMD
 };
 
 const size_t DICTIONARY_LEN = END_CMD;
 
+enum ArgsType : int
+{
+    NONE = 1 << 0,
+    REG  = 1 << 5,
+    NUM  = 1 << 6
+};
+
 struct Translation
 {
-    const char* asm_cmd;
-    size_t      cmd_len;
-    CMD         byte_cmd;
+    const char*  asm_cmd;
+    size_t       cmd_len;
+    unsigned int arg_type;
+    CMD          byte_cmd;
 };
 
 const Translation DICTIONARY[] = {
-                                    {"push", 4, CMD_PUSH},
-                                    {"in",   2, CMD_IN  },
-                                    {"add",  3, CMD_ADD },
-                                    {"sub",  3, CMD_SUB },
-                                    {"mul",  3, CMD_MUL },
-                                    {"div",  3, CMD_DIV },
-                                    {"sqrt", 4, CMD_SQRT},
-                                    {"sin",  3, CMD_SIN },
-                                    {"cos",  3, CMD_COS },
-                                    {"out",  3, CMD_OUT },
-                                    {"hlt",  3, CMD_HLT }
+                                    {"push", 4, REG | NUM, CMD_PUSH},
+                                    {"in",   2, NONE,      CMD_IN  },
+                                    {"add",  3, NONE,      CMD_ADD },
+                                    {"sub",  3, NONE,      CMD_SUB },
+                                    {"mul",  3, NONE,      CMD_MUL },
+                                    {"div",  3, NONE,      CMD_DIV },
+                                    {"sqrt", 4, NONE,      CMD_SQRT},
+                                    {"sin",  3, NONE,      CMD_SIN },
+                                    {"cos",  3, NONE,      CMD_COS },
+                                    {"out",  3, NONE,      CMD_OUT },
+                                    {"hlt",  3, NONE,      CMD_HLT },
+                                    {"pop",  3, REG,       CMD_POP }
                                 };
 
 ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code);
 
 ERRORS OpenFile(const char* file_name, FILE** file_pointer, const char* mode);
-
-//ERRORS MakeBinCmdArray(elem_t* cmd_array, const size_t len);
 
 ERRORS PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len);
 
