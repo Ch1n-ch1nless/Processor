@@ -6,13 +6,13 @@
 		push rcx
 		pop rbx
 		pop rbx
-		mul 
+		mul
 		push 4
 		pop rax
-		mul
 		pop rcx
+		mul
 		mul
 		sub
 		sqrt
-		out 
+		out  
 		hlt

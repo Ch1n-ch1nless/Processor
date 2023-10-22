@@ -7,7 +7,7 @@ error_t ExecuteCommands(Processor* clm)
 
     for (size_t i = 0; i < clm->buf_size; i++)
     {
-        int command = clm->cmd_array[i] & BIT_MASK_OF_COMMAND;
+        int command = clm->cmd_array[i] & BIT_MASK_OF_CMD;
 
         if (clm->cmd_array[i] == CMD_HLT)
         {
@@ -18,7 +18,7 @@ error_t ExecuteCommands(Processor* clm)
         {
             case(CMD_PUSH):
             {
-                int arg = clm->cmd_array[i] & BIT_MASK_OF_ARGS_TYPE;
+                int arg = clm->cmd_array[i] & BIT_MASK_OF_ARGS;
                 i++;
                 switch(arg)
                 {
@@ -35,6 +35,7 @@ error_t ExecuteCommands(Processor* clm)
                     }
 
                     default:
+                        printf("LOL!!!");
                         break;
                 }
                 break;
@@ -136,6 +137,8 @@ error_t ExecuteCommands(Processor* clm)
                 break;
             }
         }
+
+        //PRINT_PROCESSOR(clm)
 
         PRINT_PROC_ERR(error, clm)
     }

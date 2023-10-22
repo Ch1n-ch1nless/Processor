@@ -16,22 +16,12 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
             {
                 cmd_array[index] = DICTIONARY[j].byte_cmd;
 
-                char* arg_begin = cmd_begin + DICTIONARY[j].cmd_len + 1;
-                elem_t argument = POISON_VALUE;
-                char str_arg[] = "-1";
+                char* str_arg = cmd_begin + DICTIONARY[j].cmd_len + (DICTIONARY[j].type_of_args != NONE);
 
-                if (sscanf(arg_begin, elem_format, &argument) == 1)
-                {
-                    cmd_array[index] |= NUM;
-                    index++;
-                    cmd_array[index] = argument;
-                }
-                else if (sscanf(arg_begin, "%[rabcdx]", str_arg) == 1)
-                {
-                    cmd_array[index] |= REG;
-                    index++;
-                    cmd_array[index] = str_arg[1] - 'a';
-                }
+                TranslateCmdArgs(cmd_array, &index, str_arg, DICTIONARY[j].type_of_args, &error);
+
+                //printf("[%s] = [%d][%d]\n", asm_code->line_array[i].str_ptr, cmd_array[index], index);
+
                 index++;
             }
         }
@@ -53,19 +43,6 @@ ERRORS OpenFile(const char* file_name, FILE** file_pointer, const char* mode)
     return NO_ERR;
 }
 
-/*ERRORS MakeBinCmdArray(elem_t* cmd_array, const size_t len)
-{
-    assert(cmd_array);
-
-    cmd_array = (elem_t*) calloc(len, sizeof(elem_t));
-    if (cmd_array == nullptr)
-    {
-        return MEM_ALLOC_ERR;
-    }
-
-    return NO_ERR;
-}*/
-
 ERRORS PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len)
 {
     assert(cmd_array);
@@ -79,4 +56,19 @@ ERRORS PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len)
     }
 
     return error;
+}
+
+void TranslateCmdArgs(elem_t* cmd_array, size_t* index, char* str_arg, unsigned arg_type, ERRORS* error)
+{
+    #define DEF_SGNT(name, num, action)              \
+        if (arg_type & name)                         \
+        {                                            \
+            action;                                  \
+        }
+
+    size_t i = *index;
+    #include "../../DSL/signature.dsl"
+    *index = i;
+
+    #undef DEF_SGNT
 }
