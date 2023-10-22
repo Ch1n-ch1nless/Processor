@@ -3,13 +3,14 @@
 
 #include "../../Stack/source/stack.h"
 
+#include "../../Common_files/global_reg_consts_and_structs.h"
+#include "../../Common_files/global_lbl_consts_and_structs.h"
+
 #define PRINT_PROC_ERR(error, clm) error = ProcessorVerify(clm);                                \
                                    ProcessorError(clm, error, __FILE__, __FUNCTION__, __LINE__);
 
 #define PRINT_PROCESSOR(clm) \
 ProcessorDump((clm), #clm, __FILE__, __FUNCTION__, __LINE__);
-
-const size_t REGISTER_COUNT = 4;
 
 struct Processor
 {

@@ -1,14 +1,14 @@
-#define GET_SGNT(data_type) data_type = spu->cmd_array[i] & BIT_MASK_OF_ARGS;
+#define GET_SGNT(data_type) data_type = clm->cmd_array[i] & BIT_MASK_OF_ARGS;
 
-#define GET_ARG(number) i++; number = spu->cmd_array[i];
+#define GET_ARG(number) i++; number = clm->cmd_array[i];
 
-#define STK_PUSH(number) ProcessorStkPush(spu, number);
+#define STK_PUSH(number) ProcessorStkPush(clm, number);
 
-#define STK_POP(number)  ProcessorStkPop(spu, &number);
+#define STK_POP(number)  ProcessorStkPop(clm, &number);
 
-#define REG_PUSH(number) ProcessorRegPush(spu, number);
+#define REG_PUSH(number) ProcessorRegPush(clm, number);
 
-#define REG_POP(number)  ProcessorRegPop(spu, number);
+#define REG_POP(number)  ProcessorRegPop(clm, number);
 
 #define PRINT(text) printf(#text);
 
@@ -18,8 +18,8 @@
 
 #define WRITE(x) printf(elem_format "\n", x);
 
-#define SIGNAL_ERROR printf("ERROR! The wrong syntax!");
+#define SIGNAL_ERROR printf("ERROR! The wrong syntax!\n");
 
 #define BREAK break;
 
-#define EXIT return;
+#define EXIT  break;
