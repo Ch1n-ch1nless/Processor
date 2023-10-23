@@ -1,17 +1,12 @@
-		in
-		push rax
-		in
-		push rbx
-FOR:
-		pop rax
-		pop rbx
-		jb NEXT:
-		pop rax
-		pop rax
-		add
-		push rax
-		jmp FOR:
-NEXT:
-		pop rax
-		out  
+		call MAIN:
 		hlt
+OUT:
+		out
+		ret
+READ:
+		in
+		ret
+MAIN:
+		call READ:
+		call OUT:  
+		ret

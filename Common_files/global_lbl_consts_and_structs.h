@@ -17,6 +17,6 @@ static Label LABELS_ARRAY[] = {
 
 #undef DEF_LABEL
 
-const size_t LABELS_COUNT = 2;
+const size_t LABELS_COUNT = 3;
 
 #endif // GLOBAL_LBL_CONSTS_AND_STRUCTS_H_INCLUDED

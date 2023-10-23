@@ -1,6 +1,6 @@
 #include "spu_execute.h"
 
-error_t ExecuteCommands(Processor* clm)
+error_t ExecuteCommands(Processor* clm, Stack* call_stk)
 {
     error_t error = NO_ERR;
     PRINT_PROC_ERR(error, clm)

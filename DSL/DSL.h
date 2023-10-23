@@ -14,7 +14,7 @@
 
 #define READ(number) scanf(elem_format, &number);
 
-#define MAKE_VAR(name) int name = 0;
+#define MAKE_VAR(name) elem_t name = 0;
 
 #define WRITE(x) printf(elem_format "\n", x);
 

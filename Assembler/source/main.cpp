@@ -34,6 +34,11 @@ int main(int argc, const char* argv[])
     error = TranslateAssemblerCode(cmd_array, &asm_code);
     $CHECK_AND_RETURN_ERROR
 
+    for (size_t i = 0; i < 11; i++)
+    {
+        printf("[%d] = %d\n", i, cmd_array[i]);
+    }
+
     FILE* output_fp = nullptr;
 
     error = OpenFile(output_file, &output_fp, "wb");

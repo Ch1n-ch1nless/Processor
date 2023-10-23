@@ -187,4 +187,16 @@ DEF_CMD(JNE,  18, LBL,       1, {
 					    i += 1;
 					}
                                 })
+
+DEF_CMD(CALL, 19, LBL,       1, {
+				    StackPush(call_stk, i+1);
+				    i = clm->cmd_array[i+1] - 1; 
+                                })
+
+DEF_CMD(RET, 20, NONE,       0, {
+				    MAKE_VAR(index)
+				    StackPop(call_stk, &index);
+				    i = index; 
+                                })
+
  

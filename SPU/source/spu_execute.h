@@ -7,6 +7,6 @@
 
 #include "../../Common_files/global_cmd_consts_and_structs.h"
 
-error_t ExecuteCommands(Processor* clm);
+error_t ExecuteCommands(Processor* clm, Stack* call_stk);
 
 #endif // CALCULATOR_H_INCLUDED
