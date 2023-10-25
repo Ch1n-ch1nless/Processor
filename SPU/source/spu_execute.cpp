@@ -7,7 +7,7 @@ error_t ExecuteCommands(Processor* clm, Stack* call_stk)
 
     for (size_t i = 0; i < clm->buf_size; i++)
     {
-        int command = clm->cmd_array[i] & BIT_MASK_OF_CMD;
+        int command = clm->cmd_array[i] & BITMASK_OPCODE;
 
         if (clm->cmd_array[i] == CMD_HLT)
         {
@@ -29,8 +29,10 @@ error_t ExecuteCommands(Processor* clm, Stack* call_stk)
         }
 
 #undef DEF_CMD
-
-        PRINT_PROC_ERR(error, clm)
+        if (error != NO_ERR)
+        {
+            PRINT_PROC_ERR(error, clm)
+        }
     }
 
     return error;

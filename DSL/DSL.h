@@ -1,4 +1,4 @@
-#define GET_SGNT(data_type) data_type = clm->cmd_array[i] & BIT_MASK_OF_ARGS;
+#define GET_SGNT(data_type) data_type = clm->cmd_array[i] & BITMASK_SGNT;
 
 #define GET_ARG(number) i++; number = clm->cmd_array[i];
 

@@ -14,24 +14,7 @@ int main(int argc, const char* argv[])
         return error;
     }
 
-    Stack call_stk  = {
-                        #ifdef WITH_CANARY
-                            .left_canary = LEFT_CANARY_VALUE,
-                        #endif
-                        .data = nullptr,
-                        .size = 0,
-                        .capacity = 0,
-                        .name = nullptr,
-                        .file = nullptr,
-                        .line = -1,
-                        .status = KILLED_STACK,
-                        #ifdef WITH_HASH
-                            .hash = 0,
-                        #endif
-                        #ifdef WITH_CANARY
-                            .right_canary = RIGHT_CANARY_VALUE,
-                        #endif
-                      };
+    Stack call_stk  = {};
 
     error = STACK_CTOR(&call_stk); //Make the call stack
     PRINT_ERROR(&call_stk, error);

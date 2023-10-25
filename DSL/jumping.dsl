@@ -1,9 +1,0 @@
-#include "DSL.h"
-
-DEF_JMP_CMD(JMP, 12,  =)
-DEF_JMP_CMD(JA,  13,  <)
-DEF_JMP_CMD(JAE, 14, <=)
-DEF_JMP_CMD(JB,  15,  >)
-DEF_JMP_CMD(JBE, 16, >=)
-DEF_JMP_CMD(JE,  17, ==)
-DEF_JMP_CMD(JNE, 18, !=)

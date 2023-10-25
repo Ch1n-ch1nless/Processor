@@ -1,14 +1,15 @@
 #ifndef CONFIG_CMD_H_INCLUDED
 #define CONFIG_CMD_H_INCLUDED
 
-#include "global_sgnt_consts_and_structs.h"
+#include "signatures.h"
 
-const int BIT_MASK_OF_CMD  = 31;
-const int BIT_MASK_OF_ARGS = 32 + 64;
+
+const int BITMASK_OPCODE = 31;
+const int BITMASK_SGNT   = 32 + 64 + 128 + 256;
 
 #define DEF_CMD(name, cmd, ...) CMD_##name = cmd,
 
-enum CMD : int
+enum Cmd : int
 {
     #include "../DSL/commands.dsl"
     END_CMD

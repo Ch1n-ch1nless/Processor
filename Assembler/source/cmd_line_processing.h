@@ -7,7 +7,7 @@
 #include <TXLib.h>
 #include "assembler.h"
 
-static const char* INPUT_FILE_EXTENSION  = "txt";
+static const char* INPUT_FILE_EXTENSION  = "asm";
 static const char* OUTPUT_FILE_EXTENSION = "bin";
 
 const size_t COUNT_OF_ARGS = 3;

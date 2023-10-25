@@ -4,7 +4,11 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 {
     ERRORS error = NO_ERR;
 
-    for (size_t l = 0; l < 2; l++)
+    Label lbl_array[MAX_SIZE_OF_CAPACITY] = {};  //Make array of labels
+
+    size_t lbl_len = 0;
+
+    for (size_t number_of_cycle = 0; number_of_cycle < 2; number_of_cycle++)
     {
         size_t index = 0;
 
@@ -12,20 +16,29 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
         {
             char* cmd_begin = asm_code->line_array[i].str_ptr;
 
-            if (strchr(cmd_begin, ':') != nullptr && cmd_begin[0] != '\t')
+            DeleteExtraSpacesAndTabs(&cmd_begin);
+
+            if (strchr(cmd_begin, ':') != nullptr)
             {
-                for (size_t j = 0; j < LABELS_COUNT; j++)
+                cmd_begin = cmd_begin + 1; //Skip the colon
+
+                lbl_array[lbl_len].str = cmd_begin;
+
+                lbl_array[lbl_len].line = index;
+
+                size_t size_lbl = 0;
+
+                while (isalpha(cmd_begin[size_lbl]))
                 {
-                    if (strnicmp(cmd_begin, LABELS_ARRAY[j].name, LABELS_ARRAY[j].len) == 0)
-                    {
-                        LABELS_ARRAY[j].line = index;
-                        break;
-                    }
+                    size_lbl++;
                 }
+
+                lbl_array[lbl_len].len = size_lbl;
+
+                lbl_len++;
             }
             else
             {
-                cmd_begin = cmd_begin + 2;
                 for (size_t j = 0; j < DICTIONARY_LEN; j++)
                 {
                     if (strnicmp(cmd_begin, DICTIONARY[j].asm_cmd, DICTIONARY[j].cmd_len) == 0)
@@ -34,13 +47,15 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 
                         char* str_arg = cmd_begin + DICTIONARY[j].cmd_len + (DICTIONARY[j].type_of_args != NONE);
 
-                        TranslateCmdArgs(cmd_array, &index, str_arg, DICTIONARY[j].type_of_args, &error);
+                        TranslateCmdArgs(cmd_array, &index, str_arg, DICTIONARY[j].type_of_args,
+                                         &error,    lbl_array, &lbl_len, number_of_cycle);
 
                         index++;
                     }
                 }
             }
         }
+        printf("============\n");
     }
 
     return error;
@@ -74,17 +89,85 @@ ERRORS PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len)
     return error;
 }
 
-void TranslateCmdArgs(elem_t* cmd_array, size_t* index, char* str_arg, unsigned arg_type, ERRORS* error)
+void TranslateCmdArgs(elem_t* cmd_array, size_t* index, char* str_arg, unsigned arg_type,
+                      ERRORS* error, Label* lbl_array, size_t* lbl_len, size_t number_of_cycle)
 {
-    #define DEF_SGNT(name, num, action)              \
-        if (arg_type & name)                         \
-        {                                            \
-            action;                                  \
+    size_t i = *index;
+
+    DeleteExtraSpacesAndTabs(&str_arg);
+
+    if (arg_type & NONE)
+    {
+        return;
+    }
+
+    if (arg_type & NUM)
+    {
+        elem_t number = POISON_VALUE;
+
+        if (sscanf(str_arg, "%d", &number) == 1)
+        {
+            cmd_array[i] += NUM * (number_of_cycle % 2 == 1);
+            i++;
+            cmd_array[i] = number;
+            *index = i;
+
+            return;
         }
 
-    size_t i = *index;
-    #include "../../DSL/signature.dsl"
-    *index = i;
+        *index = i;
+    }
 
-    #undef DEF_SGNT
+    if (arg_type & REG)
+    {
+        for (size_t k = 0; k < REGISTER_COUNT; k++)
+        {
+            if (strnicmp(str_arg, REGISTERS_DICTIONARY[k].name, REGISTERS_DICTIONARY[k].len) == 0)
+            {
+                cmd_array[i] += REG * (number_of_cycle % 2 == 1);
+                i++;
+                cmd_array[i] = REGISTERS_DICTIONARY[k].num;
+                *index = i;
+
+                return;
+            }
+        }
+
+        *index = i;
+        return;
+    }
+
+    if (arg_type & LBL)
+    {
+        for (size_t k = 0; k < *lbl_len; k++)
+        {
+            if (strnicmp(str_arg, lbl_array[k].str, lbl_array[k].len) == 0)
+            {
+                cmd_array[i] += LBL * (number_of_cycle % 2 == 1);
+                i++;
+                cmd_array[i] = lbl_array[k].line + 1;
+                *index = i;
+
+                return;
+            }
+        }
+
+        *index = i;
+        return;
+    }
+
+    *index = i;
+    return;
+}
+
+void DeleteExtraSpacesAndTabs(char** string)
+{
+    size_t count_of_extra_char = 0;  //Count of extra spaces, tabs before command
+    char temp_array[] = {};          //Temporary array of symbols
+
+    sscanf(*string, "%[ \t]%n", temp_array, &count_of_extra_char);
+
+    *string = *string + count_of_extra_char;
+
+    return;
 }

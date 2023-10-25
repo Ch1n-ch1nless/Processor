@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "../../Common_files/global_cmd_consts_and_structs.h"
+#include "../../Common_files/commands.h"
 
 error_t ExecuteCommands(Processor* clm, Stack* call_stk);
 

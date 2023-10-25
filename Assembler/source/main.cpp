@@ -5,8 +5,8 @@ int main(int argc, const char* argv[])
     ERRORS error = NO_ERR;
     error_t new_error = NO_ERR;
 
-    const char* input_file  = "lol";
-    const char* output_file = "lol";
+    const char* input_file  = nullptr;
+    const char* output_file = nullptr;
 
     new_error = CheckArguments(&input_file, &output_file, argc, argv);
 
@@ -19,7 +19,7 @@ int main(int argc, const char* argv[])
     Text asm_code = {};
 
     error = FillText(input_file, &asm_code);
-    $CHECK_AND_RETURN_ERROR
+    PRINT_ERROR(error)
 
     elem_t* cmd_array = nullptr;
     size_t  len = 2 * asm_code.n_lines;
@@ -29,23 +29,18 @@ int main(int argc, const char* argv[])
     {
         error = MEM_ALLOC_ERR;
     }
-    $CHECK_AND_RETURN_ERROR
+    PRINT_ERROR(error)
 
     error = TranslateAssemblerCode(cmd_array, &asm_code);
-    $CHECK_AND_RETURN_ERROR
-
-    for (size_t i = 0; i < 11; i++)
-    {
-        printf("[%d] = %d\n", i, cmd_array[i]);
-    }
+    PRINT_ERROR(error)
 
     FILE* output_fp = nullptr;
 
     error = OpenFile(output_file, &output_fp, "wb");
-    $CHECK_AND_RETURN_ERROR
+    PRINT_ERROR(error)
 
     error = PrintToFile(cmd_array, output_fp, len);
-    $CHECK_AND_RETURN_ERROR
+    PRINT_ERROR(error)
 
     FreeText(&asm_code);
 

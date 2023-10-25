@@ -3,8 +3,8 @@
 
 #include "../../Stack/source/stack.h"
 
-#include "../../Common_files/global_reg_consts_and_structs.h"
-#include "../../Common_files/global_lbl_consts_and_structs.h"
+#include "../../Common_files/registers.h"
+#include "../../Common_files/labels.h"
 
 #define PRINT_PROC_ERR(error, clm) error = ProcessorVerify(clm);                                \
                                    ProcessorError(clm, error, __FILE__, __FUNCTION__, __LINE__);
