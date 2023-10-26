@@ -14,6 +14,12 @@ error_t ProcessorCtor(Processor* clm)
         error = MEM_ALLOC_ERR;
     }
 
+    clm->ram = (elem_t*) calloc(MAX_SIZE_OF_RAM, sizeof(elem_t));
+    if (clm->ram == nullptr)
+    {
+        error = MEM_ALLOC_ERR;
+    }
+
     return error;
 }
 
@@ -26,8 +32,13 @@ error_t ProcessorDtor(Processor* clm)
     error = StackDtor(&(clm->stk));
 
     free(clm->reg_array);
+    clm->reg_array = nullptr;
 
     free(clm->cmd_array);
+    clm->cmd_array = nullptr;
+
+    free(clm->ram);
+    clm->ram = nullptr;
 
     clm->buf_size = 0;
 
@@ -132,10 +143,34 @@ void ProcessorDump(Processor* clm, const char* spu_name, const char* file,
     printf("Processor \"%s\": [%p]\n", spu_name, clm);
     printf("called from file: %s(%d) in function: %s\n{\n", file, line, function);
     PrintStack(&(clm->stk), clm->stk.name, file, function, line);
+
     printf("======Register Array=====\n");
     for (size_t i = 0; i < REGISTER_COUNT; i++)
     {
-        printf("In %s = %d\n", "reg", clm->reg_array[i]);
+        printf("\tIn %s = %d\n", REGISTERS_DICTIONARY[i].name, clm->reg_array[i]);
+    }
+    printf("=========================\n\n");
+
+    printf("======Commands Array=====\n");
+    for (size_t i = 0; i < clm->buf_size; i++)
+    {
+        printf("| %.4d |", i);
+    }
+    printf("\n");
+    for (size_t i = 0; i < clm->buf_size; i++)
+    {
+        printf("| %.4d |", clm->cmd_array[i]);
+    }
+    printf("\n=========================\n\n");
+
+    printf("============RAM==========\n");
+    for (size_t i = 0; i * i < MAX_SIZE_OF_RAM; i++)
+    {
+        for (size_t j = 0; j * j < MAX_SIZE_OF_RAM; j++)
+        {
+            printf("| %.4d |", clm->ram[i * MAX_SIZE_OF_RAM + j]);
+        }
+        printf("\n");
     }
     printf("=========================\n\n");
 }

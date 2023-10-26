@@ -55,7 +55,6 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
                 }
             }
         }
-        printf("============\n");
     }
 
     return error;
@@ -154,6 +153,52 @@ void TranslateCmdArgs(elem_t* cmd_array, size_t* index, char* str_arg, unsigned 
 
         *index = i;
         return;
+    }
+
+    if (arg_type & RAM)
+    {
+        char* ram_index = nullptr;
+
+        ram_index = strchr(str_arg, '[');
+
+        if (ram_index != nullptr)
+        {
+            ram_index = ram_index + 1; //Skip the square bracket
+
+            elem_t number = POISON_VALUE;
+
+            if (sscanf(ram_index, elem_format, &number) == 1)
+            {
+                cmd_array[i] += (RAM | NUM) * (number_of_cycle % 2 == 1);
+                i++;
+                cmd_array[i] = number;
+                *index = i;
+
+                return;
+            }
+            else
+            {
+                for (size_t k = 0; k < REGISTER_COUNT; k++)
+                {
+                    if (strnicmp(ram_index, REGISTERS_DICTIONARY[k].name, REGISTERS_DICTIONARY[k].len) == 0)
+                    {
+                        cmd_array[i] += (RAM | REG) * (number_of_cycle % 2 == 1);
+                        i++;
+                        cmd_array[i] = REGISTERS_DICTIONARY[k].num;
+                        *index = i;
+
+                        return;
+                    }
+                }
+
+                *index = i;
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
     }
 
     *index = i;

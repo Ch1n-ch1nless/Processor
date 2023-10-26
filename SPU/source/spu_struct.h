@@ -12,12 +12,15 @@
 #define PRINT_PROCESSOR(clm) \
 ProcessorDump((clm), #clm, __FILE__, __FUNCTION__, __LINE__);
 
+const size_t MAX_SIZE_OF_RAM = 100;
+
 struct Processor
 {
     Stack   stk;
     elem_t* reg_array;
     int*    cmd_array;
     size_t  buf_size;
+    elem_t* ram;
 };
 
 error_t ProcessorCtor(Processor* clm);

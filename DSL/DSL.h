@@ -10,6 +10,13 @@
 
 #define REG_POP(number)  ProcessorRegPop(clm, number);
 
+#define RAM_PUSH(index)  elem_t number = 0;             \
+                         ProcessorStkPop(clm, &number); \
+                         clm->ram[index] = number;
+
+#define RAM_POP(index)   elem_t number = clm->ram[index]; \
+                         ProcessorStkPush(clm, number);
+
 #define PRINT(text) printf(#text);
 
 #define READ(number) scanf(elem_format, &number);

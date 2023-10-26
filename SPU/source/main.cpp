@@ -37,6 +37,8 @@ int main(int argc, const char* argv[])
     PRINT_PROC_ERR(error, &clm)
     PRINT_ERROR(&call_stk, error);
 
+    PRINT_PROCESSOR(&clm);
+
     ProcessorDtor(&clm);
 
     fclose(file_pointer);
