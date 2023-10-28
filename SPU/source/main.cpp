@@ -37,7 +37,9 @@ int main(int argc, const char* argv[])
     PRINT_PROC_ERR(error, &clm)
     PRINT_ERROR(&call_stk, error);
 
-    PRINT_PROCESSOR(&clm);
+    #ifdef WITH_PROC_DUMP
+        PRINT_PROCESSOR(&clm);
+    #endif
 
     ProcessorDtor(&clm);
 

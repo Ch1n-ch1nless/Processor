@@ -273,7 +273,7 @@ DEF_CMD(RET, 20, NONE,       0, {
 				    cmd_index = index; 
                                 })
 
-DEF_CMD(PUT_C, 21, NONE,     0, {
+DEF_CMD(PUTC, 21, NONE,     0, {
 				    MAKE_VAR(symbol)
 				    STK_POP(symbol)
 				    printf("%c", symbol);

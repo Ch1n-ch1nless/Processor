@@ -6,7 +6,7 @@ CFLAGS=-Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal
 	   -Wformat=2 -Wignored-qualifiers -Wlogical-op -Wno-missing-field-initializers -Wnon-virtual-dtor\
 	   -Woverloaded-virtual -Wpointer-arith -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing\
 	   -Wstrict-null-sentinel -Wtype-limits -Wwrite-strings -Werror=vla\
-	   -D_DEBUG -D_EJUDGE_CLIENT_SIDE -DWITH_CANARY -DWITH_HASH 
+	   -D_DEBUG -D_EJUDGE_CLIENT_SIDE -DWITH_CANARY -DWITH_HASH -DWITH_PROC_DUMP 
 
 STK_OBJ_DIR = ./Stack/object/
 STK_SRC_DIR = ./Stack/source/
@@ -53,7 +53,7 @@ $(SPU_OBJ_DIR)%.o : $(SPU_SRC_DIR)%.cpp
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 run_asm: 
-	./asm Assembler_commands/square_eq.asm Assembler_commands/commands.bin
+	./asm Assembler_commands/circle.asm Assembler_commands/commands.bin
 
 run_spu: 
 	./spu Assembler_commands/commands.bin

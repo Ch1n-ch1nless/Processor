@@ -11,8 +11,8 @@
 #define PRINT_PROCESSOR(clm) \
 ProcessorDump((clm), #clm, __FILE__, __FUNCTION__, __LINE__);
 
-const size_t MAX_SIZE_OF_RAM = 100;
-const size_t MAX_LEN_OF_STR  = 10;
+const size_t MAX_SIZE_OF_RAM = 400;
+const size_t MAX_LEN_OF_STR  = 20;
 
 struct Processor
 {
