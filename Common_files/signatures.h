@@ -3,7 +3,7 @@
 
 enum ArgTypes : unsigned int
 {
-    NONE = 1 << 0,
+    NONE = 0,
     NUM  = 1 << 5,
     REG  = 1 << 6,
     LBL  = 1 << 7,

@@ -5,11 +5,11 @@ error_t ExecuteCommands(Processor* clm, Stack* call_stk)
     error_t error = NO_ERR;
     PRINT_PROC_ERR(error, clm)
 
-    for (size_t i = 0; i < clm->buf_size; i++)
+    for (size_t cmd_index = 0; cmd_index < clm->buf_size; cmd_index++)
     {
-        int command = clm->cmd_array[i] & BITMASK_OPCODE;
+        int command = clm->cmd_array[cmd_index] & BITMASK_OPCODE;
 
-        if (clm->cmd_array[i] == CMD_HLT)
+        if (clm->cmd_array[cmd_index] == CMD_HLT)
         {
             return error;
         }
@@ -24,7 +24,7 @@ error_t ExecuteCommands(Processor* clm, Stack* call_stk)
 #include "../../DSL/commands.dsl"
 
             default:
-                printf("ERROR!!! Undefined Command in [%d]\n", i);
+                printf("ERROR!!! Undefined Command in [%d]\n", cmd_index);
                 break;
         }
 

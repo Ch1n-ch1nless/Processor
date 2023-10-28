@@ -36,6 +36,8 @@ enum ERRORS : unsigned int
     INCORRECT_INPUT_FILE_ERR  = 1 << 21,
     INCORRECT_OUTPUT_FILE_ERR = 1 << 22,
     READ_FEW_ARGS_ERR         = 1 << 23,
+    BAD_MEM_ACS_ERR           = 1 << 24,
+    WRITE_TO_FILE_ERR         = 1 << 25,
 
     END_OF_ENUM
 };

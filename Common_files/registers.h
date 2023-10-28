@@ -20,9 +20,9 @@ struct Register
 
 #define DEF_REG(name) {#name, strlen(#name), name},
 
-static Register REGISTERS_DICTIONARY[REGISTER_COUNT] =  {
-                                                            #include "../DSL/registers.dsl"
-                                                        };
+static Register REG_DICTIONARY[REGISTER_COUNT] =  {
+                                                    #include "../DSL/registers.dsl"
+                                                  };
 
 #undef DEF_REG
 

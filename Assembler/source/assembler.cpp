@@ -4,9 +4,9 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 {
     ERRORS error = NO_ERR;
 
-    Label lbl_array[MAX_SIZE_OF_CAPACITY] = {};  //Make array of labels
+    LabelTable lbl_table = {};
 
-    size_t lbl_len = 0;
+    LabelTableCtor(&lbl_table);
 
     for (size_t number_of_cycle = 0; number_of_cycle < 2; number_of_cycle++)
     {
@@ -20,35 +20,43 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 
             if (strchr(cmd_begin, ':') != nullptr)
             {
-                cmd_begin = cmd_begin + 1; //Skip the colon
+                Label new_lbl = {};
 
-                lbl_array[lbl_len].str = cmd_begin;
+                error = MakeNewLabel(cmd_begin, &new_lbl, index);
+                PRINT_ERROR(error)
 
-                lbl_array[lbl_len].line = index;
+                size_t lbl_num = 0;
 
-                size_t size_lbl = 0;
-
-                while (isalpha(cmd_begin[size_lbl]))
+                while (lbl_num < lbl_table.size)
                 {
-                    size_lbl++;
+                    if (new_lbl.str == lbl_table.array[lbl_num].str)
+                    {
+                        lbl_table.array[lbl_num].line = new_lbl.line;
+                        break;
+                    }
+                    lbl_num++;
                 }
 
-                lbl_array[lbl_len].len = size_lbl;
-
-                lbl_len++;
+                if (lbl_num >= lbl_table.size)
+                {
+                    error = LabelTablePush(&lbl_table, new_lbl);
+                    PRINT_ERROR(error)
+                }
             }
             else
             {
-                for (size_t j = 0; j < DICTIONARY_LEN; j++)
+                for (size_t n = 0; n < DICTIONARY_LEN; n++)
                 {
-                    if (strnicmp(cmd_begin, DICTIONARY[j].asm_cmd, DICTIONARY[j].cmd_len) == 0)
+                    if (strnicmp(cmd_begin, DICTIONARY[n].asm_cmd, DICTIONARY[n].cmd_len) == 0)
                     {
-                        cmd_array[index] = DICTIONARY[j].byte_cmd;
+                        cmd_array[index] = DICTIONARY[n].byte_cmd;
 
-                        char* str_arg = cmd_begin + DICTIONARY[j].cmd_len + (DICTIONARY[j].type_of_args != NONE);
+                        char* str_arg = cmd_begin + DICTIONARY[n].cmd_len;
 
-                        TranslateCmdArgs(cmd_array, &index, str_arg, DICTIONARY[j].type_of_args,
-                                         &error,    lbl_array, &lbl_len, number_of_cycle);
+                        DeleteExtraSpacesAndTabs(&str_arg);
+
+                        TranslateCmdArgs(cmd_array, &index, str_arg, DICTIONARY[n].type_of_args,
+                                         &error,    &lbl_table, number_of_cycle);
 
                         index++;
                     }
@@ -56,6 +64,10 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
             }
         }
     }
+
+    LabelTableDump(&lbl_table);
+
+    LabelTableDtor(&lbl_table);
 
     return error;
 }
@@ -89,120 +101,73 @@ ERRORS PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len)
 }
 
 void TranslateCmdArgs(elem_t* cmd_array, size_t* index, char* str_arg, unsigned arg_type,
-                      ERRORS* error, Label* lbl_array, size_t* lbl_len, size_t number_of_cycle)
+                      ERRORS* error, LabelTable* lbl_table, size_t number_of_cycle)
 {
-    size_t i = *index;
-
     DeleteExtraSpacesAndTabs(&str_arg);
 
-    if (arg_type & NONE)
+    if (arg_type == NONE)
     {
         return;
     }
-
-    if (arg_type & NUM)
+    else
     {
-        elem_t number = POISON_VALUE;
+        size_t ip = *index;
+        ip++;
+        *index = ip;
+        cmd_array[ip] = POISON_VALUE;
 
-        if (sscanf(str_arg, "%d", &number) == 1)
+        bool ret_value = false;
+
+        if (arg_type & RAM)
         {
-            cmd_array[i] += NUM * (number_of_cycle % 2 == 1);
-            i++;
-            cmd_array[i] = number;
-            *index = i;
+            ret_value = GetRAMArg(cmd_array, index, &str_arg, error);
 
-            return;
-        }
-
-        *index = i;
-    }
-
-    if (arg_type & REG)
-    {
-        for (size_t k = 0; k < REGISTER_COUNT; k++)
-        {
-            if (strnicmp(str_arg, REGISTERS_DICTIONARY[k].name, REGISTERS_DICTIONARY[k].len) == 0)
+            if (ret_value == true)
             {
-                cmd_array[i] += REG * (number_of_cycle % 2 == 1);
-                i++;
-                cmd_array[i] = REGISTERS_DICTIONARY[k].num;
-                *index = i;
-
-                return;
+                ip--;
+                cmd_array[ip] += RAM * (number_of_cycle % 2 == 1);
+                ip++;
             }
         }
 
-        *index = i;
+        if (arg_type & NUM)
+        {
+            ret_value = GetNumberArg(cmd_array, index, str_arg, error);
+
+            if (ret_value == true)
+            {
+                ip--;
+                cmd_array[ip] += NUM * (number_of_cycle % 2 == 1);
+                ip++;
+            }
+        }
+
+        if (arg_type & LBL)
+        {
+            ret_value = GetLabelArg(cmd_array, index, str_arg, error, lbl_table);
+
+            if (ret_value == true)
+            {
+                ip--;
+                cmd_array[ip] += LBL * (number_of_cycle % 2 == 1);
+                ip++;
+            }
+        }
+
+        if (arg_type & REG)
+        {
+            ret_value = GetRegisterArg(cmd_array, index, str_arg, error);
+
+            if (ret_value == true)
+            {
+                ip--;
+                cmd_array[ip] += REG * (number_of_cycle % 2 == 1);
+                ip++;
+            }
+        }
+
         return;
     }
-
-    if (arg_type & LBL)
-    {
-        for (size_t k = 0; k < *lbl_len; k++)
-        {
-            if (strnicmp(str_arg, lbl_array[k].str, lbl_array[k].len) == 0)
-            {
-                cmd_array[i] += LBL * (number_of_cycle % 2 == 1);
-                i++;
-                cmd_array[i] = lbl_array[k].line + 1;
-                *index = i;
-
-                return;
-            }
-        }
-
-        *index = i;
-        return;
-    }
-
-    if (arg_type & RAM)
-    {
-        char* ram_index = nullptr;
-
-        ram_index = strchr(str_arg, '[');
-
-        if (ram_index != nullptr)
-        {
-            ram_index = ram_index + 1; //Skip the square bracket
-
-            elem_t number = POISON_VALUE;
-
-            if (sscanf(ram_index, elem_format, &number) == 1)
-            {
-                cmd_array[i] += (RAM | NUM) * (number_of_cycle % 2 == 1);
-                i++;
-                cmd_array[i] = number;
-                *index = i;
-
-                return;
-            }
-            else
-            {
-                for (size_t k = 0; k < REGISTER_COUNT; k++)
-                {
-                    if (strnicmp(ram_index, REGISTERS_DICTIONARY[k].name, REGISTERS_DICTIONARY[k].len) == 0)
-                    {
-                        cmd_array[i] += (RAM | REG) * (number_of_cycle % 2 == 1);
-                        i++;
-                        cmd_array[i] = REGISTERS_DICTIONARY[k].num;
-                        *index = i;
-
-                        return;
-                    }
-                }
-
-                *index = i;
-                return;
-            }
-        }
-        else
-        {
-            return;
-        }
-    }
-
-    *index = i;
-    return;
 }
 
 void DeleteExtraSpacesAndTabs(char** string)
@@ -215,4 +180,79 @@ void DeleteExtraSpacesAndTabs(char** string)
     *string = *string + count_of_extra_char;
 
     return;
+}
+
+bool GetNumberArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error)
+{
+    elem_t number = POISON_VALUE;
+
+    if (sscanf(str_arg, "%d", &number) == 1)
+    {
+        *(cmd_array + *index) = number;
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool GetRegisterArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error)
+{
+    for (size_t reg_index = 0; reg_index < REGISTER_COUNT; reg_index++)
+    {
+        if (strnicmp(str_arg, REG_DICTIONARY[reg_index].name, REG_DICTIONARY[reg_index].len) == 0)
+        {
+            *(cmd_array + *index) = REG_DICTIONARY[reg_index].num;
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool GetLabelArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error, LabelTable* lbl_table)
+{
+    for (size_t lbl_index = 0; lbl_index < lbl_table->size; lbl_index++)
+    {
+        if (strnicmp(str_arg, lbl_table->array[lbl_index].str, lbl_table->array[lbl_index].len) == 0)
+        {
+            *(cmd_array + *index) = lbl_table->array[lbl_index].line;
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, ERRORS* error)
+{
+    char* ram_begin = nullptr;
+
+    size_t ip = *index;
+
+    ram_begin = strchr(*str_arg, '[');
+
+    if (ram_begin != nullptr)
+    {
+        ram_begin = ram_begin + 1;            //Skip the square bracket
+
+        if (strchr(ram_begin, ']') != nullptr)
+        {
+            *str_arg = ram_begin;
+
+            return true;
+        }
+        else
+        {
+            *error = WRONG_SYNTAX_ERR;
+
+            return false;
+        }
+    }
+
+    return false;
 }

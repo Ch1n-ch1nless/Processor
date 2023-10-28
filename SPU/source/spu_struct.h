@@ -4,7 +4,6 @@
 #include "../../Stack/source/stack.h"
 
 #include "../../Common_files/registers.h"
-#include "../../Common_files/labels.h"
 
 #define PRINT_PROC_ERR(error, clm) error = ProcessorVerify(clm);                                \
                                    ProcessorError(clm, error, __FILE__, __FUNCTION__, __LINE__);
@@ -13,6 +12,7 @@
 ProcessorDump((clm), #clm, __FILE__, __FUNCTION__, __LINE__);
 
 const size_t MAX_SIZE_OF_RAM = 100;
+const size_t MAX_LEN_OF_STR  = 10;
 
 struct Processor
 {

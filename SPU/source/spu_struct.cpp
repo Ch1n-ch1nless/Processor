@@ -142,12 +142,15 @@ void ProcessorDump(Processor* clm, const char* spu_name, const char* file,
 {
     printf("Processor \"%s\": [%p]\n", spu_name, clm);
     printf("called from file: %s(%d) in function: %s\n{\n", file, line, function);
+
+    printf("==========Stack==========\n");
     PrintStack(&(clm->stk), clm->stk.name, file, function, line);
+    printf("=========================\n\n");
 
     printf("======Register Array=====\n");
     for (size_t i = 0; i < REGISTER_COUNT; i++)
     {
-        printf("\tIn %s = %d\n", REGISTERS_DICTIONARY[i].name, clm->reg_array[i]);
+        printf("\tIn %s = %d\n", REG_DICTIONARY[i].name, clm->reg_array[i]);
     }
     printf("=========================\n\n");
 
@@ -168,7 +171,25 @@ void ProcessorDump(Processor* clm, const char* spu_name, const char* file,
     {
         for (size_t j = 0; j * j < MAX_SIZE_OF_RAM; j++)
         {
-            printf("| %.4d |", clm->ram[i * MAX_SIZE_OF_RAM + j]);
+            printf("| %.4d |", clm->ram[i * MAX_LEN_OF_STR + j]);
+        }
+        printf("\n");
+    }
+    printf("=========================\n\n");
+
+    printf("=======Video memory======\n");
+    for (size_t i = 0; i * i < MAX_SIZE_OF_RAM; i++)
+    {
+        for (size_t j = 0; j * j < MAX_SIZE_OF_RAM; j++)
+        {
+            if (clm->ram[i * MAX_LEN_OF_STR + j] == 0)
+            {
+                printf(".");
+            }
+            else
+            {
+                printf("*");
+            }
         }
         printf("\n");
     }

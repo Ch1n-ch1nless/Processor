@@ -1,6 +1,6 @@
-#define GET_SGNT(data_type) data_type = clm->cmd_array[i] & BITMASK_SGNT;
+#define GET_SGNT(data_type) data_type = clm->cmd_array[cmd_index] & BITMASK_SGNT;
 
-#define GET_ARG(number) i++; number = clm->cmd_array[i];
+#define GET_ARG(number) cmd_index++; number = clm->cmd_array[cmd_index];
 
 #define STK_PUSH(number) ProcessorStkPush(clm, number);
 
@@ -10,12 +10,12 @@
 
 #define REG_POP(number)  ProcessorRegPop(clm, number);
 
-#define RAM_PUSH(index)  elem_t number = 0;             \
-                         ProcessorStkPop(clm, &number); \
-                         clm->ram[index] = number;
+#define RAM_PUSH(index)  elem_t x = 0;             \
+                         ProcessorStkPop(clm, &x); \
+                         clm->ram[index] = x;
 
-#define RAM_POP(index)   elem_t number = clm->ram[index]; \
-                         ProcessorStkPush(clm, number);
+#define RAM_POP(index)   elem_t x = clm->ram[index]; \
+                         ProcessorStkPush(clm, x);
 
 #define PRINT(text) printf(#text);
 

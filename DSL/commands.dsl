@@ -7,25 +7,27 @@ DEF_CMD(PUSH,  1, REG | NUM | RAM, 1, {
 				    	GET_ARG(number)
 					if (data_type & RAM)
 					{
-					    data_type ^= RAM
+					    data_type ^= RAM;
 
-                                    	    switch(data_type)
+                                    	    if (data_type & REG)
                                     	    {
-                                    	        case(REG):
-                                                    REG_POP(number)
-						    MAKE_VAR(index)
-						    STK_POP(index)
-                                     	            RAM_PUSH(index)
-                                     	            BREAK
-
-                                      	        case(NUM):
-						    STK_PUSH(number)
-                                      	            RAM_PUSH(number)
-                                      	            BREAK
-
-                                      	        default:
-                                       	            SIGNAL_ERROR
-                                       	            BREAK
+                                                REG_POP(number)
+						{
+						    MAKE_VAR(new_value)
+						    STK_POP(new_value)
+                                     	            RAM_PUSH(new_value)
+						}
+                                     	        BREAK
+				       	     }
+					     else if (data_type & NUM)
+					     {
+                                      	         RAM_PUSH(number)
+                                      	         BREAK
+					     }
+					     else
+					     {
+                                       	         SIGNAL_ERROR
+                                       	         BREAK
                                     	    }
 					} 
 					else
@@ -107,50 +109,53 @@ DEF_CMD(OUT,  10, NONE,      0,       {
 
 DEF_CMD(POP,  11, REG | RAM | NUM, 1, {
                                     	MAKE_VAR(data_type)
-       	                           	 GET_SGNT(data_type)
+       	                           	GET_SGNT(data_type)
                                     	MAKE_VAR(number)
 				    	GET_ARG(number)
 					if (data_type & RAM)
 					{
-					    data_type ^= RAM
+					    data_type ^= RAM;
 
-                                    	    switch(data_type)
+                                    	    if (data_type & REG)
                                     	    {
-                                    	        case(REG):
-                                                    REG_POP(number)
-						    MAKE_VAR(index)
-						    STK_POP(index)
-						    REG_POP(index)
-                                     	            BREAK
-
-                                      	        case(NUM):
-						    RAM_POP(number)
-                                      	            BREAK
-
-                                      	        default:
-                                       	            SIGNAL_ERROR
-                                       	            BREAK
+                                                REG_POP(number)
+						{
+						    MAKE_VAR(ip)
+						    STK_POP(ip)
+						    REG_POP(ip)
+						}
+                                     	        BREAK
+					     }
+					     else if (data_type & NUM)
+					     {
+						RAM_POP(number)
+                                      	        BREAK
+					     }
+					     else
+					     {
+                                       	         SIGNAL_ERROR
+                                       	         BREAK
                                     	    }
 					}
 					else
 					{	
-                                    	    switch(data_type)
+                                    	    if (data_type & REG)
                                     	    {
-                                       	    	case(REG):
-                                                    REG_POP(number)
-                                                    BREAK
-
-                                            	default:
-                                                    SIGNAL_ERROR
-                                                    BREAK
-                                    	     }
+                                                REG_POP(number)
+                                                BREAK
+					    }
+					    else
+                                            {
+                                                SIGNAL_ERROR
+                                                BREAK
+                                    	    }
 					}
                                       })
 
 DEF_CMD(JMP,  12, LBL,       1, {
 				    MAKE_VAR(index)
 				    GET_ARG(index)
-				    i = index - 1;
+				    cmd_index = index - 1;
                                 })
 
 DEF_CMD(JA,   13, LBL,       1, {
@@ -162,11 +167,11 @@ DEF_CMD(JA,   13, LBL,       1, {
 					{
 					    MAKE_VAR(index)
 				    	    GET_ARG(index)
-				    	    i = index - 1;
+				    	    cmd_index = index - 1;
 					}
 					else
 					{
-					    i += 1;
+					    cmd_index += 1;
 					}
                                 })
 
@@ -179,11 +184,11 @@ DEF_CMD(JAE,  14, LBL,       1, {
 					{
 					    MAKE_VAR(index)
 				    	    GET_ARG(index)
-				            i = index - 1;
+				            cmd_index = index - 1;
 					}
 					else
 					{
-					    i += 1;
+					    cmd_index += 1;
 					}
                                 })
 
@@ -196,11 +201,11 @@ DEF_CMD(JB,   15, LBL,       1, {
 					{
 					    MAKE_VAR(index)
 				    	    GET_ARG(index)
-				    	    i = index - 1;
+				    	    cmd_index = index - 1;
 					}
 					else
 					{
-					    i += 1;
+					    cmd_index += 1;
 					}
                                 })
 
@@ -213,11 +218,11 @@ DEF_CMD(JBE,  16, LBL,       1, {
 					{
 					    MAKE_VAR(index)
 				    	    GET_ARG(index)
-				    	    i = index - 1;
+				    	    cmd_index = index - 1;
 					}
 					else
 					{
-					    i = i + 1;
+					    cmd_index = cmd_index + 1;
 					}
                                 })
 
@@ -230,11 +235,11 @@ DEF_CMD(JE,   17, LBL,       1, {
 					{
 					    MAKE_VAR(index)
 				   	    GET_ARG(index)
-				    	    i = index - 1;
+				    	    cmd_index = index - 1;
 					}
 					else
 					{
-					    i = i + 1;
+					    cmd_index = cmd_index + 1;
 					}
                                 })
 
@@ -247,25 +252,31 @@ DEF_CMD(JNE,  18, LBL,       1, {
 					{
 					    MAKE_VAR(index)
 				    	    GET_ARG(index)
-				    	    i = index - 1;
+				    	    cmd_index = index - 1;
 					}
 					else
 					{
-					    i += 1;
+					    cmd_index += 1;
 					}
                                 })
 
 DEF_CMD(CALL, 19, LBL,       1, {
-				    StackPush(call_stk, i+1);
+				    StackPush(call_stk, cmd_index+1);
 				    MAKE_VAR(index)
 				    GET_ARG(index)
-				    i = index - 1; 
+				    cmd_index = index - 1; 
                                 })
 
 DEF_CMD(RET, 20, NONE,       0, {
 				    MAKE_VAR(index)
 				    StackPop(call_stk, &index);
-				    i = index; 
+				    cmd_index = index; 
                                 })
+
+DEF_CMD(PUT_C, 21, NONE,     0, {
+				    MAKE_VAR(symbol)
+				    STK_POP(symbol)
+				    printf("%c", symbol);
+      				})
 
  

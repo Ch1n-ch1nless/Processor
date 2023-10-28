@@ -53,7 +53,7 @@ $(SPU_OBJ_DIR)%.o : $(SPU_SRC_DIR)%.cpp
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 run_asm: 
-	./asm Assembler_commands/fibonacci.asm Assembler_commands/commands.bin
+	./asm Assembler_commands/square_eq.asm Assembler_commands/commands.bin
 
 run_spu: 
 	./spu Assembler_commands/commands.bin
