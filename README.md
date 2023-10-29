@@ -8,8 +8,10 @@
 
 1. Clone <br>
         write <code>git clone https://github.com/Ch1n-ch1nless/Preprocessor.git</code> in terminal
+   
 2. Go to folder <br>
         write <code>cd Preprocessor</code> in terminal
+   
 3. Build <br>
         write <code>make -f makefile1</code> in terminal
         write <code>make -f makefile2</code> in terminal
