@@ -7,7 +7,7 @@
 ## How to use
 
 1. Clone <br>
-        write <code>git clone https://github.com/Ch1n-ch1nless/Preprocessor.git in terminal
+        write <code>git clone https://github.com/Ch1n-ch1nless/Preprocessor.git</code> in terminal
 2. Go to folder <br>
         write <code>cd Preprocessor</code> in terminal
 3. Build <br>
