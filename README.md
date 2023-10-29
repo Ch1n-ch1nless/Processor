@@ -14,7 +14,6 @@
    
 3. Build <br>
         <a>write <code>make -f makefile1</code> in terminal</a>
-        </br>
         <br>
         <a>write <code>make -f makefile2</code> in terminal</a>
 
@@ -23,11 +22,10 @@ If you want launch another file, you have 2 ways to fix this problem:
 <br>
         1. You can change name of file in makefile1 and repeat the previous step:
         <p align="center"><img src="/Img/makefile_change.png" width = "50%"></p>
-</br>
 <br>
-        2. You build project, and after write 2 commands: (filename - name of file, which you want launch)
-        <code> .\asm.exe Assembler_commands/filename.asm Assembler_commands/commands.bin </code>
-        <code> .\spu.exe Assembler_commands/commands.bin  </code>
+        2. You build project, and after write 2 commands: (filename - name of file, which you want launch) <br>
+        <code> .\asm.exe Assembler_commands/filename.asm Assembler_commands/commands.bin </code> <br>
+        <code> .\spu.exe Assembler_commands/commands.bin  </code> <br>
         
     
 
