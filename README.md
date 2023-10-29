@@ -20,10 +20,15 @@
 
 ## What can this project do?
 
-This project can:
+This project can: <br>
     * assemble code
+    </br>
+    <br>
     * disassemble
+    </br>
+    <br>
     * execute commands
+    </br>
 
 You can use: RAM, registers, video memory
 
