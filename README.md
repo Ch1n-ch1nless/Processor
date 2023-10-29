@@ -18,28 +18,23 @@
         write <code>make -f make_dis</code> in terminal
 
 5. Run <br>
-        write <code>.\asm.exe Assembler_commands/circle.asm Assembler_commands/commands.bin</code> in terminal
+        write <code>.\asm.exe Assembler_commands/circle.asm Assembler_commands/commands.bin</code> in terminal (It will launch circle.asm, if you want launch another file, instead write it) 
         write <code>.\spu.exe Assembler_commands/commands.bin</code> in terminal
         write <code>.\dism.exe Assembler_commands/commands.bin</code> in terminal
 
 ## Feats
 
-* This project can assemble, disassemble and process code
+This project can:
+    * assemble code
+    * disassemble 
+    * execute commands
 
-* Jumps are supported
+Project supports DSL to create new features, 
 
-* Registers are supported
-
-* Labels are supported
-
-* Functions are supported
-
-* Ram is supported
-
-* Implemented functions:
-    * <code> PUSH < register | num | ram > </code>
+* Basic functions:
+    * <code> PUSH < RAM | REG | NUM > </code>
     * <code> IN </code>
-    * <code> POP < register | ram > </code>
+    * <code> POP < RAM | REG > </code>
     * <code> ADD </code>
     * <code> SUB </code>
     * <code> MUL </code>
@@ -49,15 +44,15 @@
     * <code> COS </code>
     * <code> OUT </code>
     * <code> HLT </code>
-    * <code> JMP < lable | num > </code>
-    * <code> JA < lable | num > </code>
-    * <code> JAE < lable | num > </code>
-    * <code> JB < lable | num > </code>
-    * <code> JBE < lable | num > </code>
-    * <code> JE < lable | num > </code>
-    * <code> JNE < lable | num > </code>
-    * <code> JMON < lable | num > </code>
-    * <code> CALL < lable > </code>
+    * <code> JMP < LBL > </code>
+    * <code> JA < LBL > </code>
+    * <code> JAE < LBL > </code>
+    * <code> JB < LBL > </code>
+    * <code> JBE < LBL > </code>
+    * <code> JE < LBL > </code>
+    * <code> JNE < LBL > </code>
+    * <code> JMON < LBL > </code>
+    * <code> CALL < LBL > </code>
     * <code> RET </code>
     * <code> PUTC </code>
 
@@ -75,4 +70,4 @@ Quadratic equation: <br>
 <p align="center"><img src="/images/Quadratic_equation.png" width = "70%"></p>
 
 ## Support
-**This project is created by [bai_tim](https://github.com/bai_tim)**
+**This project is created by [bai_tim](https://github.com/Ch1n-ch1nless)**
