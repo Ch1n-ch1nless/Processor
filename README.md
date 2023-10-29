@@ -29,7 +29,9 @@ This project can:
     * disassemble 
     * execute commands
 
-Project supports DSL to create new features, 
+You can use: RAM, registers, video memory
+
+Project supports DSL to create new features: 
 
 * Basic functions:
     * <code> PUSH < RAM | REG | NUM > </code>
@@ -60,14 +62,14 @@ Project supports DSL to create new features,
 
 ## Examples
 
-Factorial: <br>
-<p align="center"><img src="/images/Factorial.png" width = "70%"></p>
+Fibonacci: <br>
+<p align="center"><img src="/images/Fibonacci.png" width = "70%"></p>
 
 Circle: <br>
 <p align="center"><img src="/images/Circle.png" width = "70%"></p>
 
-Quadratic equation: <br>
-<p align="center"><img src="/images/Quadratic_equation.png" width = "70%"></p>
+Square equation: <br>
+<p align="center"><img src="/images/Square_equation.png" width = "70%"></p>
 
 ## Support
-**This project is created by [bai_tim](https://github.com/Ch1n-ch1nless)**
+**This project is created by [Ch1n-ch1nless](https://github.com/Ch1n-ch1nless)**
