@@ -153,7 +153,7 @@ ERRORS MakeNewLabel(char* lbl_str, Label* new_lbl, size_t index)
 
     size_t size_lbl = 0;
 
-    while (isalpha(lbl_str[size_lbl]))
+    while (isalpha(lbl_str[size_lbl]) || lbl_str[size_lbl] == '_')
     {
         size_lbl++;
     }

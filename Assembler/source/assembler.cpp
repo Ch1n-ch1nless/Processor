@@ -65,8 +65,6 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
         }
     }
 
-    LabelTableDump(&lbl_table);
-
     LabelTableDtor(&lbl_table);
 
     return error;

@@ -1,33 +1,54 @@
 		call MAIN
 		hlt
 :READ
+		push 97
+		putc
+		push 32
+		putc
+		push 58
+		putc
+		push 61
+		putc
+		push 32
+		putc 
 		in
 		push rax
+		push 98
+		putc
+		push 32
+		putc
+		push 58
+		putc
+		push 61
+		putc
+		push 32
+		putc
 		in 
 		push rbx
+		push 99
+		putc
+		push 32
+		putc
+		push 58
+		putc
+		push 61
+		putc
+		push 32
+		putc
 		in
 		push rcx
-		ret
-
-:OUT
-		pop rax
-		out
-		pop rbx
-		out
-		pop rcx
-		out
+		push 10
+		putc
 		ret
 
 :IS_LINEAR
 		pop rax
 		push 0
-		je LIN
-		jmp SQR
-	:LIN
-			call SOLVE_LINEAR
-			ret
+		jne SQR
+		call SOLVE_LINEAR
+		ret
 	:SQR
-			call SOLVE_SQUARE
+			call QUADRATKA
 			ret
 
 :SOLVE_LINEAR
@@ -43,13 +64,23 @@
 			jmp INF_ROOTS
 
 		:INF_ROOTS
-				push 8
-				out
+				call NUMBER_OF_ROOTS
+				push 73
+				putc
+				push 78
+				putc
+				push 70
+				putc
+				push 10
+				putc
 				ret
 
 		:NO_ROOTS
+				call NUMBER_OF_ROOTS
 				push 0
 				out
+				push 10
+				putc
 				ret
 
 	:ONE_LIN_ROOT
@@ -59,25 +90,31 @@
 			pop rbx
 			div
 			push [11]
+			call NUMBER_OF_ROOTS
 			push 1
 			out
+			push 10
+			putc
+			call X_ONE
 			pop [11]
 			out
+			push 10
+			putc
 			ret
 
-:SOLVE_SQUARE
+:QUADRATKA
 		call CALCULATE_DISCRIMINANT
 		call COUNT_ROOTS
 
 		pop [0]
 		push 2
-		je FIND_TWO_ROOTs
+		je TWO_ROOTS
 		pop [0]
 		push 1
-		je FIND_ONE_ROOT
+		je ROOT_ONE
 		jmp NO_ROOTS
 
-	:FIND_TWO_ROOTS
+	:TWO_ROOTS
 			pop rdx
 			sqrt
 			push rdx
@@ -104,16 +141,25 @@
 			div
 			push [22]
 			
+			call NUMBER_OF_ROOTS
 			push 2	
 			out
+			push 10
+			putc
+			call X_ONE
 			pop [11]
 			out
+			push 10
+			putc
+			call X_TWO
 			pop [22]
 			out 
+			push 10
+			putc
 
 			ret
 
-	:FIND_ONE_ROOT
+	:ROOT_ONE
 			pop rbx
 			push -1
 			mul
@@ -123,10 +169,16 @@
 			div
 			push [11]
 
+			call NUMBER_OF_ROOTS
 			push 1
 			out
+			push 10
+			putc
+			call X_ONE
 			pop[11]
 			out
+			push 10
+			putc
 
 			ret 
 
@@ -168,6 +220,265 @@
 			ret
 
 :MAIN
+		call INTRO
 		call READ
 		call IS_LINEAR
+		call OUTRO
+		ret
+
+:INTRO
+		push 72
+		putc
+		push 101
+		putc
+		push 108
+		putc
+		push 108
+		putc
+		push 111
+		putc
+		push 33
+		putc
+		push 32
+		putc
+		push 84
+		putc
+		push 104
+		putc
+		push 105
+		putc
+		push 115
+		putc
+		push 32
+		putc
+		push 112
+		putc
+		push 114
+		putc
+		push 111
+		putc
+		push 103
+		putc
+		push 114
+		putc
+		push 97
+		putc
+		push 109
+		putc
+		push 32
+		putc
+		push 99
+		putc
+		push 97
+		putc
+		push 110
+		putc
+		push 32
+		putc
+		push 115
+		putc
+		push 111
+		putc
+		push 108
+		putc
+		push 118
+		putc
+		push 101
+		putc
+		push 32
+		putc
+		push 115
+		putc
+		push 113
+		putc
+		push 117
+		putc
+		push 97
+		putc
+		push 114
+		putc
+		push 101
+		putc
+		push 95
+		putc
+		push 101
+		putc
+		push 113
+		putc
+		push 117
+		putc
+		push 97
+		putc
+		push 116
+		putc
+		push 105
+		putc
+		push 111
+		putc
+		push 110
+		putc
+		push 33
+		putc
+		push 10
+		putc
+		push 69
+		putc
+		push 110
+		putc
+		push 116
+		putc
+		push 101
+		putc
+		push 114
+		putc
+		push 32
+		putc
+		push 116
+		putc
+		push 104
+		putc
+		push 101
+		putc
+		push 32
+		putc
+		push 118
+		putc
+		push 97
+		putc
+		push 108
+		putc
+		push 117
+		putc
+		push 101
+		putc
+		push 115
+		putc
+		push 32
+		putc
+		push 111
+		putc
+		push 102
+		putc
+		push 32
+		putc
+		push 99
+		putc
+		push 111
+		putc
+		push 101
+		putc
+		push 102
+		putc
+		push 102
+		putc
+		push 105
+		putc
+		push 99
+		putc
+		push 105
+		putc
+		push 101
+		putc
+		push 110
+		putc
+		push 116
+		putc
+		push 115
+		putc
+		push 58
+		putc
+		push 10
+		putc
+		ret
+
+:OUTRO
+		push 71
+		putc
+		push 111
+		putc
+		push 111
+		putc
+		push 100
+		putc
+		push 98
+		putc
+		push 121
+		putc
+		push 101
+		putc
+		push 33
+		putc
+		push 10
+		putc
+		ret
+
+:NUMBER_OF_ROOTS
+		push 84
+		putc
+		push 104
+		putc
+		push 101
+		putc
+		push 32
+		putc
+		push 99
+		putc
+		push 111
+		putc
+		push 117
+		putc
+		push 110
+		putc
+		push 116
+		putc
+		push 32
+		putc
+		push 111
+		putc
+		push 102
+		putc
+		push 32
+		putc
+		push 114
+		putc
+		push 111
+		putc
+		push 111
+		putc
+		push 116
+		putc
+		push 115
+		putc
+		push 32
+		putc
+		push 61
+		putc
+		push 32
+		putc
+		ret
+
+:X_ONE
+		push 120
+		putc
+		push 49
+		putc
+		push 32
+		putc
+		push 61
+		putc
+		push 32
+		putc
+		ret
+
+:X_TWO
+		push 120
+		putc
+		push 50
+		putc
+		push 32
+		putc
+		push 61
+		putc
+		push 32
+		putc
 		ret

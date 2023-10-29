@@ -17,13 +17,11 @@
 #define RAM_POP(index)   elem_t x = clm->ram[index]; \
                          ProcessorStkPush(clm, x);
 
-#define PRINT(text) printf(#text);
-
 #define READ(number) scanf(elem_format, &number);
 
 #define MAKE_VAR(name) elem_t name = 0;
 
-#define WRITE(x) printf(elem_format "\n", x);
+#define WRITE(x) printf(elem_format, x);
 
 #define SIGNAL_ERROR printf("ERROR! The wrong syntax!\n");
 

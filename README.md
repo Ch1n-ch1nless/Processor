@@ -13,25 +13,19 @@
         write <code>cd Preprocessor</code> in terminal
 
 3. Build <br>
-        write <code>make -f make_asm</code> in terminal
-        write <code>make -f make_spu</code> in terminal
-        write <code>make -f make_dis</code> in terminal
-
-5. Run <br>
-        write <code>.\asm.exe Assembler_commands/circle.asm Assembler_commands/commands.bin</code> in terminal (It will launch circle.asm, if you want launch another file, instead write it) 
-        write <code>.\spu.exe Assembler_commands/commands.bin</code> in terminal
-        write <code>.\dism.exe Assembler_commands/commands.bin</code> in terminal
+        write <code>make -f makefile1</code> in terminal
+        write <code>make -f makefile2</code> in terminal
 
 ## Feats
 
 This project can:
     * assemble code
-    * disassemble 
+    * disassemble
     * execute commands
 
 You can use: RAM, registers, video memory
 
-Project supports DSL to create new features: 
+Project supports DSL to create new features:
 
 * Basic functions:
     * <code> PUSH < RAM | REG | NUM > </code>
@@ -63,13 +57,13 @@ Project supports DSL to create new features:
 ## Examples
 
 Fibonacci: <br>
-<p align="center"><img src="/images/Fibonacci.png" width = "70%"></p>
+<p align="center"><img src="/Img/fibonacci.png" width = "70%"></p>
 
 Circle: <br>
-<p align="center"><img src="/images/Circle.png" width = "70%"></p>
+<p align="center"><img src="/IMg/circle.png" width = "70%"></p>
 
 Square equation: <br>
-<p align="center"><img src="/images/Square_equation.png" width = "70%"></p>
+<p align="center"><img src="/Imgs/square_equation.png" width = "70%"></p>
 
 ## Support
 **This project is created by [Ch1n-ch1nless](https://github.com/Ch1n-ch1nless)**

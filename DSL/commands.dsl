@@ -50,7 +50,6 @@ DEF_CMD(PUSH,  1, REG | NUM | RAM, 1, {
                                	      })
 
 DEF_CMD(IN,    2, NONE,      0,	      {
-                                    	PRINT(Print the number: )
                                     	MAKE_VAR(number)
                                     	READ(number)
                                     	STK_PUSH(number)
