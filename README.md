@@ -60,10 +60,10 @@ Fibonacci: <br>
 <p align="center"><img src="/Img/fibonacci.png" width = "70%"></p>
 
 Circle: <br>
-<p align="center"><img src="/IMg/circle.png" width = "70%"></p>
+<p align="center"><img src="/Img/circle.png" width = "70%"></p>
 
 Square equation: <br>
-<p align="center"><img src="/Imgs/square_equation.png" width = "70%"></p>
+<p align="center"><img src="/Img/square_equation.png" width = "70%"></p>
 
 ## Support
 **This project is created by [Ch1n-ch1nless](https://github.com/Ch1n-ch1nless)**
