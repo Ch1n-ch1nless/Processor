@@ -14,6 +14,8 @@
    
 3. Build <br>
         <a>write <code>make -f makefile1</code> in terminal</a>
+        </br>
+        <br>
         <a>write <code>make -f makefile2</code> in terminal</a>
 
 ## What can this project do?
