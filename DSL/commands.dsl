@@ -114,15 +114,13 @@ DEF_CMD(POP,  11, REG | RAM | NUM, 1, {
 				    	GET_ARG(number)
 					if (data_type & RAM)
 					{
-					    data_type ^= RAM;
-
                                     	    if (data_type & REG)
                                     	    {
                                                 REG_POP(number)
 						{
 						    MAKE_VAR(ip)
 						    STK_POP(ip)
-						    REG_POP(ip)
+						    RAM_POP(ip)
 						}
                                      	        BREAK
 					     }
