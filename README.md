@@ -13,8 +13,8 @@
         write <code>cd Preprocessor</code> in terminal
    
 3. Build <br>
-        write <code>make -f makefile1</code> in terminal
-        write <code>make -f makefile2</code> in terminal
+        <a>write <code>make -f makefile1</code> in terminal</a>
+        <a>write <code>make -f makefile2</code> in terminal</a>
 
 ## What can this project do?
 
