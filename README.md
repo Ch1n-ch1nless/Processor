@@ -7,20 +7,24 @@
 ## How to use
 
 1. Clone <br>
-        write <code>git clone https://github.com/baitim/Stack.git</code> in terminal
+        write <code>git clone https://github.com/Ch1n-ch1nless/Preprocessor.git in terminal
 
 2. Go to folder <br>
         write <code>cd Preprocessor</code> in terminal
 
 3. Build <br>
-        write <code>make</code> in terminal
+        write <code>make -f make_asm</code> in terminal
+        write <code>make -f make_spu</code> in terminal
+        write <code>make -f make_dis</code> in terminal
 
-4. Run <br>
-        write <code>.\start.exe</code> in termina
+5. Run <br>
+        write <code>.\asm.exe Assembler_commands/circle.asm Assembler_commands/commands.bin</code> in terminal
+        write <code>.\spu.exe Assembler_commands/commands.bin</code> in terminal
+        write <code>.\dism.exe Assembler_commands/commands.bin</code> in terminal
 
 ## Feats
 
-* This project can assemble disassemble and process code
+* This project can assemble, disassemble and process code
 
 * Jumps are supported
 
@@ -55,7 +59,7 @@
     * <code> JMON < lable | num > </code>
     * <code> CALL < lable > </code>
     * <code> RET </code>
-    * <code> OUTC </code>
+    * <code> PUTC </code>
 
 
 
