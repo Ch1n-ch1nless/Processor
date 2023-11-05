@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <TXLib.h>
-#include "assembler.h"
+#include "disassembler.h"
 
 static const char* INPUT_FILE_EXTENSION  = "bin";
 static const char* OUTPUT_FILE_EXTENSION = "dis";

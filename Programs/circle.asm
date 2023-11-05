@@ -1,7 +1,7 @@
 		call MAIN
 		hlt
 
-:MAKE_CIRCLE
+:MAKE_LIGHT_CIRCLE
 		push 0                   
 		push rax
 		jmp FILL_LINE
@@ -15,6 +15,8 @@
 				push 256
 				mul
 				pop rbx
+				add
+				push 196608
 				add
 				push rcx
 
@@ -42,7 +44,7 @@
 				push 4096
 				jb SKIP_POINT
 
-				push 16777215
+				push 16777054
 				push [rcx]
 				
 			:SKIP_POINT
@@ -65,6 +67,69 @@
 		ja FILL_LINE
 		ret
 
+:MAKE_DARK_CIRCLE
+		push 0                   
+		push rax
+		jmp FILL_STRING
+	
+	:FILL_STRING
+			push 0           
+			push rbx
+			
+		:MAKE_DARK_POINT
+				pop rax  
+				push 256
+				mul
+				pop rbx
+				add
+				push 196608
+				add
+				push rcx
+	
+				pop rbx
+				push 107
+				sub
+				pop rbx
+				push 107
+				sub
+				mul
+
+				pop rax
+				push 128
+				sub
+				pop rax
+				push 128
+				sub
+				mul
+
+				add
+				
+				push 2116
+				jb SKIP_PIXEL
+
+				push 0
+				push [rcx]
+				
+			:SKIP_PIXEL
+					pop rbx
+					push 1
+					add
+					push rbx
+
+					pop rbx   
+					push 256
+					ja MAKE_DARK_POINT
+		
+		pop rax
+		push 1
+		add
+		push rax
+
+		pop rax
+		push 256
+		ja FILL_STRING
+		ret
+
 :DRAW_CIRCLE
 		create_window
 		push 0
@@ -79,6 +144,8 @@
 				push 256
 				mul
 				pop rbx
+				add
+				push 196608
 				add
 				push rcx
 				
@@ -104,6 +171,7 @@
 		ret		
 
 :MAIN
-		call MAKE_CIRCLE
+		call MAKE_LIGHT_CIRCLE
+		call MAKE_DARK_CIRCLE
 		call DRAW_CIRCLE
 		ret

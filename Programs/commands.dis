@@ -1,9 +1,108 @@
-push 333
-in
-mul
-push 222
-add
-sqrt
-cos
-push0
-hlt
+CALL label_55
+
+POP RAX
+OUT 
+PUSH 10
+PUTC 
+RET 
+POP RBX
+POP RAX
+POP RBX
+ADD 
+PUSH RBX
+PUSH RAX
+PUSH 1
+POP RCX
+ADD 
+PUSH RCX
+POP RCX
+POP RDX
+JA label_10
+RET 
+IN 
+PUSH RDX
+PUSH 10
+PUTC 
+RET 
+PUSH 0
+PUSH RAX
+PUSH 0
+PUSH RCX
+PUSH 1
+PUSH RBX
+RET 
+CALL label_35
+CALL label_42
+CALL label_10
+CALL label_3
+RET 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

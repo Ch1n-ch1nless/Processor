@@ -280,7 +280,7 @@ DEF_CMD(SET_PIXEL, 22, NONE, 0, {
 				    MAKE_VAR(color);
 				    color = proc->ram[proc->reg_array[2]];
 				    MAKE_COLOR(color, rgb);
-				    txSetPixel(proc->reg_array[0], proc->reg_array[1], rgb);
+				    txSetPixel(proc->reg_array[1], proc->reg_array[0], rgb);
 				})
 
 DEF_CMD(CREATE_WINDOW, 23, NONE, 0, {txCreateWindow(256, 256);})
