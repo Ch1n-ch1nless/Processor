@@ -10,30 +10,31 @@
 #include "../../Common_files/registers.h"
 #include "label.h"
 
-#define PRINT_ERROR(error)                              \
-    if (error != NO_ERR)                                \
-    {                                                   \
-        fprintf(stdout, "%s:%d\n", __FILE__, __LINE__); \
+#define CHECK_ERROR(condition, error)                       \
+    if (condition)                                          \
+    {                                                       \
+        fprintf(stdout, "%s:%d\n", __FILE__, __LINE__);     \
+        return error;                                       \
     }
 
-ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code);
+error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code);
 
-ERRORS OpenFile(const char* file_name, FILE** file_pointer, const char* mode);
+error_t OpenFile(const char* file_name, FILE** file_pointer, const char* mode);
 
-ERRORS PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len);
+error_t PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len);
 
-void   TranslateCmdArgs(elem_t* cmd_array, size_t* index, char* str_arg, unsigned arg_type,
-                        ERRORS* error,     LabelTable* lbl_table, size_t number_of_cycle);
+void    TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsigned arg_type,
+                        error_t* error,    LabelTable* lbl_table, size_t number_of_cycle);
 
-void   DeleteExtraSpacesAndTabs(char** string);
+void    DeleteExtraSpacesAndTabs(char** string);
 
-bool   GetNumberArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error);
+bool    GetNumberArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error);
 
-bool   GetRegisterArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error);
+bool    GetRegisterArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error);
 
-bool   GetLabelArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error,
-                                                                                LabelTable* lbl_table);
+bool    GetLabelArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error,
+                                                                     LabelTable* lbl_table);
 
-bool   GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, ERRORS* error);
+bool    GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, error_t* error);
 
 #endif // ASSEMBLER_H_INCLUDED

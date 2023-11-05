@@ -14,8 +14,6 @@ typedef int elem_t;
 #define PRINT_STACK(stk) PrintStack((stk), #stk, __FILE__, __FUNCTION__, __LINE__);
 #define STACK_CTOR(stk) StackCtor((stk), #stk, __FILE__, __LINE__);
 
-/// The error_t is data type of errors
-typedef unsigned long long error_t;
 /// The canary_t is data type of canaries
 typedef unsigned int canary_t;
 /// The hash_t is data type of hash
@@ -26,6 +24,7 @@ typedef unsigned int hash_t;
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../../Common_files/config_error.h"
 
 const elem_t POISON_VALUE = 0;                      //!< @brief The value of element, which show that we don't have this element
 const canary_t LEFT_CANARY_VALUE   = 0x602DA617;    //!< @brief The value of working stack left canary

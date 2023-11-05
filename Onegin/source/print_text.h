@@ -5,7 +5,7 @@
 
 #define REDASSERT(str) "\033[0;31m" #str "\033[0m"
 
-ERRORS PrintText(FILE* file_name, Text onegin);
+Errors PrintText(FILE* file_name, Text onegin);
 
 void FreeText(Text* onegin);
 

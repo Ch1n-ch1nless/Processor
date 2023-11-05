@@ -1,15 +1,15 @@
 #include "spu_execute.h"
 
-error_t ExecuteCommands(Processor* clm, Stack* call_stk)
+error_t ExecuteCommands(Processor* proc)
 {
     error_t error = NO_ERR;
-    PRINT_PROC_ERR(error, clm)
+    CHECK_PROC_ERR(error, proc)
 
-    for (size_t cmd_index = 0; cmd_index < clm->buf_size; cmd_index++)
+    for (size_t cmd_index = 0; cmd_index < proc->buf_size; cmd_index++)
     {
-        int command = clm->cmd_array[cmd_index] & BITMASK_OPCODE;
+        int command = proc->cmd_array[cmd_index] & BITMASK_OPCODE;
 
-        if (clm->cmd_array[cmd_index] == CMD_HLT)
+        if (proc->cmd_array[cmd_index] == CMD_HLT)
         {
             return error;
         }
@@ -31,7 +31,7 @@ error_t ExecuteCommands(Processor* clm, Stack* call_stk)
 #undef DEF_CMD
         if (error != NO_ERR)
         {
-            PRINT_PROC_ERR(error, clm)
+            CHECK_PROC_ERR(error, proc)
         }
     }
 

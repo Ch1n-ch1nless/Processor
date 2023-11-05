@@ -54,7 +54,7 @@ error_t StackCtor(Stack* stk, const char* stk_name, const char* file, const int 
     //Check for errors
     error |= StackVerify(stk);
     if (error != NO_ERR)
-        PRINT_ERROR(stk, error)
+        PRINT_STK_ERROR(stk, error)
     return error;
 }
 
@@ -64,7 +64,7 @@ error_t StackDtor(Stack* stk)
     error_t error = StackVerify(stk);
     if (error)
     {
-        PRINT_ERROR(stk, error)
+        PRINT_STK_ERROR(stk, error)
         return error;
     }
 
@@ -93,7 +93,7 @@ error_t StackPush(Stack* stk, elem_t new_value)
     error_t error = StackVerify(stk);
     if (error)
     {
-        PRINT_ERROR(stk, error);
+        PRINT_STK_ERROR(stk, error);
         return error;
     }
 
@@ -101,7 +101,7 @@ error_t StackPush(Stack* stk, elem_t new_value)
     error |= StackRealloc(stk);
     if (error != NO_ERR)
     {
-        PRINT_ERROR(stk, error)
+        PRINT_STK_ERROR(stk, error)
         return error;
     }
 
@@ -125,7 +125,7 @@ error_t StackPop(Stack* stk, elem_t* ret_value)
     error_t error = StackVerify(stk);
     if (error)
     {
-        PRINT_ERROR(stk, error);
+        PRINT_STK_ERROR(stk, error);
         return error;
     }
 
@@ -134,7 +134,7 @@ error_t StackPop(Stack* stk, elem_t* ret_value)
     {
         *ret_value = POISON_VALUE;
         error |= MINUS_SIZE_ERR;
-        PRINT_ERROR(stk, error)
+        PRINT_STK_ERROR(stk, error)
         return error;
     }
 
@@ -152,7 +152,7 @@ error_t StackPop(Stack* stk, elem_t* ret_value)
     error |= StackRealloc(stk);
     if (error)
     {
-        PRINT_ERROR(stk, error);
+        PRINT_STK_ERROR(stk, error);
         return error;
     }
 
@@ -170,7 +170,7 @@ error_t StackRealloc(Stack* stk)
     error_t error = StackVerify(stk);
     if (error)
     {
-        PRINT_ERROR(stk, error);
+        PRINT_STK_ERROR(stk, error);
         return error;
     }
 
@@ -200,7 +200,7 @@ error_t StackRealloc(Stack* stk)
     if (temp_ptr == nullptr)
     {
         error |= MEM_ALLOC_ERR;
-        PRINT_ERROR(stk, error)
+        PRINT_STK_ERROR(stk, error)
     }
     else
     {
@@ -227,7 +227,7 @@ error_t PrintStack(Stack* stk, const char* stk_name, const char* file,
 {
     error_t error = StackVerify(stk);
     if (error != NO_ERR)
-        PRINT_ERROR(stk, error);
+        PRINT_STK_ERROR(stk, error);
 
     printf("Stack \"%s\": [%p] from %s(%d)\n", stk->name, stk, stk->file, stk->line);
     printf("called from file: %s(%d) in function: %s\n{\n", file, line, function);

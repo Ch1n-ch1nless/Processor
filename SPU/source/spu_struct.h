@@ -5,35 +5,43 @@
 
 #include "../../Common_files/registers.h"
 
-#define PRINT_PROC_ERR(error, clm) error = ProcessorVerify(clm);                                \
-                                   ProcessorError(clm, error, __FILE__, __FUNCTION__, __LINE__);
+#include <TXLib.h>
 
-#define PRINT_PROCESSOR(clm) \
-ProcessorDump((clm), #clm, __FILE__, __FUNCTION__, __LINE__);
+#define CHECK_PROC_ERR(error, proc) error = ProcessorVerify(proc);                                    \
+                                    if (error != NO_ERR)                                              \
+                                    {                                                                 \
+                                        ProcessorError(proc, error, __FILE__, __FUNCTION__, __LINE__);\
+                                    }
 
-const size_t MAX_SIZE_OF_RAM = 400;
-const size_t MAX_LEN_OF_STR  = 20;
+#define PRINT_PROCESSOR(proc) ProcessorDump((proc), #proc, __FILE__, __FUNCTION__, __LINE__);
+
+const size_t MAX_SIZE_OF_RAM    = 262144;
+const size_t MAX_LEN_OF_STR     = 512;
+const size_t MAX_SIZE_OF_VM     = 65536;
+const size_t MAX_SIZE_OF_VM_STR = 256;
+const size_t BEGIN_OF_VM        = 196608;
 
 struct Processor
 {
     Stack   stk;
+    Stack   call_stk;
     elem_t* reg_array;
     int*    cmd_array;
     size_t  buf_size;
     elem_t* ram;
 };
 
-error_t ProcessorCtor(Processor* clm);
-error_t ProcessorDtor(Processor* clm);
+error_t ProcessorCtor(Processor* proc);
+error_t ProcessorDtor(Processor* proc);
 
-error_t ProcessorStkPush(Processor* clm, elem_t new_value);
-error_t ProcessorStkPop(Processor* clm, elem_t* ret_value);
+error_t ProcessorStkPush(Processor* proc, elem_t new_value);
+error_t ProcessorStkPop(Processor* proc, elem_t* ret_value);
 
-error_t ProcessorRegPush(Processor* clm, size_t index);
-error_t ProcessorRegPop(Processor* clm, size_t index);
+error_t ProcessorRegPush(Processor* proc, size_t index);
+error_t ProcessorRegPop(Processor* proc, size_t index);
 
-error_t ProcessorVerify(Processor* clm);
-void    ProcessorError(Processor* clm, error_t error, const char* file, const char* function,
+error_t ProcessorVerify(Processor* proc);
+void    ProcessorError(Processor* proc, error_t error, const char* file, const char* function,
                                                                         const int line);
 
 void    ProcessorDump(Processor* spu, const char* spu_name, const char* file,

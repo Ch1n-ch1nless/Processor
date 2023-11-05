@@ -1,4 +1,4 @@
-#include "errors.h"
+#include "stk_errors.h"
 
 error_t StackVerify(Stack* stk)
 {
@@ -65,7 +65,7 @@ void PrintStkDataElemT(const Stack* stk, const size_t index)
 
 }
 
-void PrintError(Stack* stk, error_t error, const char* file, const char* function, const int line)
+void PrintStkError(Stack* stk, error_t error, const char* file, const char* function, const int line)
 {
     //Make file
     FILE* LOG_FILE_PTR = OpenFile("error", "a");

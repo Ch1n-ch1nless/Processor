@@ -258,7 +258,7 @@ DEF_CMD(JNE,  18, LBL,       1, {
                                 })
 
 DEF_CMD(CALL, 19, LBL,       1, {
-				    StackPush(call_stk, cmd_index+1);
+				    PUSH_CALL(cmd_index+1);
 				    MAKE_VAR(index)
 				    GET_ARG(index)
 				    cmd_index = index - 1; 
@@ -266,7 +266,7 @@ DEF_CMD(CALL, 19, LBL,       1, {
 
 DEF_CMD(RET, 20, NONE,       0, {
 				    MAKE_VAR(index)
-				    StackPop(call_stk, &index);
+				    POP_CALL(index);
 				    cmd_index = index; 
                                 })
 
@@ -276,4 +276,11 @@ DEF_CMD(PUTC, 21, NONE,     0, {
 				    printf("%c", symbol);
       				})
 
- 
+DEF_CMD(SET_PIXEL, 22, NONE, 0, {
+				    MAKE_VAR(color);
+				    color = proc->ram[proc->reg_array[2]];
+				    MAKE_COLOR(color, rgb);
+				    txSetPixel(proc->reg_array[0], proc->reg_array[1], rgb);
+				})
+
+DEF_CMD(CREATE_WINDOW, 23, NONE, 0, {txCreateWindow(256, 256);})

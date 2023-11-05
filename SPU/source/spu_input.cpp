@@ -17,9 +17,9 @@ error_t OpenFile(FILE** file_pointer, const char* file_name, const char* mode)
     return error;
 }
 
-error_t CountBufferSize(Processor* clm, const char* file_name)
+error_t CountBufferSize(Processor* proc, const char* file_name)
 {
-    assert(clm);
+    assert(proc);
     assert(file_name);
 
     error_t error = NO_ERR;
@@ -31,25 +31,25 @@ error_t CountBufferSize(Processor* clm, const char* file_name)
         return error;
     }
 
-    clm->buf_size = (st.st_size) / sizeof(elem_t) + 1;
+    proc->buf_size = (st.st_size) / sizeof(elem_t) + 1;
 
     return error;
 }
 
-error_t ReadArrayOfCommands(FILE* file_pointer, Processor* clm)
+error_t ReadArrayOfCommands(FILE* file_pointer, Processor* proc)
 {
     assert(file_pointer);
-    assert(clm);
+    assert(proc);
 
     error_t error = NO_ERR;
 
-    clm->cmd_array = (elem_t*) calloc(clm->buf_size, sizeof(elem_t));
-    if (clm->cmd_array == nullptr)
+    proc->cmd_array = (elem_t*) calloc(proc->buf_size, sizeof(elem_t));
+    if (proc->cmd_array == nullptr)
     {
         return error | MEM_ALLOC_ERR;
     }
 
-    if (fread(clm->cmd_array, sizeof(elem_t), clm->buf_size, file_pointer) < clm->buf_size)
+    if (fread(proc->cmd_array, sizeof(elem_t), proc->buf_size, file_pointer) < proc->buf_size)
     {
         return error | READ_FEW_ARGS_ERR;
     }

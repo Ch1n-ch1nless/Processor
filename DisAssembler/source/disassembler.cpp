@@ -1,4 +1,4 @@
-#include "assembler.h"
+#include "disassembler.h"
 
 ERRORS TranslateMachineCode(elem_t* cmd_array, const size_t len)
 {

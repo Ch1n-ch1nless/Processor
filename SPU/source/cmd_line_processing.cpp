@@ -1,6 +1,6 @@
 #include "cmd_line_processing.h"
 
-error_t CheckArguments(int argc, const char** argv)
+error_t CheckArguments(int argc, const char** argv, const char** filename)
 {
     if (argc < COUNT_OF_ARGS)
     {
@@ -16,6 +16,7 @@ error_t CheckArguments(int argc, const char** argv)
         {
             if (CheckFile(argv[i], INPUT_FILE_EXTENSION))
             {
+                *filename = argv[i];
                 return NO_ERR;
             }
         }
@@ -23,7 +24,7 @@ error_t CheckArguments(int argc, const char** argv)
     }
 }
 
-void HandleErrorsOfCheckArguments(error_t error, int argc, const char** argv)
+void HandleErrorsOfCheckArguments(error_t error, int argc)
 {
     if (error & FEW_CMD_LINE_ARGS_ERR)
     {

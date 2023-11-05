@@ -7,6 +7,6 @@
 
 #include "../../Common_files/commands.h"
 
-error_t ExecuteCommands(Processor* clm, Stack* call_stk);
+error_t ExecuteCommands(Processor* proc);
 
 #endif // CALCULATOR_H_INCLUDED

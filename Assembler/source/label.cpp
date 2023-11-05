@@ -1,10 +1,10 @@
 #include "label.h"
 
-ERRORS LabelTableCtor(LabelTable* lbl_table)
+error_t LabelTableCtor(LabelTable* lbl_table)
 {
     assert(lbl_table);
 
-    ERRORS error = NO_ERR;
+    error_t error = NO_ERR;
 
     lbl_table->size = 0;
 
@@ -13,18 +13,18 @@ ERRORS LabelTableCtor(LabelTable* lbl_table)
     lbl_table->array = (Label*) calloc(lbl_table->capacity, sizeof(Label));
     if (lbl_table->array == nullptr)
     {
-        return MEM_ALLOC_ERR;
+        return error | MEM_ALLOC_ERR;
     }
 
     return error;
 }
 
-ERRORS LabelTableDtor(LabelTable* lbl_table)
+error_t LabelTableDtor(LabelTable* lbl_table)
 {
     assert(lbl_table);
     assert(lbl_table->array);
 
-    ERRORS error = NO_ERR;
+    error_t error = NO_ERR;
 
     lbl_table->size = 0;
 
@@ -36,12 +36,12 @@ ERRORS LabelTableDtor(LabelTable* lbl_table)
     return error;
 }
 
-ERRORS LabelTablePush(LabelTable* lbl_table, Label lbl)
+error_t LabelTablePush(LabelTable* lbl_table, Label lbl)
 {
     assert(lbl_table);
     assert(lbl_table->array);
 
-    ERRORS error = NO_ERR;
+    error_t error = NO_ERR;
 
     if (lbl_table->size >= lbl_table->capacity)
     {
@@ -52,7 +52,7 @@ ERRORS LabelTablePush(LabelTable* lbl_table, Label lbl)
         temp_ptr = (Label*) realloc(lbl_table->array, lbl_table->capacity);
         if (temp_ptr == nullptr)
         {
-            return MEM_ALLOC_ERR;
+            return error | MEM_ALLOC_ERR;
         }
     }
 
@@ -63,13 +63,13 @@ ERRORS LabelTablePush(LabelTable* lbl_table, Label lbl)
     return error;
 }
 
-ERRORS LabelTablePop(LabelTable* lbl_table, size_t index, Label* ret_lbl)
+error_t LabelTablePop(LabelTable* lbl_table, size_t index, Label* ret_lbl)
 {
     assert(lbl_table);
     assert(lbl_table->array);
     assert(ret_lbl);
 
-    ERRORS error = NO_ERR;
+    error_t error = NO_ERR;
 
     if (index < lbl_table->size)
     {
@@ -77,7 +77,7 @@ ERRORS LabelTablePop(LabelTable* lbl_table, size_t index, Label* ret_lbl)
     }
     else
     {
-        return BAD_MEM_ACS_ERR;
+        return error | BAD_MEM_ACS_ERR;
     }
 
     return error;
@@ -104,22 +104,22 @@ error_t LabelTableVerify(LabelTable* lbl_table)
 
 void LabelTableError(LabelTable* lbl_table, error_t error)
 {
-    if (error ^ CAPACITY_FEWER_SIZE_ERR)
+    if (error & CAPACITY_FEWER_SIZE_ERR)
     {
         fprintf(stderr, "ERROR!!! Size of array > capacity of array!!!\n");
     }
 
-    if (error ^ NULL_ARR_ERR)
+    if (error & NULL_ARR_ERR)
     {
         fprintf(stderr, "ERROR!!! The pointer to array is NULL!!!\n");
     }
 
-    if (error ^ MEM_ALLOC_ERR)
+    if (error & MEM_ALLOC_ERR)
     {
         fprintf(stderr, "ERROR!!! Program can NOT allocate memory!!!\n");
     }
 
-    if (error ^ BAD_MEM_ACS_ERR)
+    if (error & BAD_MEM_ACS_ERR)
     {
         fprintf(stderr, "ERROR!!! Attempt to read beyond the array!!!\n");
     }
@@ -141,11 +141,9 @@ void LabelTableDump(LabelTable* lbl_table)
     printf("\n=====================\n");
 }
 
-ERRORS MakeNewLabel(char* lbl_str, Label* new_lbl, size_t index)
+error_t MakeNewLabel(char* lbl_str, Label* new_lbl, size_t index)
 {
-    ERRORS error = NO_ERR;
-
-    lbl_str = lbl_str + 1;  //Skip the colon
+    error_t error = NO_ERR;
 
     new_lbl->str = lbl_str;
 

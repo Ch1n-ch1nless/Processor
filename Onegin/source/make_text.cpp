@@ -1,8 +1,8 @@
 #include "make_text.h"
 
-ERRORS FillText(const char* filename, Text* onegin)
+Errors FillText(const char* filename, Text* onegin)
 {
-    ERRORS error = NO_ERR;
+    Errors error = NO_ERR;
 
     error = OpenFile(onegin, filename);
     $CHECK_AND_RETURN_ERROR
@@ -22,13 +22,13 @@ ERRORS FillText(const char* filename, Text* onegin)
     return error;
 }
 
-ERRORS OpenFile(Text* onegin, const char* filename)
+Errors OpenFile(Text* onegin, const char* filename)
 {
     struct stat st = {};
 
     onegin->file_ptr = fopen(filename, "r");
     if (onegin->file_ptr == nullptr) {
-        ERRORS error = OPEN_FILE_ERR;
+        Errors error = OPEN_FILE_ERR;
         $CHECK_AND_RETURN_ERROR
     }
 
@@ -37,14 +37,14 @@ ERRORS OpenFile(Text* onegin, const char* filename)
     return NO_ERR;
 }
 
-ERRORS ReadBuffer(Text* onegin)
+Errors ReadBuffer(Text* onegin)
 {
     assert(onegin);
     assert(onegin->file_ptr);
 
     onegin->buffer = (char*) calloc(onegin->buf_size, sizeof(char));
     if (onegin->buffer == nullptr) {
-        ERRORS error = MEM_ALLOC_ERR;
+        Errors error = MEM_ALLOC_ERR;
         $CHECK_AND_RETURN_ERROR
     }
 
@@ -68,7 +68,7 @@ ERRORS ReadBuffer(Text* onegin)
     return NO_ERR;
 }
 
-size_t FillLineArray(Text* onegin, ERRORS* error)
+size_t FillLineArray(Text* onegin, Errors* error)
 {
     assert(onegin);
     assert(onegin->buffer);
@@ -91,10 +91,12 @@ size_t FillLineArray(Text* onegin, ERRORS* error)
         {
             size_t length = (onegin->buffer + i) - temp_array->str_ptr;
             temp_array->str_len = length;
-            do {
+            do
+            {
                 *(onegin->buffer + i) = '\0';
                 i++;
-            } while(*(onegin->buffer + i) == '\n');
+            }
+            while(*(onegin->buffer + i) == '\n');
 
             temp_array++;
             temp_array->str_ptr =  (onegin->buffer + i);

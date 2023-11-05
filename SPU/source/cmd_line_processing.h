@@ -10,9 +10,9 @@
 const int   COUNT_OF_ARGS = 2;
 static const char* INPUT_FILE_EXTENSION = "bin";
 
-error_t CheckArguments(int argc, const char** argv);
+error_t CheckArguments(int argc, const char** argv, const char** filename);
 
-void    HandleErrorsOfCheckArguments(error_t error, int argc, const char** argv);
+void    HandleErrorsOfCheckArguments(error_t error, int argc);
 
 bool    CheckFile(const char *str, const char* file_extension);
 

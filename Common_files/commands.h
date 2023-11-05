@@ -17,7 +17,7 @@ enum Cmd : int
 
 #undef DEF_CMD
 
-const size_t DICTIONARY_LEN = END_CMD;
+const size_t NUMBER_OF_COMMANDS = END_CMD;
 
 struct Translation
 {
@@ -30,7 +30,7 @@ struct Translation
 
 #define DEF_CMD(name, cmd, signature, num_of_args, ...)  {#name, strlen(#name), signature, num_of_args, cmd},
 
-const Translation DICTIONARY[] = {
+const Translation COMMAND_SET[] = {
                                     #include "../DSL/commands.dsl"
                                  };
 

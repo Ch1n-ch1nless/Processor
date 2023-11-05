@@ -1,47 +1,50 @@
-#include "main.h"
+#include "spu_execute.h"
+#include "cmd_line_processing.h"
 
 int main(int argc, const char* argv[])
 {
     error_t error = NO_ERR;
 
-    FILE* file_pointer  = nullptr;
+    FILE* file_pointer = nullptr;
 
-    error = CheckArguments(argc, argv);
+    const char* filename = nullptr;
+
+    error = CheckArguments(argc, argv, &filename);
 
     if (error != NO_ERR)
     {
-        HandleErrorsOfCheckArguments(error, argc, argv);
+        HandleErrorsOfCheckArguments(error, argc);
         return error;
     }
 
-    Stack call_stk  = {};
+    Processor proc = {
+                      .stk       = {},
+                      .call_stk  = {},
+                      .reg_array = nullptr,
+                      .cmd_array = nullptr,
+                      .buf_size  = 0,
+                     };
 
-    error = STACK_CTOR(&call_stk); //Make the call stack
-    PRINT_ERROR(&call_stk, error);
+    error = ProcessorCtor(&proc);
+    CHECK_PROC_ERR(error, &proc)
 
-    MAKE_PROCESSOR(clm);  //C.L.M. = Capybara Loves Maths
+    error = OpenFile(&file_pointer, filename, "rb");
+    CHECK_PROC_ERR(error, &proc)
 
-    error = ProcessorCtor(&clm);
-    PRINT_PROC_ERR(error, &clm)
+    error = CountBufferSize(&proc, filename);
+    CHECK_PROC_ERR(error, &proc)
 
-    error = OpenFile(&file_pointer, argv[1], "rb");
-    PRINT_PROC_ERR(error, &clm)
+    error = ReadArrayOfCommands(file_pointer, &proc);
+    CHECK_PROC_ERR(error, &proc)
 
-    error = CountBufferSize(&clm, argv[1]);
-    PRINT_PROC_ERR(error, &clm)
-
-    error = ReadArrayOfCommands(file_pointer, &clm);
-    PRINT_PROC_ERR(error, &clm)
-
-    error = ExecuteCommands(&clm, &call_stk);
-    PRINT_PROC_ERR(error, &clm)
-    PRINT_ERROR(&call_stk, error);
+    error = ExecuteCommands(&proc);
+    CHECK_PROC_ERR(error, &proc)
 
     #ifdef WITH_PROC_DUMP
-        PRINT_PROCESSOR(&clm);
+        PRINT_PROCESSOR(&proc);
     #endif
 
-    ProcessorDtor(&clm);
+    ProcessorDtor(&proc);
 
     fclose(file_pointer);
 

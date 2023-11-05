@@ -29,10 +29,7 @@
 
 #define SIGNAL_ERROR printf("ERROR! The wrong syntax!\n");
 
-#define MAKE_COLOR(color, rgb)  int red   = color / 65536;              \
-                                int green = color / 256 % 256;          \
-                                int blue  = color % 256;                \
-                                COLORREF rgb = RGB(red, green, blue);
+#define MAKE_COLOR(color, rgb) 
 
 #define BREAK break;
 

@@ -1,10 +1,10 @@
 #include "print_text.h"
 
-ERRORS PrintText(FILE* file_ptr, Text onegin)
+Errors PrintText(FILE* file_ptr, Text onegin)
 {
     assert(onegin.line_array);
 
-    ERRORS error = NO_ERR;
+    Errors error = NO_ERR;
 
     for (size_t i = 0; i < onegin.n_lines; i++) {
         if ((onegin.line_array)->str_ptr) {

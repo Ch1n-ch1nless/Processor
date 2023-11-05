@@ -3,7 +3,7 @@
 #ifndef STACK_H_INCLUDED
 #define STACK_H_INCLUDED
 
-#include "errors.h"
+#include "stk_errors.h"
 
 ///Constant by which we increase the stack size
 const size_t STACK_SIZE_UP   = 2;

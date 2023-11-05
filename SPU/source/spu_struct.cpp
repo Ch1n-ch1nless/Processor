@@ -1,110 +1,114 @@
 #include "spu_struct.h"
 
-error_t ProcessorCtor(Processor* clm)
+error_t ProcessorCtor(Processor* proc)
 {
-    assert(clm);
+    assert(proc);
 
     error_t error = NO_ERR;
 
-    error = STACK_CTOR(&(clm->stk));
+    error |= STACK_CTOR(&(proc->stk));
 
-    clm->reg_array = (elem_t*) calloc(REGISTER_COUNT, sizeof(elem_t));
-    if (clm->reg_array == nullptr)
+    error |= STACK_CTOR(&(proc->call_stk));
+
+    proc->reg_array = (elem_t*) calloc(REGISTER_COUNT, sizeof(elem_t));
+    if (proc->reg_array == nullptr)
     {
-        error = MEM_ALLOC_ERR;
+        error |= MEM_ALLOC_ERR;
     }
 
-    clm->ram = (elem_t*) calloc(MAX_SIZE_OF_RAM, sizeof(elem_t));
-    if (clm->ram == nullptr)
+    proc->ram = (elem_t*) calloc(MAX_SIZE_OF_RAM, sizeof(elem_t));
+    if (proc->ram == nullptr)
     {
-        error = MEM_ALLOC_ERR;
+        error |= MEM_ALLOC_ERR;
     }
 
     return error;
 }
 
-error_t ProcessorDtor(Processor* clm)
+error_t ProcessorDtor(Processor* proc)
 {
-    assert(clm);
+    assert(proc);
 
     error_t error = NO_ERR;
 
-    error = StackDtor(&(clm->stk));
+    error |= StackDtor(&(proc->stk));
 
-    free(clm->reg_array);
-    clm->reg_array = nullptr;
+    error |= StackDtor(&(proc->call_stk));
 
-    free(clm->cmd_array);
-    clm->cmd_array = nullptr;
+    free(proc->reg_array);
+    proc->reg_array = nullptr;
 
-    free(clm->ram);
-    clm->ram = nullptr;
+    free(proc->cmd_array);
+    proc->cmd_array = nullptr;
 
-    clm->buf_size = 0;
+    free(proc->ram);
+    proc->ram = nullptr;
+
+    proc->buf_size = 0;
 
     return error;
 }
 
-error_t ProcessorStkPush(Processor* clm, elem_t new_value)
+error_t ProcessorStkPush(Processor* proc, elem_t new_value)
 {
-    assert(clm);
+    assert(proc);
 
     error_t error = NO_ERR;
 
-    error = StackPush(&(clm->stk), new_value);
+    error = StackPush(&(proc->stk), new_value);
 
     return error;
 }
 
-error_t ProcessorStkPop(Processor* clm, elem_t* ret_value)
+error_t ProcessorStkPop(Processor* proc, elem_t* ret_value)
 {
-    assert(clm);
+    assert(proc);
 
     error_t error = NO_ERR;
 
-    error = StackPop(&(clm->stk), ret_value);
+    error = StackPop(&(proc->stk), ret_value);
 
     return error;
 }
 
-error_t ProcessorRegPush(Processor* clm, size_t index)
+error_t ProcessorRegPush(Processor* proc, size_t index)
 {
-    assert(clm);
+    assert(proc);
 
     error_t error = NO_ERR;
 
     elem_t new_value = POISON_VALUE;
 
-    error = StackPop(&(clm->stk), &new_value);
+    error = StackPop(&(proc->stk), &new_value);
 
-    clm->reg_array[index] = new_value;
+    proc->reg_array[index] = new_value;
 
     return error;
 }
 
-error_t ProcessorRegPop(Processor* clm, size_t index)
+error_t ProcessorRegPop(Processor* proc, size_t index)
 {
-    assert(clm);
+    assert(proc);
 
     error_t error = NO_ERR;
 
-    elem_t ret_value = clm->reg_array[index];
+    elem_t ret_value = proc->reg_array[index];
 
-    error = StackPush(&(clm->stk), ret_value);
+    error = StackPush(&(proc->stk), ret_value);
 
     return error;
 }
 
-error_t ProcessorVerify(Processor* clm)
+error_t ProcessorVerify(Processor* proc)
 {
-    error_t error = StackVerify(&(clm->stk));
+    error_t error = StackVerify(&(proc->stk));
 
-    if (clm->reg_array == nullptr)
+    if (proc->reg_array == nullptr)
     {
         error |= REG_ARRAY_NULLPTR_ERR;
     }
 
-    if (clm->cmd_array == nullptr)
+    if (proc->cmd_array == nullptr)
     {
         error |= CMD_ARRAY_NULLPTR_ERR;
     }
@@ -112,9 +116,11 @@ error_t ProcessorVerify(Processor* clm)
     return error;
 }
 
-void ProcessorError(Processor* clm, error_t error, const char* file, const char* function, const int line)
+void ProcessorError(Processor* proc, error_t error, const char* file, const char* function, const int line)
 {
-    PRINT_ERROR(&(clm->stk), error);
+    PRINT_STK_ERROR(&(proc->stk), error);
+
+    PRINT_STK_ERROR(&(proc->call_stk), error);
 
     FILE* output = fopen("error.log", "a");
     if (output == nullptr)
@@ -137,32 +143,36 @@ void ProcessorError(Processor* clm, error_t error, const char* file, const char*
     }
 }
 
-void ProcessorDump(Processor* clm, const char* spu_name, const char* file,
+void ProcessorDump(Processor* proc, const char* spu_name, const char* file,
                                const char* function, const int   line)
 {
-    printf("Processor \"%s\": [%p]\n", spu_name, clm);
+    printf("Processor \"%s\": [%p]\n", spu_name, proc);
     printf("called from file: %s(%d) in function: %s\n{\n", file, line, function);
 
     printf("==========Stack==========\n");
-    PrintStack(&(clm->stk), clm->stk.name, file, function, line);
+    PrintStack(&(proc->stk), proc->stk.name, file, function, line);
+    printf("=========================\n\n");
+
+    printf("=======Call stack========\n");
+    PrintStack(&(proc->call_stk), proc->stk.name, file, function, line);
     printf("=========================\n\n");
 
     printf("======Register Array=====\n");
     for (size_t i = 0; i < REGISTER_COUNT; i++)
     {
-        printf("\tIn %s = %d\n", REG_DICTIONARY[i].name, clm->reg_array[i]);
+        printf("\tIn %s = %d\n", REG_DICTIONARY[i].name, proc->reg_array[i]);
     }
     printf("=========================\n\n");
 
     printf("======Commands Array=====\n");
-    for (size_t i = 0; i < clm->buf_size; i++)
+    for (size_t i = 0; i < proc->buf_size; i++)
     {
         printf("| %.4d |", i);
     }
     printf("\n");
-    for (size_t i = 0; i < clm->buf_size; i++)
+    for (size_t i = 0; i < proc->buf_size; i++)
     {
-        printf("| %.4d |", clm->cmd_array[i]);
+        printf("| %.4d |", proc->cmd_array[i]);
     }
     printf("\n=========================\n\n");
 
@@ -171,18 +181,18 @@ void ProcessorDump(Processor* clm, const char* spu_name, const char* file,
     {
         for (size_t j = 0; j * j < MAX_SIZE_OF_RAM; j++)
         {
-            printf("| %.4d |", clm->ram[i * MAX_LEN_OF_STR + j]);
+            printf("| 5%.4d |", proc->ram[i * MAX_LEN_OF_STR + j]);
         }
         printf("\n");
     }
     printf("=========================\n\n");
 
     printf("=======Video memory======\n");
-    for (size_t i = 0; i * i < MAX_SIZE_OF_RAM; i++)
+    for (size_t i = 0; i * i < MAX_SIZE_OF_VM; i++)
     {
-        for (size_t j = 0; j * j < MAX_SIZE_OF_RAM; j++)
+        for (size_t j = 0; j * j < MAX_SIZE_OF_VM; j++)
         {
-            if (clm->ram[i * MAX_LEN_OF_STR + j] == 0)
+            if (proc->ram[i * MAX_SIZE_OF_VM_STR + j + BEGIN_OF_VM] == 0)
             {
                 printf(".");
             }

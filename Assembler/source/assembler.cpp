@@ -1,14 +1,15 @@
 #include "assembler.h"
 
-ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
+error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 {
-    ERRORS error = NO_ERR;
+    error_t error = NO_ERR;
 
     LabelTable lbl_table = {};
 
-    LabelTableCtor(&lbl_table);
+    error = LabelTableCtor(&lbl_table);
+    CHECK_ERROR(error != NO_ERR, error)
 
-    for (size_t number_of_cycle = 0; number_of_cycle < 2; number_of_cycle++)
+    for (size_t pass = 0; pass < 2; pass++)
     {
         size_t index = 0;
 
@@ -18,12 +19,14 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 
             DeleteExtraSpacesAndTabs(&cmd_begin);
 
-            if (strchr(cmd_begin, ':') != nullptr)
+            if (cmd_begin[0] == ':')
             {
+                cmd_begin++;
+
                 Label new_lbl = {};
 
                 error = MakeNewLabel(cmd_begin, &new_lbl, index);
-                PRINT_ERROR(error)
+                CHECK_ERROR(error != NO_ERR, error)
 
                 size_t lbl_num = 0;
 
@@ -39,24 +42,24 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 
                 if (lbl_num >= lbl_table.size)
                 {
-                    error = LabelTablePush(&lbl_table, new_lbl);
-                    PRINT_ERROR(error)
+                    error |= LabelTablePush(&lbl_table, new_lbl);
+                    CHECK_ERROR(error != NO_ERR, error)
                 }
             }
             else
             {
-                for (size_t n = 0; n < DICTIONARY_LEN; n++)
+                for (size_t n = 0; n < NUMBER_OF_COMMANDS; n++)
                 {
-                    if (strnicmp(cmd_begin, DICTIONARY[n].asm_cmd, DICTIONARY[n].cmd_len) == 0)
+                    if (strnicmp(cmd_begin, COMMAND_SET[n].asm_cmd, COMMAND_SET[n].cmd_len) == 0)
                     {
-                        cmd_array[index] = DICTIONARY[n].byte_cmd;
+                        cmd_array[index] = COMMAND_SET[n].byte_cmd;
 
-                        char* str_arg = cmd_begin + DICTIONARY[n].cmd_len;
+                        char* str_arg = cmd_begin + COMMAND_SET[n].cmd_len;
 
                         DeleteExtraSpacesAndTabs(&str_arg);
 
-                        TranslateCmdArgs(cmd_array, &index, str_arg, DICTIONARY[n].type_of_args,
-                                         &error,    &lbl_table, number_of_cycle);
+                        TranslateCmdArg(cmd_array, &index, str_arg, COMMAND_SET[n].type_of_args,
+                                        &error,    &lbl_table, pass);
 
                         index++;
                     }
@@ -70,7 +73,7 @@ ERRORS TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
     return error;
 }
 
-ERRORS OpenFile(const char* file_name, FILE** file_pointer, const char* mode)
+error_t OpenFile(const char* file_name, FILE** file_pointer, const char* mode)
 {
     assert(file_name != nullptr);
 
@@ -83,23 +86,23 @@ ERRORS OpenFile(const char* file_name, FILE** file_pointer, const char* mode)
     return NO_ERR;
 }
 
-ERRORS PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len)
+error_t PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len)
 {
     assert(cmd_array);
     assert(output_fp);
 
-    ERRORS error = NO_ERR;
+    error_t error = NO_ERR;
 
     if (fwrite(cmd_array, sizeof(elem_t), len, output_fp) < len)
     {
-        return WRITE_TO_FILE_ERR;
+        return error | WRITE_TO_FILE_ERR;
     }
 
     return error;
 }
 
-void TranslateCmdArgs(elem_t* cmd_array, size_t* index, char* str_arg, unsigned arg_type,
-                      ERRORS* error, LabelTable* lbl_table, size_t number_of_cycle)
+void TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsigned arg_type,
+                      error_t* error, LabelTable* lbl_table, size_t pass)
 {
     DeleteExtraSpacesAndTabs(&str_arg);
 
@@ -109,60 +112,34 @@ void TranslateCmdArgs(elem_t* cmd_array, size_t* index, char* str_arg, unsigned 
     }
     else
     {
-        size_t ip = *index;
-        ip++;
-        *index = ip;
-        cmd_array[ip] = POISON_VALUE;
+        *opcode_addr += 1;
+        cmd_array[*opcode_addr] = POISON_VALUE;
 
-        bool ret_value = false;
+        int type = 0;
 
-        if (arg_type & RAM)
+        if ((arg_type & RAM) && GetRAMArg(cmd_array, opcode_addr, &str_arg, error))
         {
-            ret_value = GetRAMArg(cmd_array, index, &str_arg, error);
-
-            if (ret_value == true)
-            {
-                ip--;
-                cmd_array[ip] += RAM * (number_of_cycle % 2 == 1);
-                ip++;
-            }
+            type |= RAM;
         }
 
-        if (arg_type & NUM)
+        if ((arg_type & NUM) && GetNumberArg(cmd_array, opcode_addr, str_arg, error))
         {
-            ret_value = GetNumberArg(cmd_array, index, str_arg, error);
-
-            if (ret_value == true)
-            {
-                ip--;
-                cmd_array[ip] += NUM * (number_of_cycle % 2 == 1);
-                ip++;
-            }
+            type |= NUM;
         }
 
-        if (arg_type & LBL)
+        if ((arg_type & LBL) && GetLabelArg(cmd_array, opcode_addr, str_arg, error, lbl_table))
         {
-            ret_value = GetLabelArg(cmd_array, index, str_arg, error, lbl_table);
-
-            if (ret_value == true)
-            {
-                ip--;
-                cmd_array[ip] += LBL * (number_of_cycle % 2 == 1);
-                ip++;
-            }
+            type |= LBL;
         }
 
-        if (arg_type & REG)
+        if ((arg_type & REG) && GetRegisterArg(cmd_array, opcode_addr, str_arg, error))
         {
-            ret_value = GetRegisterArg(cmd_array, index, str_arg, error);
-
-            if (ret_value == true)
-            {
-                ip--;
-                cmd_array[ip] += REG * (number_of_cycle % 2 == 1);
-                ip++;
-            }
+            type |= REG;
         }
+
+        *opcode_addr -= 1;
+        cmd_array[*opcode_addr] |= type * (pass % 2);
+        *opcode_addr += 1;
 
         return;
     }
@@ -180,7 +157,7 @@ void DeleteExtraSpacesAndTabs(char** string)
     return;
 }
 
-bool GetNumberArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error)
+bool GetNumberArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error)
 {
     elem_t number = POISON_VALUE;
 
@@ -196,7 +173,7 @@ bool GetNumberArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error
     }
 }
 
-bool GetRegisterArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error)
+bool GetRegisterArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error)
 {
     for (size_t reg_index = 0; reg_index < REGISTER_COUNT; reg_index++)
     {
@@ -211,7 +188,7 @@ bool GetRegisterArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* err
     return false;
 }
 
-bool GetLabelArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error, LabelTable* lbl_table)
+bool GetLabelArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error, LabelTable* lbl_table)
 {
     for (size_t lbl_index = 0; lbl_index < lbl_table->size; lbl_index++)
     {
@@ -226,7 +203,7 @@ bool GetLabelArg(elem_t* cmd_array, size_t* index, char* str_arg, ERRORS* error,
     return false;
 }
 
-bool GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, ERRORS* error)
+bool GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, error_t* error)
 {
     char* ram_begin = nullptr;
 
@@ -240,6 +217,8 @@ bool GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, ERRORS* error)
 
         if (strchr(ram_begin, ']') != nullptr)
         {
+            DeleteExtraSpacesAndTabs(&ram_begin);
+
             *str_arg = ram_begin;
 
             return true;
