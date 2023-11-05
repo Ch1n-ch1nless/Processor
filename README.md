@@ -15,7 +15,7 @@
         write <code>cd Preprocessor</code> in terminal
 
 3. Build <br>
-        <a>write <code>make
+        write <code>make</code>
 
 <h2 align="left">Note!</h2>
 If you want launch another file, you have 2 ways to fix this problem:
