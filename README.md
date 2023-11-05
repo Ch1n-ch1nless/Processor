@@ -1,21 +1,21 @@
 <h1 align="center">PROCESSOR</h1>
 
-## Description
+<h2 align="left"> Description </h2>
 
- Implementation of processor.
+ This is my project, which imitate working of processor.
+ It has the graph library, which works ONLY ON WINDOWS!!!
+ On other OS it won't launch!
 
-## How to use
+<h2 align="left"> How to install and use? </h2>
 
 1. Clone <br>
         write <code>git clone https://github.com/Ch1n-ch1nless/Preprocessor.git</code> in terminal
-   
+
 2. Go to folder <br>
         write <code>cd Preprocessor</code> in terminal
-   
+
 3. Build <br>
-        <a>write <code>make -f makefile1</code> in terminal</a>
-        <br>
-        <a>write <code>make -f makefile2</code> in terminal</a>
+        <a>write <code>make
 
 <h2 align="left">Note!</h2>
 If you want launch another file, you have 2 ways to fix this problem:
@@ -26,20 +26,24 @@ If you want launch another file, you have 2 ways to fix this problem:
         2. You build project, and after write 2 commands: (filename - name of file, which you want launch) <br>
         <code> .\asm.exe Assembler_commands/filename.asm Assembler_commands/commands.bin </code> <br>
         <code> .\spu.exe Assembler_commands/commands.bin  </code> <br>
-        
-    
 
-## What can this project do?
+<h2 align="left"> Warning! </h2>
+The project has problem with Disassembler. <br>
+If you want launch without Disassembler, you need to do next steps:
+<p align="center"><img src="/Img/run_asm.png" width = "50%"></p>
+<p align="center"><img src="/Img/run_dis.png" width = "50%"></p>
+
+
+
+<h2 align="left">What can this project do?</h2>
 
 This project can: <br>
     * assemble code
-    </br>
     <br>
-    * disassemble
-    </br>
+    * disassemble machine code
     <br>
     * execute commands
-    </br>
+    <br>
 
 You can use: RAM, registers, video memory
 
@@ -69,19 +73,21 @@ Project supports DSL to create new features:
     * <code> CALL < LBL > </code>
     * <code> RET </code>
     * <code> PUTC </code>
+    * <code> SET_PIXEL </code>
+    * <code> CREATE_WINDOW </code>
 
 
 
-## Examples
+<h2 align="left">Examples</h2>
 
 Fibonacci: <br>
 <p align="center"><img src="/Img/fibonacci.png" width = "70%"></p>
 
-Circle: <br>
-<p align="center"><img src="/Img/circle.png" width = "70%"></p>
+Beautiful Moon: <br>
+<p align="center"><img src="/Img/moon.png" width = "70%"></p>
 
 Square equation: <br>
 <p align="center"><img src="/Img/square_equation.png" width = "70%"></p>
 
-## Support
+<h2 align="left">Support</h2>
 **This project is created by [Ch1n-ch1nless](https://github.com/Ch1n-ch1nless)**
