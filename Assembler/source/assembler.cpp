@@ -32,7 +32,7 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 
                 while (lbl_num < lbl_table.size)
                 {
-                    if (new_lbl.str == lbl_table.array[lbl_num].str)
+                    if (stricmp(new_lbl.str, lbl_table.array[lbl_num].str) == 0)
                     {
                         lbl_table.array[lbl_num].line = new_lbl.line;
                         break;
@@ -59,13 +59,16 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
                         DeleteExtraSpacesAndTabs(&str_arg);
 
                         TranslateCmdArg(cmd_array, &index, str_arg, COMMAND_SET[n].type_of_args,
-                                        &error,    &lbl_table, pass);
+                                        &error,    &lbl_table);
+                        //CHECK_ERROR(error != NO_ERR, error)
 
                         index++;
                     }
                 }
             }
         }
+
+        LabelTableDump(&lbl_table);
     }
 
     LabelTableDtor(&lbl_table);
@@ -73,36 +76,8 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
     return error;
 }
 
-error_t OpenFile(const char* file_name, FILE** file_pointer, const char* mode)
-{
-    assert(file_name != nullptr);
-
-    *file_pointer = fopen(file_name, mode);
-    if (*file_pointer == nullptr)
-    {
-        return OPEN_FILE_ERR;
-    }
-
-    return NO_ERR;
-}
-
-error_t PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len)
-{
-    assert(cmd_array);
-    assert(output_fp);
-
-    error_t error = NO_ERR;
-
-    if (fwrite(cmd_array, sizeof(elem_t), len, output_fp) < len)
-    {
-        return error | WRITE_TO_FILE_ERR;
-    }
-
-    return error;
-}
-
-void TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsigned arg_type,
-                      error_t* error, LabelTable* lbl_table, size_t pass)
+void TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsigned int arg_type,
+                      error_t* error, LabelTable* lbl_table)
 {
     DeleteExtraSpacesAndTabs(&str_arg);
 
@@ -120,26 +95,42 @@ void TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsi
         if ((arg_type & RAM) && GetRAMArg(cmd_array, opcode_addr, &str_arg, error))
         {
             type |= RAM;
-        }
 
-        if ((arg_type & NUM) && GetNumberArg(cmd_array, opcode_addr, str_arg, error))
+            if ((arg_type & NUM) && GetNumberArg(cmd_array, opcode_addr, str_arg, error))
+            {
+                type |= NUM;
+            }
+            if ((arg_type & REG) && GetRegisterArg(cmd_array, opcode_addr, str_arg, error))
+            {
+                type |= REG;
+            }
+
+        }
+        else
         {
-            type |= NUM;
+            if ((arg_type & NUM) && GetNumberArg(cmd_array, opcode_addr, str_arg, error))
+            {
+                type |= NUM;
+            }
+
+            if ((arg_type & LBL) && GetLabelArg(cmd_array, opcode_addr, str_arg, error, lbl_table))
+            {
+                type |= LBL;
+            }
+
+            if ((arg_type & REG) && GetRegisterArg(cmd_array, opcode_addr, str_arg, error))
+            {
+                type |= REG;
+            }
+
+            /*if (type == NONE)
+            {
+                *error |= WRONG_SYNTAX_ERR;
+                return;
+            }*/
         }
 
-        if ((arg_type & LBL) && GetLabelArg(cmd_array, opcode_addr, str_arg, error, lbl_table))
-        {
-            type |= LBL;
-        }
-
-        if ((arg_type & REG) && GetRegisterArg(cmd_array, opcode_addr, str_arg, error))
-        {
-            type |= REG;
-        }
-
-        *opcode_addr -= 1;
-        cmd_array[*opcode_addr] |= type * (pass % 2);
-        *opcode_addr += 1;
+        cmd_array[*opcode_addr - 1] |= type;
 
         return;
     }
@@ -207,13 +198,11 @@ bool GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, error_t* error)
 {
     char* ram_begin = nullptr;
 
-    size_t ip = *index;
+    ram_begin = *str_arg;
 
-    ram_begin = strchr(*str_arg, '[');
-
-    if (ram_begin != nullptr)
+    if (ram_begin[0] == '[')
     {
-        ram_begin = ram_begin + 1;            //Skip the square bracket
+        ram_begin++;            //Skip the square bracket
 
         if (strchr(ram_begin, ']') != nullptr)
         {
@@ -232,4 +221,36 @@ bool GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, error_t* error)
     }
 
     return false;
+}
+
+error_t CheckEndOfArgument(char* str_arg)
+{
+    error_t error = NO_ERR;
+
+    size_t index = 0;
+
+    size_t count_of_args = 0;
+
+    while(str_arg[index] != '\n')
+    {
+        if (str_arg[index] == ' ' || str_arg[index] == '\t')
+        {
+            count_of_args++;
+            while (str_arg[index] == ' ' || str_arg[index] == '\t')
+            {
+                index++;
+            }
+        }
+        else
+        {
+            index++;
+        }
+    }
+
+    if (count_of_args > 1)
+    {
+        return error | WRONG_SYNTAX_ERR;
+    }
+
+    return error;
 }

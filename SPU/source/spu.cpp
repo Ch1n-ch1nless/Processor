@@ -1,4 +1,4 @@
-#include "spu_struct.h"
+#include "spu.h"
 
 error_t ProcessorCtor(Processor* proc)
 {
@@ -71,7 +71,7 @@ error_t ProcessorStkPop(Processor* proc, elem_t* ret_value)
     return error;
 }
 
-error_t ProcessorRegPush(Processor* proc, size_t index)
+error_t ProcessorRegPop(Processor* proc, size_t index)
 {
     assert(proc);
 
@@ -86,7 +86,7 @@ error_t ProcessorRegPush(Processor* proc, size_t index)
     return error;
 }
 
-error_t ProcessorRegPop(Processor* proc, size_t index)
+error_t ProcessorRegPush(Processor* proc, size_t index)
 {
     assert(proc);
 

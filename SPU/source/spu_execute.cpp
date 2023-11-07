@@ -9,26 +9,21 @@ error_t ExecuteCommands(Processor* proc)
     {
         int command = proc->cmd_array[cmd_index] & BITMASK_OPCODE;
 
-        if (proc->cmd_array[cmd_index] == CMD_HLT)
-        {
-            return error;
-        }
-
-#define DEF_CMD(name, num, arg_type, num_of_args, action) \
-    case(CMD_##name):                                     \
-    action                                                \
-    break;
+        #define DEF_CMD(name, num, arg_type, num_of_args, action) \
+            case(CMD_##name):                                     \
+                action                                            \
+                break;
 
         switch(command)
         {
-#include "../../DSL/commands.dsl"
+            #include "../../DSL/commands.dsl"
 
             default:
                 printf("ERROR!!! Undefined Command in [%d]\n", cmd_index);
                 break;
         }
 
-#undef DEF_CMD
+        #undef DEF_CMD
         if (error != NO_ERR)
         {
             CHECK_PROC_ERR(error, proc)

@@ -6,68 +6,66 @@
 ; Arguments:
 ;	rax -- value of last fibonacci number
 ;
-:OUT
-		pop rax
+:PRINT_FIBONACCI_NUMBER
+		push rax
 		out
-		push 10
-		putc
 		ret
 
-; Evaluates and prints fibonacci number
+; Evaluates fibonacci number
 ;
 ; Arguments:
 ;	rdx -- amount of fibonacci numbers
-; Clobbers:
-;	rax, rbx, rcx
-; Returns
-;	rax -- last fibonacci number 
-:FIB
-		pop rbx	  ; rax = rbx, rbx = rax + rbx
-		pop rax
-		pop rbx
-		add
-		push rbx
-		push rax 
+; Returns:
+;	rax  -- desired fibonacci number, 
+; 	rbx  -- next fibonacci number, 
+;	rcx  -- counter
+;
+:SEARCH_FIBONACCI_NUMBER
+		call MAKE_START_VALUES
+	:start_cycle
+			push rbx	  ; rax = rbx, rbx = rax + rbx
+			push rax
+			push rbx
+			add
+			pop rbx
+			pop rax 
 
-		push 1    ; rcx += 1
-		pop rcx
-		add
-		push rcx
+			push 1    ; rcx += 1
+			push rcx
+			add
+			pop rcx
 
-		pop rcx
-		pop rdx
-		ja FIB
+			push rcx
+			push rdx
+			ja start_cycle
 		ret
 
 ; Read the amount of fibonacci numbers
 ;
-; Clobbers:
+; Arguments:
 ;	rdx -- amount of fibonacci numbers
-:READ
+:READ_NUMBER_OF_FIBONACCI_NUMBER
 		in
-		push rdx
-		push 10
-		putc
+		pop rdx
 		ret
 
-; Fill registers by values of first and second fibonacci numbers and makes counter 
+; Fills rax and rbx by values of first and second fibonacci numbers and makes counter 
 ;
-; Clobbers
+; Returns
 ;	rax -- fibonacci number with 0
 ;	rbx -- fibonacci number with 1
 ;	rcx -- counter
-:FILL_REGS
+:MAKE_START_VALUES
 		push 0
-		push rax
+		pop rax ; first fibonacci number
 		push 0
-		push rcx
+		pop rcx ; counter
 		push 1
-		push rbx
+		pop rbx ; second fibonacci number
 		ret
 		
 :MAIN
-		call READ	   ; function reading number of fibonacci
-		call FILL_REGS     ; function filling rax, rbx and rcx
-		call FIB	   ; Search the fibonacci number
-		call OUT	   ; Print the number  
+		call READ_NUMBER_OF_FIBONACCI_NUMBER	; Read number of fibonacci number
+		call SEARCH_FIBONACCI_NUMBER		; Search the fibonacci number
+		call PRINT_FIBONACCI_NUMBER	   	; Print the number  
 		ret

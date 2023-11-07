@@ -1,5 +1,5 @@
-#ifndef SPU_STRUCT_H_INCLUDED
-#define SPU_STRUCT_H_INCLUDED
+#ifndef SPU_H_INCLUDED
+#define SPU_H_INCLUDED
 
 #include "../../Stack/source/stack.h"
 
@@ -15,11 +15,11 @@
 
 #define PRINT_PROCESSOR(proc) ProcessorDump((proc), #proc, __FILE__, __FUNCTION__, __LINE__);
 
-const size_t MAX_SIZE_OF_RAM    = 262144;
-const size_t MAX_LEN_OF_STR     = 512;
-const size_t MAX_SIZE_OF_VM     = 65536;
-const size_t MAX_SIZE_OF_VM_STR = 256;
-const size_t BEGIN_OF_VM        = 196608;
+const size_t MAX_SIZE_OF_RAM    = 0x40000;
+const size_t MAX_LEN_OF_STR     = 0x200;
+const size_t MAX_SIZE_OF_VM     = 0x10000;
+const size_t MAX_SIZE_OF_VM_STR = 0x100;
+const size_t BEGIN_OF_VM        = 0x30000;
 
 struct Processor
 {
@@ -47,4 +47,4 @@ void    ProcessorError(Processor* proc, error_t error, const char* file, const c
 void    ProcessorDump(Processor* spu, const char* spu_name, const char* file,
                                const char* function, const int   line);
 
-#endif // SPU_STRUCT_H_INCLUDED
+#endif // SPU_H_INCLUDED

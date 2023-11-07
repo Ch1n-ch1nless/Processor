@@ -11,7 +11,7 @@ DEF_CMD(PUSH,  1, REG | NUM | RAM, 1, {
 
                                     	    if (data_type & REG)
                                     	    {
-                                                REG_POP(number)
+                                                REG_PUSH(number)
 						{
 						    MAKE_VAR(new_value)
 						    STK_POP(new_value)
@@ -55,7 +55,7 @@ DEF_CMD(IN,    2, NONE,      0,	      {
                                     	STK_PUSH(number)
                                       })
 
-DEF_CMD(HLT,  -1, NONE,      0,       {EXIT})
+DEF_CMD(HLT,   0, NONE,      0,       {EXIT})
 
 DEF_CMD(ADD,   3, NONE,      0,       {
                                     	MAKE_VAR(x)
@@ -104,6 +104,7 @@ DEF_CMD(OUT,  10, NONE,      0,       {
                                     	MAKE_VAR(x)
                                     	STK_POP(x)
                                     	WRITE(x)
+					SKIP_LINE
                                       })
 
 DEF_CMD(POP,  11, REG | RAM | NUM, 1, {
@@ -115,7 +116,7 @@ DEF_CMD(POP,  11, REG | RAM | NUM, 1, {
 					{
                                     	    if (data_type & REG)
                                     	    {
-                                                REG_POP(number)
+                                                REG_PUSH(number)
 						{
 						    MAKE_VAR(ip)
 						    STK_POP(ip)

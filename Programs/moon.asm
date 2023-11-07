@@ -1,176 +1,257 @@
 		call MAIN
 		hlt
 
+; Fills video memory cells with a color code if they match the circle equation
+;
+; Arguments:
+;	[0] -- x-coordinate of circle
+;	[1] -- y-coordinate of circle
+;	[2] -- square radius of circle
+; 	[3] -- color of circle
+; 	[4] -- size of videomemory
+;	[5] -- begin of videomemory
+;
+; Clobbers:
+;	rax -- y-coordinate
+;	rbx -- x-coordinate
+;	rcx -- index of RAM
+;
+; Returns:
+;	video memory [0x30000-0x40000]
+;
 :MAKE_LIGHT_CIRCLE
 		push 0                   
-		push rax
-		jmp FILL_LINE
+		pop rax
+		jmp fill_line
 	
-	:FILL_LINE
+	:fill_line
 			push 0           
-			push rbx
+			pop rbx
 			
-		:LOOP
-				pop rax  
-				push 256
+		:loop
+				push rax  
+				push [4] ; push in stack size of video memory
 				mul
-				pop rbx
+				push rbx
 				add
-				push 196608
+				push [5] ; push begin of video memory
 				add
-				push rcx
+				pop rcx
 
-				push 0
-				push [rcx]
+				push [9]   ; push black color
+				pop [rcx]
 	
-				pop rbx
-				push 128
+				push rbx
+				push [0] ; push x-coordinate of light circle
 				sub
-				pop rbx
-				push 128
+				push rbx
+				push [0] ; push x-coordinate of light circle
 				sub
 				mul
 
-				pop rax
-				push 128
+				push rax
+				push [1] ; push y-coordinate of light circle
 				sub
-				pop rax
-				push 128
+				push rax
+				push [1] ; push y-coordinate of light circle
 				sub
 				mul
 
 				add
 				
-				push 4096
+				push [2] ; push square radius of light circle
 				jb SKIP_POINT
 
-				push 16777054
-				push [rcx]
+				push [3] ; push color of light circle
+				pop [rcx]
 				
 			:SKIP_POINT
-					pop rbx
+					push rbx
 					push 1
 					add
-					push rbx
+					pop rbx
 
-					pop rbx   
-					push 256
-					ja LOOP
+					push rbx   
+					push [4] ; push size of video memory
+					ja loop
 		
-		pop rax
+		push rax
 		push 1
 		add
-		push rax
-
 		pop rax
-		push 256
-		ja FILL_LINE
+
+		push rax
+		push [4] ; push size of video memory
+		ja fill_line
 		ret
 
+; Fills video memory cells with a color code if they match the circle equation
+;
+; Arguments:
+;	[6] -- x-coordinate of circle
+;	[7] -- y-coordinate of circle
+;	[8] -- square radius of circle
+; 	[9] -- color of circle
+; 	[4] -- size of videomemory
+;	[5] -- begin of videomemory
+;
+; Clobbers:
+;	rax -- y-coordinate
+;	rbx -- x-coordinate
+; 	rcx -- index of RAM
+;
+; Returns:
+;	video memory [0x30000-0x40000]
+;
 :MAKE_DARK_CIRCLE
 		push 0                   
-		push rax
-		jmp FILL_STRING
+		pop rax
+		jmp fill_string
 	
-	:FILL_STRING
+	:fill_string
 			push 0           
-			push rbx
+			pop rbx
 			
-		:MAKE_DARK_POINT
-				pop rax  
-				push 256
+		:make_dark_point
+				push rax  
+				push [4] ; push size of video memory
 				mul
-				pop rbx
+				push rbx
 				add
-				push 196608
+				push [5] ; push begin of video memory
 				add
-				push rcx
+				pop rcx
 	
-				pop rbx
-				push 107
+				push rbx
+				push [6] ; push x-coordinate of dark circle
 				sub
-				pop rbx
-				push 107
+				push rbx
+				push [6] ; push x-coordinate of dark circle
 				sub
 				mul
 
-				pop rax
-				push 128
+				push rax
+				push [7] ; push y-coordinate of dark circle
 				sub
-				pop rax
-				push 128
+				push rax
+				push [7] ; push y-coordinate of dark circle
 				sub
 				mul
 
 				add
 				
-				push 2116
+				push [8] ; push square radius of dark circle
 				jb SKIP_PIXEL
 
-				push 0
-				push [rcx]
+				push [9] ; push black color
+				pop [rcx]
 				
 			:SKIP_PIXEL
-					pop rbx
+					push rbx
 					push 1
 					add
-					push rbx
+					pop rbx
 
-					pop rbx   
-					push 256
-					ja MAKE_DARK_POINT
+					push rbx   
+					push [4] ; push size of video memory
+					ja make_dark_point
 		
-		pop rax
+		push rax
 		push 1
 		add
-		push rax
-
 		pop rax
-		push 256
-		ja FILL_STRING
+
+		push rax
+		push [4] ; push size of video memory
+		ja fill_string
 		ret
 
+; Draw all video memory
+;
+; Arguments:
+;	[4] -- size of video memory
+;	[5] -- begin of video memory
+;
+; Clobbers:
+;	rax -- y-coordinate of pixel
+;	rbx -- x-coordinate of pixel
+;	rcx -- index of RAM
+;
 :DRAW_CIRCLE
-		create_window
+		create_window ; make window [4] x [4]
 		push 0
-		push rax
+		pop rax
 
-	:LINE	
+	:line	
 			push 0
-			push rbx
+			pop rbx
 		
-		:CHAR
-				pop rax
-				push 256
+		:pixel
+				push rax
+				push [4] ; push size of video memory
 				mul
-				pop rbx
+				push rbx
 				add
-				push 196608
+				push [5] ; push begin of video memory
 				add
-				push rcx
+				pop rcx
 				
-				set_pixel 
+				set_pixel ; get color fron [rcx] and color pixel(rbx; rax) 
 
-				pop rbx
+				push rbx
 				push 1
 				add
-				push rbx
-
 				pop rbx
-				push 256
-				ja CHAR
 
-		pop rax
+				push rbx
+				push [4] ; push size of video memory
+				ja pixel
+
+		push rax
 		push 1
 		add
-		push rax
-
 		pop rax
+
+		push rax
+		push [4] ; push size of video memory
+		ja line
+		ret
+
+; Make constants in RAM
+;
+; Arguments:
+; 	RAM[0x0-0x9]
+;
+; Returns:
+; 	constants in cells of RAM
+; 
+:MAKE_CONSTANTS
+		push 128
+		pop [0] ; in [0] keeps x-coordinate of light circle
+		push 128
+		pop [1] ; in [0] keeps y-coordinate of light circle
+		push 4096
+		pop [2] ; in [2] keeps radius of light circle
+		push 16777054
+		pop [3] ; in [3] keeps color of light circle
+
 		push 256
-		ja LINE
-		ret		
+		pop [4] ; in [4] keeps size of video memory
+		push 196608
+		pop [5] ; in [5] keeps begin of video memory
+
+		push 107
+		pop [6] ; in [6] keeps x-coordinate of dark circle
+		push 128
+		pop [7] ; in [7] keeps y-coordinate of dark circle
+		push 2116
+		pop [8] ; in [8] keeps radius of dark circle
+		push 0
+		pop [9] ; in [9] keeps color of dark circle
+		ret 				
 
 :MAIN
+		call MAKE_CONSTANTS
 		call MAKE_LIGHT_CIRCLE
 		call MAKE_DARK_CIRCLE
 		call DRAW_CIRCLE

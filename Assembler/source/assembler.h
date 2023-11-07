@@ -1,10 +1,7 @@
 #ifndef ASSEMBLER_H_INCLUDED
 #define ASSEMBLER_H_INCLUDED
 
-#include "../../Onegin/source/text.h"
-#include "../../Onegin/source/make_text.h"
-#include "../../Onegin/source/print_text.h"
-#include "../../Stack/source/struct_and_const.h"
+#include "asm_output.h"
 
 #include "../../Common_files/commands.h"
 #include "../../Common_files/registers.h"
@@ -17,14 +14,18 @@
         return error;                                       \
     }
 
+#define DEF_CMD(name, num, arg_type, num_of_args, ...)                                         \
+    static_assert(num_of_args < 2, "Wrong syntax in DSL! Function can't have > 1 argumets!\n");
+
+#include "../../DSL/commands.dsl"
+
+#undef DEF_CMD
+
 error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code);
 
-error_t OpenFile(const char* file_name, FILE** file_pointer, const char* mode);
-
-error_t PrintToFile(elem_t* cmd_array, FILE* output_fp, const size_t len);
-
-void    TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsigned arg_type,
-                        error_t* error,    LabelTable* lbl_table, size_t number_of_cycle);
+void    TranslateCmdArg(elem_t*  cmd_array, size_t*      opcode_addr,
+                        char*    str_arg,   unsigned int arg_type,
+                        error_t* error,     LabelTable*  lbl_table);
 
 void    DeleteExtraSpacesAndTabs(char** string);
 
@@ -32,9 +33,12 @@ bool    GetNumberArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* e
 
 bool    GetRegisterArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error);
 
-bool    GetLabelArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error,
-                                                                     LabelTable* lbl_table);
+bool    GetLabelArg(elem_t*     cmd_array, size_t*  index,
+                    char*       str_arg,   error_t* error,
+                    LabelTable* lbl_table);
 
 bool    GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, error_t* error);
+
+error_t CheckEndOfArgument(char* str_arg);
 
 #endif // ASSEMBLER_H_INCLUDED

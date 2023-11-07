@@ -1,7 +1,7 @@
 #ifndef CMD_LINE_PROCESSING_H_INCLUDED
 #define CMD_LINE_PROCESSING_H_INCLUDED
 
-#include "spu_struct.h"
+#include "spu.h"
 
 #include <stdio.h>
 #include <stdlib.h>

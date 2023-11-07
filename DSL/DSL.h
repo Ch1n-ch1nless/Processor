@@ -10,16 +10,16 @@
 
 #define REG_POP(number)  ProcessorRegPop(proc, number);
 
-#define RAM_PUSH(index)  elem_t x = 0;              \
+#define RAM_POP(index)   elem_t x = 0;              \
                          ProcessorStkPop(proc, &x); \
                          proc->ram[index] = x;
 
-#define RAM_POP(index)   elem_t x = proc->ram[index]; \
+#define RAM_PUSH(index)  elem_t x = proc->ram[index]; \
                          ProcessorStkPush(proc, x);
 
 #define PUSH_CALL(number)   StackPush(&(proc->call_stk), number);
 
-#define POP_CALL(number)   StackPop(&(proc->call_stk), &number);
+#define POP_CALL(number)    StackPop(&(proc->call_stk), &number);
 
 #define READ(number) scanf(elem_format, &number);
 
@@ -34,6 +34,8 @@
                                 int blue  = color % 256;                \
                                 COLORREF rgb = RGB(red, green, blue);
 
+#define SKIP_LINE printf("\n");
+
 #define BREAK break;
 
-#define EXIT  break;
+#define EXIT  return error;

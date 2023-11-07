@@ -1,7 +1,7 @@
 #ifndef SPU_INPUT_H_INCLUDED
 #define SPU_INPUT_H_INCLUDED
 
-#include "spu_struct.h"
+#include "spu.h"
 #include "sys/stat.h"
 #include <stdlib.h>
 

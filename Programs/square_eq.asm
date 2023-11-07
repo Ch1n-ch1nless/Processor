@@ -7,157 +7,142 @@
 ;	rax -- senior coefficient
 ;	rbx -- second coefficient
 ; 	rcx -- free term
-:READ 
+:READ_COEFFICIENTS 
 		in
-		push rax
+		pop rax
 		in 
-		push rbx
+		pop rbx
 		in
-		push rcx
+		pop rcx
 		ret
 
-; Defines a square or linear equation
+; Defines a square or linear equation, depending on the senior coefficient
 ;
 ; Argument:
 ; 	rax -- senior coefficient
-:IS_LINEAR
-		pop rax
+:IS_ZERO_THE_FIRST_CF
+		push rax
 		push 0
-		jne SQR
-		call SOLVE_LINEAR
+		jne first_cf_is_not_zero
+		call SOLVE_LINEAR_EQUATION ; call this function, if senior coefficient == 0
 		ret
-	:SQR
-			call QUADRATKA
+	:first_cf_is_not_zero
+			call SOLVE_SQUARE_EQUATION
 			ret
 
 ; Solve linear equation 
 ;
 ; Arguments:
-; 	rbx, rcx
-; Clobbers:
-;	memory([0] & [11])
-:SOLVE_LINEAR
-		pop rbx
+; 	rbx -- second coefficient 
+;	rcx -- free term
+; Returns:
+;	memory([0], [11])
+:SOLVE_LINEAR_EQUATION
+		push rbx
 		push 0
-		je INF_OR_ZERO
-		jmp ONE_LIN_ROOT
+		je inf_or_zero
+		jmp one_lin_root
 
-	:INF_OR_ZERO
-			pop rcx
+	:inf_or_zero
+			push rcx
 			push 0
-			jne NO_ROOTS
-			jmp INF_ROOTS
+			jne no_roots
+			jmp inf_roots
 
-		:INF_ROOTS
+		:inf_roots
 				push 8
 				out
-				push 10
-				putc
 				ret
 
-		:NO_ROOTS
+		:no_roots
 				push 0
 				out
-				push 10
-				putc
 				ret
 
-	:ONE_LIN_ROOT
-			pop rcx
+	:one_lin_root
+			push rcx
 			push -1
 			mul
-			pop rbx
+			push rbx
 			div
-			push [11]
+			pop [11]
 			push 1
 			out
-			push 10
-			putc
-			pop [11]
+			push [11]
 			out
-			push 10
-			putc
 			ret
 
 ; Solve square equation
 ;
 ; Arguments:
-;	rax, rbx, rcx
+;	rax -- first  coefficient, 
+;      	rbx -- second coefficient, 
+;	rcx -- free term
 ;
-; Clobbers:
-; 	rdx, memory([0], [11] & [22])
-:QUADRATKA
+; Returns:
+; 	rdx, memory([0], [11], [22])
+:SOLVE_SQUARE_EQUATION
 		call CALCULATE_DISCRIMINANT
 		call COUNT_ROOTS
 
-		pop [0]
+		push [0]
 		push 2
-		je TWO_ROOTS
-		pop [0]
+		je two_roots
+		push [0]
 		push 1
-		je ROOT_ONE
-		jmp NO_ROOTS
+		je one_root
+		jmp no_roots
 
-	:TWO_ROOTS
-			pop rdx
-			sqrt
+	:two_roots
 			push rdx
+			sqrt
+			pop rdx
 
-			pop rbx
+			push rbx
 			push -1
 			mul
-			pop rdx
+			push rdx
 			sub
 			push 2
-			pop rax
+			push rax
 			div
 			div
-			push [11]
+			pop [11]
 
-			pop rbx
+			push rbx
 			push -1
 			mul
-			pop rdx
+			push rdx
 			add
 			push 2
-			pop rax
+			push rax
 			div
 			div
-			push [22]
+			pop [22]
 			
 			push 2	
 			out
-			push 10
-			putc
-			pop [11]
+			push [11]
 			out
-			push 10
-			putc
-			pop [22]
-			out 
-			push 10
-			putc
+			push [22]
+			out
 
 			ret
 
-	:ROOT_ONE
-			pop rbx
+	:one_root
+			push rbx
 			push -1
 			mul
 			push 2
 			div
-			pop rax
+			push rax
 			div
-			push [11]
+			pop  [11]
 
 			push 1
 			out
-			push 10
-			putc
-			pop[11]
+      			push [11]
 			out
-			push 10
-			putc
 
 			ret 
 
@@ -165,52 +150,52 @@
 ;
 ; Arguments:
 ; 	rax, rbx, rdx
-; Return:
+; Returns:
 ; 	rdx -- Discriminant
 :CALCULATE_DISCRIMINANT
-		pop rbx
-		pop rbx
+		push rbx
+		push rbx
 		mul
 		push 4
-		pop rax
+		push rax
 		mul
-		pop rcx
+		push rcx
 		mul
 		sub
-		push rdx
+		pop rdx
 		ret
 
 ; Calculate the number of roots
 ;
 ; Arguments:
-;	rdx 
-; Return:
+;	rdx -- Discriminant
+; Returns:
 ;	[0] (RAM cell with number 0)
 :COUNT_ROOTS
-		pop rdx
+		push rdx
 		push 0
-		je D_EQUAL_0
-		pop rdx
+		je d_equal_0
+		push rdx
 		push 0
-		ja D_FEWER_0
-		jmp D_GREATER_0
+		ja d_fewer_0
+		jmp d_greater_0
 
-	:D_EQUAL_0
+	:d_equal_0
 			push 1
-			push [0]
+			pop  [0]
 			ret
 	
-	:D_FEWER_0
+	:d_fewer_0
 			push 0
-			push [0]
+			pop  [0]
 			ret
 
-	:D_GREATER_0
+	:d_greater_0
 			push 2
-			push [0]
+			pop  [0]
 			ret
 
 :MAIN
-		call READ
-		call IS_LINEAR
+		call READ_COEFFICIENTS
+		call :IS_ZERO_THE_FIRST_CF
 		ret
