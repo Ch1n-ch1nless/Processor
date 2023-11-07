@@ -2,6 +2,9 @@
 
 error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 {
+    assert((cmd_array != nullptr) && "Error! Pointer to cmd_array is NULL!!!");
+    assert((asm_code  != nullptr) && "Error! Pointer to asm_code is NULL!!!");
+
     error_t error = NO_ERR;
 
     LabelTable lbl_table = {};
@@ -19,7 +22,11 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 
             DeleteExtraSpacesAndTabs(&cmd_begin);
 
-            if (cmd_begin[0] == ':')
+            if (cmd_begin[0] == ';')
+            {
+                ;
+            }
+            else if (cmd_begin[0] == ':')
             {
                 cmd_begin++;
 
@@ -58,9 +65,11 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 
                         DeleteExtraSpacesAndTabs(&str_arg);
 
+                        error |= CheckCorrectnessOfArguments(str_arg, COMMAND_SET[n].type_of_args);
+                        //CHECK_ERROR(error != NO_ERR, error)
+
                         TranslateCmdArg(cmd_array, &index, str_arg, COMMAND_SET[n].type_of_args,
                                         &error,    &lbl_table);
-                        //CHECK_ERROR(error != NO_ERR, error)
 
                         index++;
                     }
@@ -79,6 +88,12 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 void TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsigned int arg_type,
                       error_t* error, LabelTable* lbl_table)
 {
+    assert((cmd_array != nullptr)   && "Error! Pointer to array of commands is NULL!!!");
+    assert((opcode_addr != nullptr) && "Error! Pointer to opcode_addr is NULL!!!");
+    assert((str_arg != nullptr)     && "Error! Pointer to str_arg is NULL!!!");
+    assert((error != nullptr)       && "Error! Pointer to error is NULL!!!");
+    assert((lbl_table != nullptr)   && "Error! Pointer to label's table is NULL!!!");
+
     DeleteExtraSpacesAndTabs(&str_arg);
 
     if (arg_type == NONE)
@@ -122,12 +137,11 @@ void TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsi
             {
                 type |= REG;
             }
+        }
 
-            /*if (type == NONE)
-            {
-                *error |= WRONG_SYNTAX_ERR;
-                return;
-            }*/
+        if (type == NONE || type == RAM)
+        {
+            *error |= WRONG_SYNTAX_ERR;
         }
 
         cmd_array[*opcode_addr - 1] |= type;
@@ -136,20 +150,13 @@ void TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsi
     }
 }
 
-void DeleteExtraSpacesAndTabs(char** string)
-{
-    size_t count_of_extra_char = 0;  //Count of extra spaces, tabs before command
-    char temp_array[] = {};          //Temporary array of symbols
-
-    sscanf(*string, "%[ \t]%n", temp_array, &count_of_extra_char);
-
-    *string = *string + count_of_extra_char;
-
-    return;
-}
-
 bool GetNumberArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error)
 {
+    assert((cmd_array != nullptr) && "Error! Pointer to array of commands is NULL!!!");
+    assert((index != nullptr)     && "Error! Pointer to index is NULL!!!");
+    assert((str_arg != nullptr)   && "Error! Pointer to str_arg is NULL!!!");
+    assert((error != nullptr)     && "Error! Pointer to error is NULL!!!");
+
     elem_t number = POISON_VALUE;
 
     if (sscanf(str_arg, "%d", &number) == 1)
@@ -166,6 +173,11 @@ bool GetNumberArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* erro
 
 bool GetRegisterArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error)
 {
+    assert((cmd_array != nullptr) && "Error! Pointer to array of commands is NULL!!!");
+    assert((index != nullptr)     && "Error! Pointer to index is NULL!!!");
+    assert((str_arg != nullptr)   && "Error! Pointer to str_arg is NULL!!!");
+    assert((error != nullptr)     && "Error! Pointer to error is NULL!!!");
+
     for (size_t reg_index = 0; reg_index < REGISTER_COUNT; reg_index++)
     {
         if (strnicmp(str_arg, REG_DICTIONARY[reg_index].name, REG_DICTIONARY[reg_index].len) == 0)
@@ -181,6 +193,12 @@ bool GetRegisterArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* er
 
 bool GetLabelArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error, LabelTable* lbl_table)
 {
+    assert((cmd_array != nullptr) && "Error! Pointer to array of commands is NULL!!!");
+    assert((index != nullptr)     && "Error! Pointer to index is NULL!!!");
+    assert((str_arg != nullptr)   && "Error! Pointer to str_arg is NULL!!!");
+    assert((error != nullptr)     && "Error! Pointer to error is NULL!!!");
+    assert((lbl_table != nullptr) && "Error! Pointer to label's table is NULL!!!");
+
     for (size_t lbl_index = 0; lbl_index < lbl_table->size; lbl_index++)
     {
         if (strnicmp(str_arg, lbl_table->array[lbl_index].str, lbl_table->array[lbl_index].len) == 0)
@@ -196,6 +214,11 @@ bool GetLabelArg(elem_t* cmd_array, size_t* index, char* str_arg, error_t* error
 
 bool GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, error_t* error)
 {
+    assert((cmd_array != nullptr) && "Error! Pointer to array of commands is NULL!!!");
+    assert((index != nullptr)     && "Error! Pointer to index is NULL!!!");
+    assert((str_arg != nullptr)   && "Error! Pointer to str_arg is NULL!!!");
+    assert((error != nullptr)     && "Error! Pointer to error is NULL!!!");
+
     char* ram_begin = nullptr;
 
     ram_begin = *str_arg;
@@ -214,43 +237,11 @@ bool GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, error_t* error)
         }
         else
         {
-            *error = WRONG_SYNTAX_ERR;
+            *error |= WRONG_SYNTAX_ERR;
 
             return false;
         }
     }
 
     return false;
-}
-
-error_t CheckEndOfArgument(char* str_arg)
-{
-    error_t error = NO_ERR;
-
-    size_t index = 0;
-
-    size_t count_of_args = 0;
-
-    while(str_arg[index] != '\n')
-    {
-        if (str_arg[index] == ' ' || str_arg[index] == '\t')
-        {
-            count_of_args++;
-            while (str_arg[index] == ' ' || str_arg[index] == '\t')
-            {
-                index++;
-            }
-        }
-        else
-        {
-            index++;
-        }
-    }
-
-    if (count_of_args > 1)
-    {
-        return error | WRONG_SYNTAX_ERR;
-    }
-
-    return error;
 }
