@@ -15,7 +15,7 @@
         write <code>cd Preprocessor</code> in terminal
 
 3. Build <br>
-        <a>write <code>make
+        write <code>make</code>
 
 <h2 align="left">Note!</h2>
 If you want launch another file, you have 2 ways to fix this problem:
@@ -30,8 +30,8 @@ If you want launch another file, you have 2 ways to fix this problem:
 <h2 align="left"> Warning! </h2>
 The project has problem with Disassembler. <br>
 If you want launch without Disassembler, you need to do next steps:
-<p align="center"><img src="/Img/run_asm.png" width = "50%"></p>
-<p align="center"><img src="/Img/run_dis.png" width = "50%"></p>
+* write in terminal: <code>make run_asm </code>
+* write in terminal: <code>make run_spu </code>
 
 
 
