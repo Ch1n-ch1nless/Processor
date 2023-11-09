@@ -197,5 +197,5 @@
 
 :MAIN
 		call READ_COEFFICIENTS
-		call :IS_ZERO_THE_FIRST_CF
+		call IS_ZERO_THE_FIRST_CF
 		ret

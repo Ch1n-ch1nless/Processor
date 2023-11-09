@@ -20,16 +20,16 @@
 ;	video memory [0x30000-0x40000]
 ;
 :MAKE_LIGHT_CIRCLE
-		push 0                   
+		push 0
 		pop rax
 		jmp fill_line
 	
 	:fill_line
-			push 0           
+			push 0
 			pop rbx
 			
 		:loop
-				push rax  
+				push rax
 				push [4] ; push in stack size of video memory
 				mul
 				push rbx
@@ -104,12 +104,12 @@
 ;	video memory [0x30000-0x40000]
 ;
 :MAKE_DARK_CIRCLE
-		push 0                   
+		push 0
 		pop rax
 		jmp fill_string
 	
 	:fill_string
-			push 0           
+			push 0
 			pop rbx
 			
 		:make_dark_point

@@ -63,13 +63,14 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 
                         char* str_arg = cmd_begin + COMMAND_SET[n].cmd_len;
 
-                        DeleteExtraSpacesAndTabs(&str_arg);
+                        error = CheckCorrectnessOfArguments(str_arg, COMMAND_SET[n].type_of_args);
+                        CHECK_ERROR(error != NO_ERR, error)
 
-                        error |= CheckCorrectnessOfArguments(str_arg, COMMAND_SET[n].type_of_args);
-                        //CHECK_ERROR(error != NO_ERR, error)
+                        DeleteExtraSpacesAndTabs(&str_arg);
 
                         TranslateCmdArg(cmd_array, &index, str_arg, COMMAND_SET[n].type_of_args,
                                         &error,    &lbl_table);
+                        CHECK_ERROR(error != NO_ERR && pass % 2 == 1, error);
 
                         index++;
                     }
