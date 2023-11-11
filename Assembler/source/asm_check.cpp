@@ -32,7 +32,8 @@ error_t CheckCorrectnessOfArguments(char* str_arg, unsigned int arg_type)
     error |= CheckCorrectnessOfBrackets(&copy_str_arg);
     CHECK_ERROR(error != NO_ERR, error);
 
-    while (*copy_str_arg != '\0' && *copy_str_arg != ';' && *copy_str_arg != '\n')
+    while (*copy_str_arg != '\0' && *copy_str_arg != ';'
+                                 && *copy_str_arg != '\n' && *copy_str_arg != '\r')
     {
         //Validates the spelling of string characters
         error |= CheckCorrectnessOfSymbols(&copy_str_arg, &count_of_args);
@@ -139,7 +140,7 @@ error_t CheckCorrectnessOfSymbols(char** str_arg, size_t* count_of_args)
 
     int is_argument = 0; //Variable that accepts 1 if there is an argument and 0 otherwise
 
-    while (**str_arg != '\0' && **str_arg != ';' && **str_arg != '\n')
+    while (**str_arg != '\0' && **str_arg != ';' && **str_arg != '\n' && **str_arg != '\r')
     {
         is_argument = 0;    //No arguments
 

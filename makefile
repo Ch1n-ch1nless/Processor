@@ -68,7 +68,7 @@ $(DIS_OBJ_DIR)%.o : $(DIS_SRC_DIR)%.cpp
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 run_asm: 
-	./asm Programs/moon.asm Programs/commands.bin
+	./asm Programs/square_eq.asm Programs/commands.bin
 
 run_spu: 
 	./spu Programs/commands.bin

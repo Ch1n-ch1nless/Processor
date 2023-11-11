@@ -9,14 +9,17 @@ int main(int argc, const char* argv[])
 
     const char* filename = nullptr;
 
+    //Check correctness of command's arguments
     error = CheckArguments(argc, argv, &filename);
 
     if (error != NO_ERR)
     {
+        //Handle errors in command's arguments
         HandleErrorsOfCheckArguments(error, argc);
         return error;
     }
 
+    //Create processor
     Processor proc = {
                       .stk       = {},
                       .call_stk  = {},
@@ -28,6 +31,7 @@ int main(int argc, const char* argv[])
     error = ProcessorCtor(&proc);
     CHECK_PROC_ERR(error, &proc)
 
+    //Open binary file
     error = OpenFile(&file_pointer, filename, "rb");
     CHECK_PROC_ERR(error, &proc)
 

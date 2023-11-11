@@ -7,8 +7,10 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 
     error_t error = NO_ERR;
 
+    //Table of labels
     LabelTable lbl_table = {};
 
+    //Create table of labels
     error = LabelTableCtor(&lbl_table);
     CHECK_ERROR(error != NO_ERR, error)
 
@@ -20,6 +22,7 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
         {
             char* cmd_begin = asm_code->line_array[i].str_ptr;
 
+            //Skip white spaces and tabs before command
             DeleteExtraSpacesAndTabs(&cmd_begin);
 
             if (cmd_begin[0] == ';')
@@ -32,11 +35,13 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
 
                 Label new_lbl = {};
 
+                //Create label
                 error = MakeNewLabel(cmd_begin, &new_lbl, index);
                 CHECK_ERROR(error != NO_ERR, error)
 
                 size_t lbl_num = 0;
 
+                //Find new label
                 while (lbl_num < lbl_table.size)
                 {
                     if (stricmp(new_lbl.str, lbl_table.array[lbl_num].str) == 0)
@@ -47,6 +52,7 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
                     lbl_num++;
                 }
 
+                //If label doesn't locates in array, add label to label's table
                 if (lbl_num >= lbl_table.size)
                 {
                     error |= LabelTablePush(&lbl_table, new_lbl);
@@ -57,17 +63,21 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
             {
                 for (size_t n = 0; n < NUMBER_OF_COMMANDS; n++)
                 {
+                    //Find command in set of commands
                     if (strnicmp(cmd_begin, COMMAND_SET[n].asm_cmd, COMMAND_SET[n].cmd_len) == 0)
                     {
                         cmd_array[index] = COMMAND_SET[n].byte_cmd;
 
                         char* str_arg = cmd_begin + COMMAND_SET[n].cmd_len;
 
+                        //Check correctness of command's arguments
                         error = CheckCorrectnessOfArguments(str_arg, COMMAND_SET[n].type_of_args);
                         CHECK_ERROR(error != NO_ERR, error)
 
+                        //Skip white spaces and tabs
                         DeleteExtraSpacesAndTabs(&str_arg);
 
+                        //Translate assembler argument to binary argument
                         TranslateCmdArg(cmd_array, &index, str_arg, COMMAND_SET[n].type_of_args,
                                         &error,    &lbl_table);
                         CHECK_ERROR(error != NO_ERR && pass % 2 == 1, error);
@@ -78,9 +88,12 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
             }
         }
 
-        LabelTableDump(&lbl_table);
+        #ifdef WITH_LBL_DUMP
+            LabelTableDump(&lbl_table);
+        #endif
     }
 
+    //Delete label's table
     LabelTableDtor(&lbl_table);
 
     return error;
@@ -95,6 +108,7 @@ void TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsi
     assert((error != nullptr)       && "Error! Pointer to error is NULL!!!");
     assert((lbl_table != nullptr)   && "Error! Pointer to label's table is NULL!!!");
 
+    //Skips white spaces and tabs
     DeleteExtraSpacesAndTabs(&str_arg);
 
     if (arg_type == NONE)
@@ -103,6 +117,7 @@ void TranslateCmdArg(elem_t* cmd_array, size_t* opcode_addr, char* str_arg, unsi
     }
     else
     {
+        //Allocate a memory cell to the command's argument
         *opcode_addr += 1;
         cmd_array[*opcode_addr] = POISON_VALUE;
 

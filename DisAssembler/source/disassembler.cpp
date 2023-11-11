@@ -15,7 +15,7 @@ error_t TranslateMachineCode(FILE* output_fp, elem_t* cmd_array, const size_t le
         {
             if (command == COMMAND_SET[cmd_index].byte_cmd)
             {
-                fprintf(output_fp, "%s ", COMMAND_SET[cmd_index].asm_cmd);
+                fprintf(output_fp, "\t\t%s ", COMMAND_SET[cmd_index].asm_cmd);
 
                 int arg_type = cmd_array[ip] & BITMASK_SGNT;
                 if (arg_type == NONE)

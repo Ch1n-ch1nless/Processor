@@ -1,108 +1,91 @@
-CALL label_55
-
-POP RAX
-OUT 
-PUSH 10
-PUTC 
-RET 
-POP RBX
-POP RAX
-POP RBX
-ADD 
-PUSH RBX
-PUSH RAX
-PUSH 1
-POP RCX
-ADD 
-PUSH RCX
-POP RCX
-POP RDX
-JA label_10
-RET 
-IN 
-PUSH RDX
-PUSH 10
-PUTC 
-RET 
-PUSH 0
-PUSH RAX
-PUSH 0
-PUSH RCX
-PUSH 1
-PUSH RBX
-RET 
-CALL label_35
-CALL label_42
-CALL label_10
-CALL label_3
-RET 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		CALL label_39
+		HLT 
+		IN 
+		POP RAX
+		RET 
+		PUSH RBX
+		OUT 
+		RET 
+		PUSH RAX
+		PUSH 1
+		JE label_33
+		PUSH RAX
+		PUSH RBX
+		MUL 
+		POP RBX
+		PUSH RAX
+		PUSH 1
+		SUB 
+		POP RAX
+		CALL label_11
+		RET 
+		PUSH 1
+		POP RBX
+		RET 
+		CALL label_3
+		CALL label_34
+		CALL label_11
+		CALL label_7
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 
+		HLT 

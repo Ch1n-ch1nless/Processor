@@ -1,15 +1,17 @@
 		call MAIN
 		hlt
 
+;------------------------------------------------------------------------------
+
 ; Fills video memory cells with a color code if they match the circle equation
 ;
 ; Arguments:
-;	[0] -- x-coordinate of circle
-;	[1] -- y-coordinate of circle
-;	[2] -- square radius of circle
-; 	[3] -- color of circle
-; 	[4] -- size of videomemory
-;	[5] -- begin of videomemory
+;	memory cell [0] -- x-coordinate of circle
+;	memory cell [1] -- y-coordinate of circle
+;	memory cell [2] -- square radius of circle
+; 	memory cell [3] -- color of circle
+; 	memory cell [4] -- size of video memory
+;	memory cell [5] -- begin of video memory
 ;
 ; Clobbers:
 ;	rax -- y-coordinate
@@ -18,7 +20,7 @@
 ;
 ; Returns:
 ;	video memory [0x30000-0x40000]
-;
+
 :MAKE_LIGHT_CIRCLE
 		push 0
 		pop rax
@@ -85,15 +87,17 @@
 		ja fill_line
 		ret
 
+;------------------------------------------------------------------------------
+
 ; Fills video memory cells with a color code if they match the circle equation
 ;
 ; Arguments:
-;	[6] -- x-coordinate of circle
-;	[7] -- y-coordinate of circle
-;	[8] -- square radius of circle
-; 	[9] -- color of circle
-; 	[4] -- size of videomemory
-;	[5] -- begin of videomemory
+;	memory cell [6] -- x-coordinate of circle
+;	memory cell [7] -- y-coordinate of circle
+;	memory cell [8] -- square radius of circle
+; 	memory cell [9] -- color of circle
+; 	memory cell [4] -- size of video memory
+;	memory cell [5] -- begin of video memory
 ;
 ; Clobbers:
 ;	rax -- y-coordinate
@@ -102,7 +106,7 @@
 ;
 ; Returns:
 ;	video memory [0x30000-0x40000]
-;
+
 :MAKE_DARK_CIRCLE
 		push 0
 		pop rax
@@ -141,12 +145,11 @@
 				add
 				
 				push [8] ; push square radius of dark circle
-				jb SKIP_PIXEL
-
+				jb skip_pixel
 				push [9] ; push black color
 				pop [rcx]
 				
-			:SKIP_PIXEL
+			:skip_pixel
 					push rbx
 					push 1
 					add
@@ -166,19 +169,21 @@
 		ja fill_string
 		ret
 
-; Draw all video memory
+;------------------------------------------------------------------------------
+
+; Draws all video memory
 ;
 ; Arguments:
-;	[4] -- size of video memory
-;	[5] -- begin of video memory
+;	memory cell [4] -- size of video memory
+;	memory cell [5] -- begin of video memory
 ;
 ; Clobbers:
 ;	rax -- y-coordinate of pixel
 ;	rbx -- x-coordinate of pixel
 ;	rcx -- index of RAM
-;
+
 :DRAW_CIRCLE
-		create_window ; make window [4] x [4]
+		create_window ; create window size equal to video memory size
 		push 0
 		pop rax
 
@@ -196,7 +201,7 @@
 				add
 				pop rcx
 				
-				set_pixel ; get color fron [rcx] and color pixel(rbx; rax) 
+				set_pixel ; get color from [rcx] and color pixel(rbx; rax) 
 
 				push rbx
 				push 1
@@ -217,38 +222,39 @@
 		ja line
 		ret
 
-; Make constants in RAM
-;
-; Arguments:
-; 	RAM[0x0-0x9]
+;------------------------------------------------------------------------------
+
+; Makes constants in RAM
 ;
 ; Returns:
-; 	constants in cells of RAM
-; 
+; 	constants in cells of RAM 
+ 
 :MAKE_CONSTANTS
 		push 128
-		pop [0] ; in [0] keeps x-coordinate of light circle
+		pop [0] ; keeps x-coordinate of light circle
 		push 128
-		pop [1] ; in [0] keeps y-coordinate of light circle
+		pop [1] ; keeps y-coordinate of light circle
 		push 4096
-		pop [2] ; in [2] keeps radius of light circle
+		pop [2] ; keeps square radius of light circle
 		push 16777054
-		pop [3] ; in [3] keeps color of light circle
+		pop [3] ; keeps color of light circle
 
 		push 256
-		pop [4] ; in [4] keeps size of video memory
+		pop [4] ; keeps size of video memory
 		push 196608
-		pop [5] ; in [5] keeps begin of video memory
+		pop [5] ; keeps begin of video memory
 
 		push 107
-		pop [6] ; in [6] keeps x-coordinate of dark circle
+		pop [6] ; keeps x-coordinate of dark circle
 		push 128
-		pop [7] ; in [7] keeps y-coordinate of dark circle
+		pop [7] ; keeps y-coordinate of dark circle
 		push 2116
-		pop [8] ; in [8] keeps radius of dark circle
+		pop [8] ; keeps square radius of dark circle
 		push 0
-		pop [9] ; in [9] keeps color of dark circle
-		ret 				
+		pop [9] ; keeps color of dark circle
+		ret
+
+;------------------------------------------------------------------------------ 				
 
 :MAIN
 		call MAKE_CONSTANTS
@@ -256,3 +262,5 @@
 		call MAKE_DARK_CIRCLE
 		call DRAW_CIRCLE
 		ret
+
+;------------------------------------------------------------------------------

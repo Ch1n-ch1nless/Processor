@@ -1,12 +1,15 @@
 		call MAIN
 		hlt
 
-; Read 3 coefficients of square equation
+;------------------------------------------------
+
+; Reads 3 coefficients of square equation
 ;
 ; Arguments:
 ;	rax -- senior coefficient
 ;	rbx -- second coefficient
 ; 	rcx -- free term
+
 :READ_COEFFICIENTS 
 		in
 		pop rax
@@ -16,47 +19,39 @@
 		pop rcx
 		ret
 
-; Defines a square or linear equation, depending on the senior coefficient
-;
-; Argument:
-; 	rax -- senior coefficient
-:IS_ZERO_THE_FIRST_CF
-		push rax
-		push 0
-		jne first_cf_is_not_zero
-		call SOLVE_LINEAR_EQUATION ; call this function, if senior coefficient == 0
-		ret
-	:first_cf_is_not_zero
-			call SOLVE_SQUARE_EQUATION
-			ret
+;------------------------------------------------
 
-; Solve linear equation 
+; Solves linear equation 
 ;
 ; Arguments:
 ; 	rbx -- second coefficient 
 ;	rcx -- free term
 ; Returns:
-;	memory([0], [11])
+;	memory cell [0]  -- number of roots
+;	memory cell [11] -- value of root
+
 :SOLVE_LINEAR_EQUATION
 		push rbx
 		push 0
-		je inf_or_zero
-		jmp one_lin_root
+		je inf_or_zero	 ; if second coefficient == 0, then we go to label "inf_or_zero"
+		jmp one_lin_root ; go to label "one_lin_root" in other cases
 
 	:inf_or_zero
 			push rcx
 			push 0
+			; if our equation looks like: "0 * x^2 + 0 * x + C = 0", then go to label "no_roots"
 			jne no_roots
-			jmp inf_roots
+			; if our equation looks like: "0 * x^2 + 0 * x + 0 = 0", then go to label "inf_roots"
+			jmp inf_roots 
 
 		:inf_roots
 				push 8
-				out
+				pop [0] ; put the number, which means infinite of roots
 				ret
 
 		:no_roots
 				push 0
-				out
+				pop [0] ; put the number of roots
 				ret
 
 	:one_lin_root
@@ -64,15 +59,17 @@
 			push -1
 			mul
 			push rbx
-			div
-			pop [11]
+			div	 ; x = -c / b
+			pop [11] ; put the x in the memory cell 
+
 			push 1
-			out
-			push [11]
-			out
+			pop [0]	 ; put the number of roots
+
 			ret
 
-; Solve square equation
+;------------------------------------------------
+
+; Solves square equation
 ;
 ; Arguments:
 ;	rax -- first  coefficient, 
@@ -80,23 +77,31 @@
 ;	rcx -- free term
 ;
 ; Returns:
-; 	rdx, memory([0], [11], [22])
+;	rdx -- Discriminant,
+;	memory cell [0]	 -- number of roots, 
+;	memory cell [11] -- value of first root, 
+;	memory cell [22] -- value of second root
+
 :SOLVE_SQUARE_EQUATION
+		push 0
+		push rax
+		je SOLVE_LINEAR_EQUATION
+
 		call CALCULATE_DISCRIMINANT
 		call COUNT_ROOTS
 
 		push [0]
 		push 2
-		je two_roots
+		je two_roots ; if number of roots == 2, go to "two_roots"
 		push [0]
 		push 1
-		je one_root
-		jmp no_roots
+		je one_root  ; if number of roots == 1, go to "one_root"
+		jmp no_roots ; in other case go to "no_roots"
 
 	:two_roots
 			push rdx
 			sqrt
-			pop rdx
+			pop rdx ; put sqrt(Discriminant) in register "rdx"
 
 			push rbx
 			push -1
@@ -107,7 +112,7 @@
 			push rax
 			div
 			div
-			pop [11]
+			pop [11] ; put (-b - sqrt(D)) / (2 * a) in the memory cell
 
 			push rbx
 			push -1
@@ -118,14 +123,7 @@
 			push rax
 			div
 			div
-			pop [22]
-			
-			push 2	
-			out
-			push [11]
-			out
-			push [22]
-			out
+			pop [22] ; put (-b + sqrt(D)) / (2 * a) in the memory cell
 
 			ret
 
@@ -137,21 +135,21 @@
 			div
 			push rax
 			div
-			pop  [11]
+			pop  [11] ; put -b / (2 * a) in the memory cell 
 
-			push 1
-			out
-      			push [11]
-			out
+			ret
 
-			ret 
+;------------------------------------------------ 
 
-; Calculate Discriminant
+; Calculates Discriminant
 ;
 ; Arguments:
-; 	rax, rbx, rdx
+; 	rax -- senior coefficient, 
+;	rbx -- second coefficient, 
+;	rdx -- free term
 ; Returns:
 ; 	rdx -- Discriminant
+
 :CALCULATE_DISCRIMINANT
 		push rbx
 		push rbx
@@ -162,15 +160,18 @@
 		push rcx
 		mul
 		sub
-		pop rdx
+		pop rdx ; put (b^2 - 4*a*c) in memory cell
 		ret
 
-; Calculate the number of roots
+;------------------------------------------------
+
+; Calculates the number of roots
 ;
 ; Arguments:
 ;	rdx -- Discriminant
 ; Returns:
-;	[0] (RAM cell with number 0)
+;	memory cell [0]  -- number of roots
+
 :COUNT_ROOTS
 		push rdx
 		push 0
@@ -195,7 +196,47 @@
 			pop  [0]
 			ret
 
+;------------------------------------------------
+
+; Prints number of roots and their values
+;
+; Arguments:
+;	memory cell [0]  -- number of roots,
+; 	memory cell [11] -- first  root,
+;	memory cell [22] -- second root
+
+:PRINT_ROOTS
+		push [0]
+		out	 ; print number of roots
+
+		push [0]
+		push 2
+		je print_two_roots
+
+		push [0]
+		push 1
+		je print_one_root
+
+		ret
+
+	:print_two_roots
+			push [11]
+			out	  ; print first root
+			push [22]
+			out	  ; print second root 
+			ret
+
+	:print_one_root
+			push [11]
+			out	  ; print root
+			ret
+
+;------------------------------------------------
+
 :MAIN
 		call READ_COEFFICIENTS
-		call IS_ZERO_THE_FIRST_CF
+		call SOLVE_SQUARE_EQUATION
+		call PRINT_ROOTS
 		ret
+
+;------------------------------------------------
