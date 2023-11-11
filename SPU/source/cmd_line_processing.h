@@ -7,8 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-const int   COUNT_OF_ARGS = 2;
-static const char* INPUT_FILE_EXTENSION = "bin";
+const int COUNT_OF_ARGS = 2;
+
+const char* const INPUT_FILE_EXTENSION = "bin";
 
 error_t CheckArguments(int argc, const char** argv, const char** filename);
 

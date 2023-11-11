@@ -32,8 +32,8 @@ const canary_t RIGHT_CANARY_VALUE  = 0x602DABAD;    //!< @brief The value of wor
 const canary_t INTRO_CANARY_VALUE  = 0xD134CA75;    //!< @brief The value of working data left canary
 const canary_t OUTRO_CANARY_VALUE  = 0x06B16A55;    //!< @brief The value of working data right canary
 const canary_t POISON_CANARY_VALUE = 0xF331D3AD;    //!< @brief The value of killed canary
-static const char* KILLED_STACK = "D3AD 57ACK";     //!< @brief The status, which shows that stack was destructed
-static const char* LIVE_STACK   = "LIVE STACK";     //!< @brief The status, which shows that stack is correct
+const char* const KILLED_STACK = "D3AD 57ACK";      //!< @brief The status, which shows that stack was destructed
+const char* const LIVE_STACK   = "LIVE STACK";      //!< @brief The status, which shows that stack is correct
 
 /**
  *The struct which contains elements of real stack and security features

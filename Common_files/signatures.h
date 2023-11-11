@@ -1,5 +1,5 @@
-#ifndef CONFIG_SGNT_H_INCLUDED
-#define CONFIG_SGNT_H_INCLUDED
+#ifndef SIGNATURES_H_INCLUDED
+#define SIGNATURES_H_INCLUDED
 
 enum ArgTypes : unsigned int
 {
@@ -10,4 +10,4 @@ enum ArgTypes : unsigned int
     RAM  = 1 << 8
 };
 
-#endif // CONFIG_SGNT_H_INCLUDED
+#endif // SIGNATURES_H_INCLUDED

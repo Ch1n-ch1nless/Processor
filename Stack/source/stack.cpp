@@ -179,7 +179,7 @@ error_t StackRealloc(Stack* stk)
     {
         stk->capacity *= STACK_SIZE_UP;
     }
-    else if (stk->size < (stk->capacity / STACK_SIZE_DOWN))
+    else if ((size_t) stk->size < (stk->capacity / STACK_SIZE_DOWN))
     {
         stk->capacity /= STACK_SIZE_UP; //Reduce the data size by constant = STACK_SIZE_UP
     }
@@ -208,7 +208,7 @@ error_t StackRealloc(Stack* stk)
     }
 
     //Clean the data and fill all elements with a POISON_VALUE
-    for (size_t i = stk->size; i < stk->capacity; i++)
+    for (size_t i = stk->size; i < (size_t)stk->capacity; i++)
     {
         SetStkDataElemT(stk, i, POISON_VALUE);
     }
@@ -222,8 +222,7 @@ error_t StackRealloc(Stack* stk)
     return NO_ERR;
 }
 
-error_t PrintStack(Stack* stk, const char* stk_name, const char* file,
-                               const char* function, const int   line)
+error_t PrintStack(Stack* stk, const char* file, const char* function, const int   line)
 {
     error_t error = StackVerify(stk);
     if (error != NO_ERR)

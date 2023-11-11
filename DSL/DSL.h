@@ -23,6 +23,12 @@
 
 #define READ(number) scanf(elem_format, &number);
 
+#define SQRT(number) number = (elem_t) sqrt((double) number);
+
+#define SIN(number) number = (elem_t) sin((double) number);
+
+#define COS(number) number = (elem_t) cos((double) number);
+
 #define MAKE_VAR(name) elem_t name = 0;
 
 #define WRITE(x) printf(elem_format, x);

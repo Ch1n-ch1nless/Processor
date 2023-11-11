@@ -1,5 +1,5 @@
-#ifndef CONFIG_CMD_H_INCLUDED
-#define CONFIG_CMD_H_INCLUDED
+#ifndef COMMANDS_H_INCLUDED
+#define COMMANDS_H_INCLUDED
 
 #include "signatures.h"
 
@@ -36,4 +36,4 @@ const Translation COMMAND_SET[] = {
 
 #undef DEF_CMD
 
-#endif // CONFIG_CMD_H_INCLUDED
+#endif // COMMANDS_H_INCLUDED

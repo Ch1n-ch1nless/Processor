@@ -11,7 +11,7 @@
 /**
  * Pointer to string: ".log"
  */
-static const char* EXTENSION = ".log";
+const char* const EXTENSION = ".log";
 
 /**
  *@brief Create and open file with extension = EXTENSION(constant in log.h)

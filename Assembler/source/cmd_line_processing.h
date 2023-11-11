@@ -7,15 +7,15 @@
 #include <TXLib.h>
 #include "assembler.h"
 
-static const char* INPUT_FILE_EXTENSION  = "asm";
-static const char* OUTPUT_FILE_EXTENSION = "bin";
+const char* const INPUT_FILE_EXTENSION  = "asm";
+const char* const OUTPUT_FILE_EXTENSION = "bin";
 
 const size_t COUNT_OF_ARGS = 3;
 
 error_t CheckArguments(const char** input_file, const char** output_file,
                        int argc, const char** argv);
 
-void    HandleErrorsOfCheckArguments(error_t error, int argc, const char** argv);
+void    HandleErrorsOfCheckArguments(error_t error, int argc);
 
 bool    CheckFile(const char *str, const char* file_extension);
 

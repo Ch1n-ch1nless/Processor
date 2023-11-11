@@ -1,4 +1,4 @@
-///@file errors.h
+///@file stk_errors.h
 #ifndef STK_ERRORS_H_INCLUDED
 #define STK_ERRORS_H_INCLUDED
 

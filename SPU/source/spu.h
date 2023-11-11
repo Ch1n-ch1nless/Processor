@@ -42,9 +42,9 @@ error_t ProcessorRegPop(Processor* proc, size_t index);
 
 error_t ProcessorVerify(Processor* proc);
 void    ProcessorError(Processor* proc, error_t error, const char* file, const char* function,
-                                                                        const int line);
+                                                                         const int line);
 
 void    ProcessorDump(Processor* spu, const char* spu_name, const char* file,
-                               const char* function, const int   line);
+                                      const char* function, const int   line);
 
 #endif // SPU_H_INCLUDED

@@ -106,7 +106,8 @@ void LabelTableError(LabelTable* lbl_table, error_t error)
 {
     if (error & CAPACITY_FEWER_SIZE_ERR)
     {
-        fprintf(stderr, "ERROR!!! Size of array > capacity of array!!!\n");
+        fprintf(stderr, "ERROR!!! Size of array [%d] > capacity of array [%d]!!!\n",
+                lbl_table->size, lbl_table->capacity);
     }
 
     if (error & NULL_ARR_ERR)

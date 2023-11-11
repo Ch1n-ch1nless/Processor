@@ -1,7 +1,7 @@
 #ifndef CONFIG_ERROR_H_INCLUDED
 #define CONFIG_ERROR_H_INCLUDED
 
-typedef unsigned long long error_t;
+typedef unsigned int error_t;
 
 enum Errors : unsigned int
 {

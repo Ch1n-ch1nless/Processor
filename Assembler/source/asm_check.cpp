@@ -1,21 +1,21 @@
 #include "asm_check.h"
 
-void DeleteExtraSpacesAndTabs(char** string)
+void DeleteExtraSpacesAndTabs(char** cmd_line)
 {
-    assert((string != nullptr)  && "Error! Pointer to string is NULL!!!");
-    assert((*string != nullptr) && "Error! Pointer to char* array is NULL!!!");
+    assert((cmd_line  != nullptr)  && "Error! Pointer to string is NULL!!!");
+    assert((*cmd_line != nullptr) && "Error! Pointer to char* array is NULL!!!");
 
     size_t count_of_extra_char = 0;  //Count of extra spaces, tabs before command
     char temp_array[] = {};          //Temporary array of symbols
 
-    sscanf(*string, "%[ \t]%n", temp_array, &count_of_extra_char);
+    sscanf(*cmd_line, "%[ \t]%n", temp_array, &count_of_extra_char);
 
-    *string = *string + count_of_extra_char;
+    *cmd_line = *cmd_line + count_of_extra_char;
 
     return;
 }
 
-error_t CheckCorrectnessOfArguments(char* str_arg, unsigned int arg_type)
+error_t CheckCorrectnessOfArguments(char* str_arg)
 {
     assert((str_arg  != nullptr) && "Error! Pointer to link of string is NULL!!!");
 

@@ -13,7 +13,7 @@ int main(int argc, const char* argv[])
     if (error != NO_ERR)
     {
         //Handle errors in command's arguments
-        HandleErrorsOfCheckArguments(error, argc, argv);
+        HandleErrorsOfCheckArguments(error, argc);
         return error;
     }
 

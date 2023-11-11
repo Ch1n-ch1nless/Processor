@@ -52,9 +52,9 @@ void PrintStkDataElemT(const Stack* stk, const size_t index)
 {
     assert(stk);
     assert(stk->data);
-    assert(index <= stk->capacity);
+    assert(index <= (size_t)stk->capacity);
 
-    if (index < stk->size)
+    if (index < (size_t)stk->size)
     {
         printf("\t *[%d] = " elem_format "\n", index, GetStkDataElemT(stk, index));
     }
@@ -171,8 +171,6 @@ hash_t CalculateStkHash(const Stack* stk)
 
     hash = hash * 33 + *(hash_t*)&stk;
 
-    hash = hash * 33 + *(hash_t*)&(stk->data);
-
     for (size_t i = 0; i < stk->capacity * sizeof(elem_t) + 2 * sizeof(canary_t); i++)
     {
         hash = hash * 33 + stk->data[i];
@@ -186,8 +184,6 @@ hash_t CalculateStkHash(const Stack* stk)
     hash = hash * 33 + stk->size;
     hash = hash * 33 + stk->capacity;
     hash = hash * 33 + stk->line;
-    hash = hash * 33 + *(hash_t*)&(stk->name);
-    hash = hash * 33 + *(hash_t*)&(stk->file);
 
     return hash;
 }

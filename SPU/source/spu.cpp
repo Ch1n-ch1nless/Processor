@@ -116,11 +116,12 @@ error_t ProcessorVerify(Processor* proc)
     return error;
 }
 
-void ProcessorError(Processor* proc, error_t error, const char* file, const char* function, const int line)
+void ProcessorError(Processor* proc, error_t error, const char* file,
+                                                    const char* function, const int line)
 {
-    PRINT_STK_ERROR(&(proc->stk), error);
+    PrintStkError(&(proc->stk), error, file, function, line);
 
-    PRINT_STK_ERROR(&(proc->call_stk), error);
+    PrintStkError(&(proc->call_stk), error, file, function, line);
 
     FILE* output = fopen("error.log", "a");
     if (output == nullptr)
@@ -150,11 +151,11 @@ void ProcessorDump(Processor* proc, const char* spu_name, const char* file,
     printf("called from file: %s(%d) in function: %s\n{\n", file, line, function);
 
     printf("==========Stack==========\n");
-    PrintStack(&(proc->stk), proc->stk.name, file, function, line);
+    PrintStack(&(proc->stk), file, function, line);
     printf("=========================\n\n");
 
     printf("=======Call stack========\n");
-    PrintStack(&(proc->call_stk), proc->stk.name, file, function, line);
+    PrintStack(&(proc->call_stk), file, function, line);
     printf("=========================\n\n");
 
     printf("======Register Array=====\n");

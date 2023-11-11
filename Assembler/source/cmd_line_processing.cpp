@@ -3,11 +3,15 @@
 error_t CheckArguments(const char** input_file, const char** output_file,
                        int argc, const char** argv)
 {
-    if (argc < COUNT_OF_ARGS)
+    if (argc < 0)
     {
         return FEW_CMD_LINE_ARGS_ERR;
     }
-    else if (argc > COUNT_OF_ARGS)
+    else if (((size_t) argc) < COUNT_OF_ARGS)
+    {
+        return FEW_CMD_LINE_ARGS_ERR;
+    }
+    else if (((size_t) argc) > COUNT_OF_ARGS)
     {
         return MANY_CMD_LINE_ARGS_ERR;
     }
@@ -48,15 +52,15 @@ error_t CheckArguments(const char** input_file, const char** output_file,
     }
 }
 
-void HandleErrorsOfCheckArguments(error_t error, int argc, const char** argv)
+void HandleErrorsOfCheckArguments(error_t error, int argc)
 {
     if (error & FEW_CMD_LINE_ARGS_ERR)
     {
-        printf("ERROR!!! Program gets few command line arguments!!!\n %d < %d", argc, COUNT_OF_ARGS);
+        printf("ERROR!!! Program gets few command line arguments!!!\n %d < %u", argc, COUNT_OF_ARGS);
     }
     if (error & MANY_CMD_LINE_ARGS_ERR)
     {
-        printf("ERROR!!! Program gets many command line arguments!!!\n %d > %d", argc, COUNT_OF_ARGS);
+        printf("ERROR!!! Program gets many command line arguments!!!\n %d > %u", argc, COUNT_OF_ARGS);
     }
     if (error & INCORRECT_INPUT_FILE_ERR)
     {

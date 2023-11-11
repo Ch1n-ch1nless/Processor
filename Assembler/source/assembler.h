@@ -26,6 +26,4 @@ bool    GetLabelArg(elem_t*     cmd_array, size_t*  index,
 
 bool    GetRAMArg(elem_t* cmd_array, size_t* index, char** str_arg, error_t* error);
 
-error_t CheckCorrectnessOfArguments(char* str_arg, unsigned int arg_type);
-
 #endif // ASSEMBLER_H_INCLUDED

@@ -71,7 +71,7 @@ error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code)
                         char* str_arg = cmd_begin + COMMAND_SET[n].cmd_len;
 
                         //Check correctness of command's arguments
-                        error = CheckCorrectnessOfArguments(str_arg, COMMAND_SET[n].type_of_args);
+                        error = CheckCorrectnessOfArguments(str_arg);
                         CHECK_ERROR(error != NO_ERR, error)
 
                         //Skip white spaces and tabs

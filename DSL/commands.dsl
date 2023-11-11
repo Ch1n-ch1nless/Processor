@@ -88,17 +88,20 @@ DEF_CMD(DIV,   6, NONE,      0,       {
 DEF_CMD(SQRT,  7, NONE,      0,       {
                                     	MAKE_VAR(x)
                                     	STK_POP(x)
-                                    	STK_PUSH(sqrt(x))
+					SQRT(x)
+                                    	STK_PUSH(x)
                                       })
 DEF_CMD(SIN,   8, NONE,      0,       {
                                     	MAKE_VAR(x)
                                     	STK_POP(x)
-                                    	STK_PUSH(sin(x))
+					SIN(x)
+                                    	STK_PUSH(x)
                                       })
 DEF_CMD(COS,   9, NONE,      0,       {
                                    	MAKE_VAR(x)
                                     	STK_POP(x)
-                                    	STK_PUSH(cos(x))
+					COS(x)
+                                    	STK_PUSH(x)
                                       })
 DEF_CMD(OUT,  10, NONE,      0,       {
                                     	MAKE_VAR(x)

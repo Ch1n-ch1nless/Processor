@@ -1,5 +1,5 @@
-#ifndef GLOBAL_REG_CONSTS_AND_STRUCTS_H_INCLUDED
-#define GLOBAL_REG_CONSTS_AND_STRUCTS_H_INCLUDED
+#ifndef REGISTERS_H_INCLUDED
+#define REGISTERS_H_INCLUDED
 
 #define DEF_REG(name) name,
 
@@ -20,10 +20,10 @@ struct Register
 
 #define DEF_REG(name) {#name, strlen(#name), name},
 
-static Register REG_DICTIONARY[REGISTER_COUNT] =  {
+const Register REG_DICTIONARY[REGISTER_COUNT] =  {
                                                     #include "../DSL/registers.dsl"
                                                   };
 
 #undef DEF_REG
 
-#endif // GLOBAL_REG_CONSTS_AND_STRUCTS_H_INCLUDED
+#endif // REGISTERS_H_INCLUDED

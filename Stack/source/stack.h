@@ -83,7 +83,6 @@ error_t StackRealloc(Stack* stk);
  *@brief Print all elements of stack
  *
  *@param [in] stk - pointer to stack
- *@param [in] stk_name - name of stack
  *@param [in] file - name of file in which the function was called
  *@param [in] function - name of function that was called
  *@param [in] line - value of line on which the function was called
@@ -91,7 +90,6 @@ error_t StackRealloc(Stack* stk);
  *@return NO_ERR - if the stack has been destroyed successfully
  *@return error  - the variable which contains numbers of errors, which u can see in enum ERRRORS.
  */
-error_t PrintStack(Stack* stk, const char* stk_name, const char* file,
-                               const char* function, const int   line);
+error_t PrintStack(Stack* stk, const char* file, const char* function, const int   line);
 
 #endif // STACK_H_INCLUDED

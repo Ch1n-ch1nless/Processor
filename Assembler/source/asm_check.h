@@ -16,7 +16,7 @@
 
 void    DeleteExtraSpacesAndTabs(char** string);
 
-error_t CheckCorrectnessOfArguments(char* str_arg, unsigned int arg_type);
+error_t CheckCorrectnessOfArguments(char* str_arg);
 
 error_t CheckCorrectnessOfBrackets(char** str_arg);
 
