@@ -9,9 +9,9 @@ The project supports DSL. You can add new commands!!! What you need to do: <br>
     &emsp; 1) Open in folder "DSL" file "commands.dsl" <br>
     &emsp; 2) Write in the end of file: <code>DEF_CMD((a), (b), (c), (d), (e))</code> <br>
         &emsp; &emsp; 2.1) In brackets you need write: <br>
-                &emsp; &emsp; &emsp; a) name of command <br>
-                &emsp; &emsp; &emsp; b) number of command <br>
-                &emsp; &emsp; &emsp; c) type of arguments <br>
-                &emsp; &emsp; &emsp; d) number of arguments (now better to write 0 or 1, if you write more, can be errors in program) <br>
-                &emsp; &emsp; &emsp; e) action, what program needs to do <br>
+                &emsp; &emsp; &emsp; <code>(a)</code> name of command <br>
+                &emsp; &emsp; &emsp; <code>(b)</code> number of command <br>
+                &emsp; &emsp; &emsp; <code>(c)</code> type of arguments <br>
+                &emsp; &emsp; &emsp; <code>(d)</code> number of arguments (now better to write 0 or 1, if you write more, can be errors in program) <br>
+                &emsp; &emsp; &emsp; <code>(e)</code> action, what program needs to do <br>
 <br>
