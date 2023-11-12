@@ -20,5 +20,19 @@ The project supports DSL. You can add new commands!!! What you need to do: <br>
 Examples of programs that are written in "assembly" you can find in folder "Programs" <br>
 What programs you can find? <br>
 <h4 align="center">Factorial</h4>
-&emsp; Brief:<code>This program on input takes number and returns it factorial</code>
- 
+&emsp; <code>Brief:</code> &emsp; This program on input takes number and returns it factorial <br> 
+<br>
+&emsp; <code>Example of working:</code> &emsp; <br>
+<p align="center"><img src="/Img/factorial.png" width = "70%"></p>
+<br>
+<h4 align="center">Fibonacci</h4>
+&emsp; <code>Brief:</code> &emsp; This program on input takes the index of fibonacci number and returns the fibonacci number with this index <br> 
+<br>
+&emsp; <code>Example of working:</code> &emsp; <br>
+<p align="center"><img src="/Img/fibonacci.png" width = "70%"></p>
+<br>
+<h4 align="center">Moon</h4>
+&emsp; <code>Brief:</code> &emsp; This program draws beatiful moon <br> 
+<br>
+&emsp; <code>Example of working:</code> &emsp; <br>
+<p align="center"><img src="/Img/moon.png" width = "70%"></p> 
