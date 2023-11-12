@@ -6,9 +6,14 @@
 #define DEF_CMD(name, num, arg_type, num_of_args, ...)                                         \
     static_assert(num_of_args < 2, "Wrong syntax in DSL! Function can't have > 1 argumets!\n");
 
+#define DEF_JMP_CMD(name, num, num_of_args, ...)                                                \
+    static_assert(num_of_args <= 2, "Wrong syntax in DSL! Function can't have > 1 argumets!\n");
+
 #include "../../DSL/commands.dsl"
 
 #undef DEF_CMD
+
+#undef DEF_JMP_CMD
 
 error_t TranslateAssemblerCode(elem_t* cmd_array, Text* asm_code);
 

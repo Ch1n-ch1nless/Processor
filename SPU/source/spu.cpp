@@ -195,7 +195,7 @@ void ProcessorDump(Processor* proc, const char* spu_name, const char* file,
         {
             if (proc->ram[i * MAX_SIZE_OF_VM_STR + j + BEGIN_OF_VM] == 0)
             {
-                printf(".");
+                printf(" ");
             }
             else
             {

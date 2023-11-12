@@ -1,25 +1,22 @@
-#define GET_SGNT(data_type) data_type = proc->cmd_array[cmd_index] & BITMASK_SGNT;
+#define GET_SGNT(signature) int signature = proc->cmd_array[cmd_index] & BITMASK_SGNT;
 
-#define GET_ARG(number) cmd_index++; number = proc->cmd_array[cmd_index];
+#define MAKE_VAR(name) elem_t name = 35;
+
+#define MAKE_PTR(pointer, name) elem_t* pointer = &name;
+
+#define GET_ARG(signature, argument, arg_pointer)                          \
+        cmd_index++;                                                       \
+        GetArgument(proc, cmd_index,  signature, &argument, &arg_pointer);
+
+#define GET_LBL(cmd_index) cmd_index = proc->cmd_array[cmd_index+1] - 1;
 
 #define STK_PUSH(number) ProcessorStkPush(proc, number);
 
-#define STK_POP(number)  ProcessorStkPop(proc, &number);
+#define STK_POP(pointer)  ProcessorStkPop(proc, pointer);
 
-#define REG_PUSH(number) ProcessorRegPush(proc, number);
+#define CALL_STK_PUSH(number)   StackPush(&(proc->call_stk), number);
 
-#define REG_POP(number)  ProcessorRegPop(proc, number);
-
-#define RAM_POP(index)   elem_t x = 0;              \
-                         ProcessorStkPop(proc, &x); \
-                         proc->ram[index] = x;
-
-#define RAM_PUSH(index)  elem_t x = proc->ram[index]; \
-                         ProcessorStkPush(proc, x);
-
-#define PUSH_CALL(number)   StackPush(&(proc->call_stk), number);
-
-#define POP_CALL(number)    StackPop(&(proc->call_stk), &number);
+#define CALL_STK_POP(number)    StackPop(&(proc->call_stk), &number);
 
 #define READ(number) scanf(elem_format, &number);
 
@@ -28,8 +25,6 @@
 #define SIN(number) number = (elem_t) sin((double) number);
 
 #define COS(number) number = (elem_t) cos((double) number);
-
-#define MAKE_VAR(name) elem_t name = 0;
 
 #define WRITE(x) printf(elem_format, x);
 

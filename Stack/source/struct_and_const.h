@@ -26,7 +26,7 @@ typedef unsigned int hash_t;
 #include <string.h>
 #include "../../Common_files/config_error.h"
 
-const elem_t POISON_VALUE = 0;                      //!< @brief The value of element, which show that we don't have this element
+const elem_t POISON_VALUE = -1;                     //!< @brief The value of element, which show that we don't have this element
 const canary_t LEFT_CANARY_VALUE   = 0x602DA617;    //!< @brief The value of working stack left canary
 const canary_t RIGHT_CANARY_VALUE  = 0x602DABAD;    //!< @brief The value of working stack right canary
 const canary_t INTRO_CANARY_VALUE  = 0xD134CA75;    //!< @brief The value of working data left canary
