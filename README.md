@@ -42,11 +42,21 @@ The project supports DSL. You can add new commands!!! What you need to do: <br>
                 &emsp; &emsp; &emsp; <code>(e)</code> action, what program needs to do <br>
         &emsp; &emsp; 2.2) About syntax DSL you can read: [link to manual will be here later] <br>
 <br>
+<h2 align="left" How to launch and use program?></h2>
+    &emsp; 1) write in terminal: <code>git clone https://github.com/Ch1n-ch1nless/Preprocessor.git</code> <br>
+    &emsp; 2) go to folder "Preprocessor" <br>
+    &emsp; 3) add folder "object" in folders: "Assembler", "SPU", "DisAssembler", "Stack", "Onegin" <br>
+    &emsp; 4) write in terminal: <code>make compile</code> <br>
+    <br>
+    &emsp; After write commands, which writes in section 'Programs' <br>
+<br>
 <h2 align="left">Programs</h2>
 Examples of programs that are written in "assembly" you can find in folder "Programs" <br>
 What programs you can find? <br>
 <h4 align="center">Factorial</h4>
 &emsp; <code>Brief:</code> &emsp; This program on input takes number and returns it factorial <br> 
+<br>
+&emsp; <code>Command:</code> write in terminal: <code>make factorial</code> <br>
 <br>
 &emsp; <code>Example of working:</code> &emsp; <br>
 <p align="center"><img src="/Img/factorial.png" width = "70%"></p>
@@ -54,11 +64,15 @@ What programs you can find? <br>
 <h4 align="center">Fibonacci</h4>
 &emsp; <code>Brief:</code> &emsp; This program on input takes the index of fibonacci number and returns the fibonacci number with this index <br> 
 <br>
+&emsp; <code>Command:</code> write in terminal: <code>make fibonacci</code> <br>
+<br>
 &emsp; <code>Example of working:</code> &emsp; <br>
 <p align="center"><img src="/Img/fibonacci.png" width = "70%"></p>
 <br>
 <h4 align="center">Moon</h4>
 &emsp; <code>Brief:</code> &emsp; This program draws beatiful moon <br> 
+<br>
+&emsp; <code>Command:</code> write in terminal: <code>make moon</code> <br>
 <br>
 &emsp; <code>Example of working:</code> &emsp; <br>
 <p align="center"><img src="/Img/moon.png" width = "70%"></p>
@@ -70,6 +84,8 @@ What programs you can find? <br>
 &emsp; &emsp; 2) if first number is 8, that means equation has infinite quantite of roots. <br>
 &emsp; &emsp; 3) if first number is 1, that means equation hasn 1 root. Second number is value of root<br>
 &emsp; &emsp; 4) if first number is 2, that means equation hasn 2 roots. Next 2 numbers are values of roots<br>
+<br>
+&emsp; <code>Command:</code> write in terminal: <code>make square_equation</code> <br>
 <br>
 &emsp; <code>Example of working:</code> &emsp; <br>
 <p align="center"><img src="/Img/square_equation.png" width = "70%"></p>
