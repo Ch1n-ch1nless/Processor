@@ -26,13 +26,7 @@ What programs you can find? <br>
 <p align="center"><img src="/Img/factorial.png" width = "70%"></p>
 <br>
 <h4 align="center">Fibonacci</h4>
-&emsp; <code>Brief:</code> &emsp; This program щт штзге takes 3 coefficients of the square equation and returns the number of roots and their valueы<br> 
-&emsp; About return: <br>
-&emsp; &emsp; 1) if first number is 0, that means equation hasn't roots. <br>
-&emsp; &emsp; 2) if first number is 8, that means equation has infinite quantite of roots. <br>
-&emsp; &emsp; 3) if first number is 1, that means equation hasn 1 root. Second number is value of root<br>
-&emsp; &emsp; 4) if first number is 2, that means equation hasn 2 roots. Next 2 numbers are values of roots<br>
-<br>
+
 &emsp; <code>Example of working:</code> &emsp; <br>
 <p align="center"><img src="/Img/fibonacci.png" width = "70%"></p>
 <br>
@@ -43,7 +37,12 @@ What programs you can find? <br>
 <p align="center"><img src="/Img/moon.png" width = "70%"></p>
 <br>
 <h4 align="center">Square equation</h4>
-&emsp; <code>Brief:</code> &emsp; This program draws beatiful moon <br> 
+&emsp; <code>Brief:</code> &emsp; This program on input takes 3 coefficients of the square equation and returns the number of roots and their valueы<br> 
+&emsp; About return: <br>
+&emsp; &emsp; 1) if first number is 0, that means equation hasn't roots. <br>
+&emsp; &emsp; 2) if first number is 8, that means equation has infinite quantite of roots. <br>
+&emsp; &emsp; 3) if first number is 1, that means equation hasn 1 root. Second number is value of root<br>
+&emsp; &emsp; 4) if first number is 2, that means equation hasn 2 roots. Next 2 numbers are values of roots<br>
 <br>
 &emsp; <code>Example of working:</code> &emsp; <br>
 <p align="center"><img src="/Img/square_equation.png" width = "70%"></p>
