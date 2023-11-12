@@ -1,4 +1,7 @@
-<h1 align="center">PREPROCESSOR</h1>
+<h1 align="center">Hi there, I'm <a href="https://t.me/Chin_chinless" target="_blank">Oleg</a>
+<img src="https://github.com/blackcater/blackcater/raw/main/images/Hi.gif" height="32"/></h1>
+<h4 align="center">I am the author of project:</h4>
+<h1 align="center">Preprocessor</h1>
 <h2 align="left">Description</h2>
 My realization of working soft processing unit. What this project can do?<br>
     &emsp; 1) This project can translate assembler code to machine code. Code, which does it, locates in folder "Assembler"<br>
@@ -42,7 +45,7 @@ The project supports DSL. You can add new commands!!! What you need to do: <br>
                 &emsp; &emsp; &emsp; <code>(e)</code> action, what program needs to do <br>
         &emsp; &emsp; 2.2) About syntax DSL you can read: [link to manual will be here later] <br>
 <br>
-<h2 align="left" How to launch and use program?></h2>
+<h2 align="left"> How to launch and use program?</h2>
     &emsp; 1) write in terminal: <code>git clone https://github.com/Ch1n-ch1nless/Preprocessor.git</code> <br>
     &emsp; 2) go to folder "Preprocessor" <br>
     &emsp; 3) add folder "object" in folders: "Assembler", "SPU", "DisAssembler", "Stack", "Onegin" <br>
@@ -89,3 +92,6 @@ What programs you can find? <br>
 <br>
 &emsp; <code>Example of working:</code> &emsp; <br>
 <p align="center"><img src="/Img/square_equation.png" width = "70%"></p>
+
+<h1 align = "center"> Thank you for reading! </h1>
+<h4 align = "center"> If you have any questions, write on <a href="https://t.me/Chin_chinless" target="_blank">Telegram</a> </h4>
