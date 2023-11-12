@@ -160,7 +160,7 @@ error_t CheckCorrectnessOfSymbols(char** str_arg, size_t* count_of_args)
 
         if (isalnum(**str_arg) == false && **str_arg != '_' && **str_arg != '-')
         {
-            if (**str_arg == '\0' || **str_arg == ';' || **str_arg == '\n')
+            if (**str_arg == '\0' || **str_arg == ';' || **str_arg == '\n' || **str_arg == '\r')
             {
                 break; //After these symbols string doesn't have arguments
             }

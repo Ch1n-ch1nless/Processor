@@ -14,7 +14,7 @@
         return error;                                       \
     }
 
-void    DeleteExtraSpacesAndTabs(char** string);
+void    DeleteExtraSpacesAndTabs(char** cmd_line);
 
 error_t CheckCorrectnessOfArguments(char* str_arg);
 

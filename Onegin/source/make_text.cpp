@@ -26,7 +26,7 @@ Errors OpenFile(Text* onegin, const char* filename)
 {
     struct stat st = {};
 
-    onegin->file_ptr = fopen(filename, "r");
+    onegin->file_ptr = fopen(filename, "rb");
     if (onegin->file_ptr == nullptr) {
         Errors error = OPEN_FILE_ERR;
         $CHECK_AND_RETURN_ERROR
@@ -49,7 +49,7 @@ Errors ReadBuffer(Text* onegin)
     }
 
     const size_t symbol_number = fread(onegin->buffer, sizeof(char), onegin->buf_size, onegin->file_ptr);
-    if (symbol_number != onegin->buf_size) {
+    if ((symbol_number + 1) != onegin->buf_size) {
         #if 1
         if (feof(onegin->file_ptr)) {
             printf("Error reading %s: unexpected end of file\n", "<STRING>");

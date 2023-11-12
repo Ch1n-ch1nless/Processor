@@ -38,7 +38,9 @@ ASM_OBJ = $(patsubst $(ASM_SRC_DIR)%.cpp, $(ASM_OBJ_DIR)%.o, $(ASM_SRC))
 ONG_SRC = $(wildcard $(ONG_SRC_DIR)*.cpp)
 ONG_OBJ = $(patsubst $(ONG_SRC_DIR)%.cpp, $(ONG_OBJ_DIR)%.o, $(ONG_SRC))
 
-all: asm_compile spu_compile dis_compile run_asm run_spu run_dis
+all: compile moon
+
+compile: asm_compile spu_compile dis_compile
 
 asm_compile: $(ONG_OBJ) $(ASM_OBJ)
 	$(CC) $(ASM_OBJ) $(ONG_OBJ) -o asm
@@ -67,14 +69,34 @@ $(ONG_OBJ_DIR)%.o : $(ONG_SRC_DIR)%.cpp
 $(DIS_OBJ_DIR)%.o : $(DIS_SRC_DIR)%.cpp
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-run_asm: 
+factorial:
+ 
 	./asm Programs/factorial.asm Programs/commands.bin
-
-run_spu: 
+	
 	./spu Programs/commands.bin
 
-run_dis: 
+fibonacci:
+ 
+	./asm Programs/fibonacci.asm Programs/commands.bin
+
+	./spu Programs/commands.bin
+
+moon:
+
+	./asm Programs/moon.asm Programs/commands.bin
+
+	./spu Programs/commands.bin
+
+square_equation:
+
+	./asm Programs/square_equation.asm Programs/commands.bin
+
+	./spu Programs/commands.bin
+
+disassemble:
 	./dis Programs/commands.bin Programs/commands.dis
+
+
 
 clean:
 	rm $(STK_OBJ) $(ASM_OBJ) $(SPU_OBJ) $(DIS_OBJ) $(ONG_OBJ)
