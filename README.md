@@ -47,7 +47,7 @@ The project supports DSL. You can add new commands!!! What you need to do: <br>
 <br>
 <h2 align="left"> How to launch and use program?</h2>
     &emsp; 1) write in terminal: <code>git clone https://github.com/Ch1n-ch1nless/Preprocessor.git</code> <br>
-    &emsp; 2) go to folder: &nbsp;&nbsp;&nbsp;&nbsp; <code>cd Preprocessor</code> <br>
+    &emsp; 2) go to folder: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <code>cd Preprocessor</code> <br>
     &emsp; 3) write in terminal: <code>make compile</code> <br>
     <br>
     &emsp; The command to run the program, you can find in the section 'Programs' <br>
