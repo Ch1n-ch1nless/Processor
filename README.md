@@ -26,7 +26,8 @@ What programs you can find? <br>
 <p align="center"><img src="/Img/factorial.png" width = "70%"></p>
 <br>
 <h4 align="center">Fibonacci</h4>
-
+&emsp; <code>Brief:</code> &emsp; This program on input takes the index of fibonacci number and returns the fibonacci number with this index <br> 
+<br>
 &emsp; <code>Example of working:</code> &emsp; <br>
 <p align="center"><img src="/Img/fibonacci.png" width = "70%"></p>
 <br>
