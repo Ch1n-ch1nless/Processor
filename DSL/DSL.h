@@ -40,3 +40,31 @@
 #define BREAK break;
 
 #define EXIT  return error;
+
+#define DEF_JMP_CMD(name, num, num_of_args, compare)                                                \
+        DEF_CMD(name, num, LBL, num_of_args, {                                                      \
+                                            if (num_of_args == 1)                                   \
+                                            {                                                       \
+                                                cmd_index = proc->cmd_array[cmd_index + 1] - 1;     \
+                                            }                                                       \
+                                            else if (num_of_args == 2)                              \
+                                            {                                                       \
+                                                elem_t first  = POISON_VALUE;                       \
+                                                elem_t second = POISON_VALUE;                       \
+                                                ProcessorStkPop(proc, &second);                     \
+                                                ProcessorStkPop(proc, &first);                      \
+                                                if (first compare second)                           \
+                                                {                                                   \
+                                                    cmd_index = proc->cmd_array[cmd_index + 1] - 1; \
+                                                }                                                   \
+                                                else                                                \
+                                                {                                                   \
+                                                    cmd_index++;                                    \
+                                                }                                                   \
+                                            }                                                       \
+                                            else                                                    \
+                                            {                                                       \
+                                                error |= INCORRECT_NUM_OF_ARGS_ERR;                 \
+                                                CHECK_PROC_ERR(error, proc)                         \
+                                            }                                                       \
+                                             })

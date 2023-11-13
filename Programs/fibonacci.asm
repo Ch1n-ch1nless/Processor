@@ -23,7 +23,7 @@
 ;	rax  -- desired fibonacci number, 
 ; 	rbx  -- next fibonacci number,
 
-:SEARCH_FIBONACCI_NUMBER
+:EVALUATE_FIBONACCI_NUMBER
 		push 0
 		push rdx
 		je end_of_recursion
@@ -33,7 +33,7 @@
 		sub
 		pop  rdx
 
-		call SEARCH_FIBONACCI_NUMBER
+		call EVALUATE_FIBONACCI_NUMBER
 
 		push rdx
 		push 1
@@ -59,10 +59,10 @@
 
 ;----------------------------------------------------------
 
-; Reads the amount of fibonacci numbers
+; Reads the index of fibonacci number
 ;
-; Arguments:
-;	rdx -- amount of fibonacci numbers
+; Returns:
+;	rdx -- index of fibonacci number
 
 :READ_NUMBER_OF_FIBONACCI_NUMBER
 		in
@@ -73,7 +73,7 @@
 		
 :MAIN
 		call READ_NUMBER_OF_FIBONACCI_NUMBER	; Read number of fibonacci number
-		call SEARCH_FIBONACCI_NUMBER		; Search the fibonacci number
+		call EVALUATE_FIBONACCI_NUMBER		; Evaluate the fibonacci number
 		call PRINT_FIBONACCI_NUMBER	   	; Print the number  
 		ret
 

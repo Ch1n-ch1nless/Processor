@@ -5,7 +5,7 @@
 
 ; Reads the number that factorial will be calculated after
 ;
-; Arguments:
+; Returns:
 ;	rax -- number
 
 :READ_NUMBER

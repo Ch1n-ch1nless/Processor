@@ -27,8 +27,12 @@
 ; 	rbx -- second coefficient 
 ;	rcx -- free term
 ; Returns:
-;	memory cell [0]  -- number of roots
+;	memory cell [0]  -- number of roots 
 ;	memory cell [11] -- value of root
+;
+; if equation hasn't roots ,               then in [0] keeps 0
+; if equation has infinite quantity roots, then in [0] keeps 8
+; if equation has 1 root,                  then in [0] keeps 1
 
 :SOLVE_LINEAR_EQUATION
 		push rbx
@@ -81,6 +85,11 @@
 ;	memory cell [0]	 -- number of roots, 
 ;	memory cell [11] -- value of first root, 
 ;	memory cell [22] -- value of second root
+;
+; if equation hasn't roots ,               then in [0] keeps 0
+; if equation has infinite quantity roots, then in [0] keeps 8
+; if equation has 1 root,                  then in [0] keeps 1
+; if equation has 2 roots,                 then in [0] keeps 2
 
 :SOLVE_SQUARE_EQUATION
 		push 0

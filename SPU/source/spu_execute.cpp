@@ -14,36 +14,6 @@ error_t ExecuteCommands(Processor* proc)
                 action                                            \
                 break;
 
-        #define DEF_JMP_CMD(name, num, num_of_args, compare)            \
-            case(CMD_##name):                                           \
-            {                                                           \
-                if (num_of_args == 1)                                   \
-                {                                                       \
-                    cmd_index = proc->cmd_array[cmd_index + 1] - 1;     \
-                }                                                       \
-                else if (num_of_args == 2)                              \
-                {                                                       \
-                    elem_t first  = POISON_VALUE;                       \
-                    elem_t second = POISON_VALUE;                       \
-                    ProcessorStkPop(proc, &second);                     \
-                    ProcessorStkPop(proc, &first);                      \
-                    if (first compare second)                           \
-                    {                                                   \
-                        cmd_index = proc->cmd_array[cmd_index + 1] - 1; \
-                    }                                                   \
-                    else                                                \
-                    {                                                   \
-                        cmd_index++;                                    \
-                    }                                                   \
-                }                                                       \
-                else                                                    \
-                {                                                       \
-                    error |= INCORRECT_NUM_OF_ARGS_ERR;                 \
-                    CHECK_PROC_ERR(error, proc)                         \
-                }                                                       \
-                break;                                                  \
-            }
-
         switch(command)
         {
             #include "../../DSL/commands.dsl"
@@ -54,7 +24,6 @@ error_t ExecuteCommands(Processor* proc)
         }
 
         #undef DEF_CMD
-        #undef DEF_JMP_CMD
 
         if (error != NO_ERR)
         {
