@@ -1,7 +1,7 @@
 <h1 align="center">Hi there, I'm <a href="https://t.me/Chin_chinless" target="_blank">Oleg</a>
 <img src="https://github.com/blackcater/blackcater/raw/main/images/Hi.gif" height="32"/></h1>
 <h4 align="center">I am the author of project:</h4>
-<h1 align="center">Preprocessor</h1>
+<h1 align="center">Processor</h1>
 <h2 align="left">Description</h2>
 My realization of working soft processing unit. What this project can do?<br>
     &emsp; 1) Assembler: assembles human-readable assembly code to binary<br>
